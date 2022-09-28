@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/widgets.dart';
+import '../../widgets/widgets.dart';
 
 // This is of first screen when user init this Aplication, only seen once
 class StartScreen extends StatelessWidget {
@@ -52,7 +52,7 @@ class ContainerBottomButton extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, 'init_change_page');
               },
-              title: 'COMENCEMOS',
+              title: 'INICIAR RETO',
               style: const TextStyle(
                   fontWeight: FontWeight.w700, letterSpacing: 0.1),
             ),

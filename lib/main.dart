@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
-import 'package:bajar_de_peso_21_dias/screens/start_screen.dart';
+import 'package:bajar_de_peso_21_dias/screens/start/start_screen.dart';
 import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
 
 // import 'package:bajar_de_peso_21_dias/router/app_routes.dart';

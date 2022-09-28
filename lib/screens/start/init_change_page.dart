@@ -26,7 +26,7 @@ class InitChange extends StatelessWidget {
                     Navigator.pushNamed(context, 'init_start_routine'),
                 style: const TextStyle(
                     fontWeight: FontWeight.w800, letterSpacing: 0.1),
-                title: 'VAMOS'),
+                title: 'COMENCEMOS'),
             const SizedBox(
               height: 30,
             ),

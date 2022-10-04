@@ -1,7 +1,9 @@
+import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/widgets.dart';
+import '../screens.dart';
 
 class StartRoutineScreen extends StatelessWidget {
   const StartRoutineScreen({super.key});
@@ -25,11 +27,6 @@ class StartRoutineScreen extends StatelessWidget {
         'duationExercise': '1:20'
       },
       {
-        'titleExercise': 'Plank leg up',
-        'animation': 'assets/plank leg up.json',
-        'duationExercise': '1:10'
-      },
-            {
         'titleExercise': 'Abdominales',
         'animation': 'assets/abdominal-crunches-exercise.json',
         'duationExercise': '1:55'
@@ -50,6 +47,8 @@ class StartRoutineScreen extends StatelessWidget {
         'duationExercise': '1:10'
       }
     ];
+    const textStyleButton =
+        TextStyle(fontWeight: FontWeight.w600, letterSpacing: 0.1);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -82,11 +81,10 @@ class StartRoutineScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: CustomButtonInit(
-          onPressed: () {},
+          onPressed: () => Navigator.push(context, AppRoutes.handleNavigate(pageBuilder: const MainScreen(), type: 'fade')),
           title: 'VAMOS',
-          style:
-              const TextStyle(fontWeight: FontWeight.w600, letterSpacing: 0.1)),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          style: textStyleButton),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterFloat,
     );
   }
 }
@@ -105,16 +103,17 @@ class ListExercisesContainer extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(top: 22, bottom: 22),
         padding: AppTheme.paddingPagesExercises,
-        child: ListView.separated(
-          physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics()),
-          itemBuilder: (context, index) => ContainerExerciseAnimation(
-            titleExercise: exercises[index]['titleExercise'],
-            animation: exercises[index]['animation'],
-            duationExercise: exercises[index]['duationExercise'],
+        child: SingleChildScrollView(
+          physics: AppTheme.physics,
+          child: Column(
+            children: exercises
+                .map((e) => ContainerExerciseAnimation(
+                      animation: e['animation'],
+                      duationExercise: e['duationExercise'],
+                      titleExercise: e['titleExercise'],
+                    ))
+                .toList(),
           ),
-          itemCount: exercises.length,
-          separatorBuilder: (_, __) => const Divider(),
         ),
       ),
     );
@@ -175,7 +174,7 @@ class ContainerTextWihOutImage extends StatelessWidget {
         children: [
           Expanded(child: Container()),
           const Text(
-            '1 °Dia',
+            '1° Dia',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
           ),
           const Text('4 Mins - 8 ejercicios'),

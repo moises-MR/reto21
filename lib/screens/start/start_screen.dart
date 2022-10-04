@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../router/app_routes.dart';
 import '../../widgets/widgets.dart';
+import '../screens.dart';
 
 // This is of first screen when user init this Aplication, only seen once
 class StartScreen extends StatelessWidget {
@@ -49,9 +51,12 @@ class ContainerBottomButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             CustomButtonInit(
-              onPressed: () {
-                Navigator.pushNamed(context, 'init_change_page');
-              },
+              onPressed: () => Navigator.push(
+                  context,
+                  AppRoutes.handleNavigate(
+                    pageBuilder: const InitChange(),
+                    type: 'ios',
+                  )),
               title: 'INICIAR RETO',
               style: const TextStyle(
                   fontWeight: FontWeight.w700, letterSpacing: 0.1),

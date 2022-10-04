@@ -12,6 +12,7 @@ class CustomButtonInit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoButton(
+      borderRadius: BorderRadius.circular(50.0),
       padding: const EdgeInsets.symmetric(horizontal: 90, vertical: 16),
       onPressed: onPressed,
       color: AppTheme.primaryColor,

@@ -1,7 +1,9 @@
+import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../theme/app_theme.dart';
 import '../../widgets/widgets.dart';
+import '../screens.dart';
 
 class InitChange extends StatelessWidget {
   const InitChange({super.key});
@@ -9,29 +11,37 @@ class InitChange extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          foregroundColor: AppTheme.blackLight,
-          backgroundColor: Colors.white,
-        ),
-        body: Column(
-          children: [
-            const TitleInitChange(),
-            const SizedBox(
-              height: 20,
-            ),
-            const ContainerImageText(),
-            Expanded(child: Container()),
-            CustomButtonInit(
-                onPressed: () =>
-                    Navigator.pushNamed(context, 'init_start_routine'),
-                style: const TextStyle(
-                    fontWeight: FontWeight.w800, letterSpacing: 0.1),
-                title: 'COMENCEMOS'),
-            const SizedBox(
-              height: 30,
-            ),
-          ],
-        ));
+      appBar: AppBar(
+        foregroundColor: AppTheme.blackLight,
+        backgroundColor: Colors.white,
+      ),
+      body: Column(
+        children: [
+          const TitleInitChange(),
+          const SizedBox(
+            height: 20,
+          ),
+          const ContainerImageText(),
+          Expanded(child: Container()),
+          const SizedBox(
+            height: 30,
+          ),
+        ],
+      ),
+      floatingActionButton: CustomButtonInit(
+        onPressed: () => Navigator.push(
+            context,
+            AppRoutes.handleNavigate(
+              pageBuilder: const StartRoutineScreen(),
+              type: 'ios',
+            )),
+        style: const TextStyle(fontWeight: FontWeight.w800, letterSpacing: 0.1),
+        title: 'COMENCEMOS',
+      ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+    );
   }
 }
 

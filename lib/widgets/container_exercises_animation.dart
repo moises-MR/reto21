@@ -33,7 +33,7 @@ class ContainerExerciseAnimation extends StatelessWidget {
               builder: (context) => _createModal(
                   titleExercise: titleExercise,
                   animation: animation,
-                  duationExercise: duationExercise),
+                  durationExercise: duationExercise),
               shape: roundedRectangleBorder,
               isScrollControlled: true);
         },
@@ -90,7 +90,7 @@ class _Texts extends StatelessWidget {
 Widget _createModal(
     {required String titleExercise,
     required String animation,
-    required String duationExercise}) {
+    required String durationExercise}) {
   return DraggableScrollableSheet(
     expand: false,
     initialChildSize: 0.87,
@@ -107,7 +107,7 @@ Widget _createModal(
       views: [
         ViewAnimation(
           animation: animation,
-          duationExercise: duationExercise,
+          duationExercise: durationExercise,
           titleExercise: titleExercise,
         ),
         const _VideoPlayer(
@@ -166,13 +166,14 @@ class ViewAnimation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      physics: AppTheme.physics,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(
             height: 1,
           ),
-          Lottie.asset(animation,width: double.infinity),
+          Lottie.asset(animation, width: double.infinity),
           Padding(
             padding: const EdgeInsets.only(left: 12, top: 12),
             child: Text(

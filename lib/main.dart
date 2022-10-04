@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         // initialRoute: AppRoutes.initialRoute,
         routes: AppRoutes.routes,
-        // home: const MainScreen(),
-        home: const StartScreen(),
+        home: const MainScreen(),
+        // home: const StartScreen(),
         theme: AppTheme.lightTheme);
   }
 }

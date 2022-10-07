@@ -25,9 +25,12 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(screens[currentIndex]['title']),
-          centerTitle: true,
-          ),
+        title: Text(
+          screens[currentIndex]['title'],
+          style: const TextStyle(color: AppTheme.primaryColor),
+        ),
+        centerTitle: true,
+      ),
       body: screens[currentIndex]['screen'],
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),

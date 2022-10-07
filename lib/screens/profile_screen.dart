@@ -5,19 +5,19 @@ class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    const data = [
+    final List<Map<String, dynamic>> data = [
       {
-        'title': '',
-        'icon': Icons.abc,
+        'title': 'Usuario',
+        'icon': Icons.supervised_user_circle,
       },
       {
-        'title': '',
-        'icon': Icons.abc,
+        'title': 'Cuenta',
+        'icon': Icons.mail,
       },
       {
-        'title': '',
-        'icon': Icons.abc,
-      }
+        'title': 'Correo',
+        'icon': Icons.album,
+      },
     ];
     return Scaffold(
         body: ListView.separated(
@@ -26,11 +26,14 @@ class ProfileScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               return ListTile(
                 onTap: () {},
-                title: Text('sdsd'),
-                leading: Icon(Icons.notifications_active_outlined),
+                title: Text(data[index]['title']),
+                leading: Icon(data[index]['icon']),
               );
             },
-            separatorBuilder: (context, index) => const Divider(),
+            separatorBuilder: (context, index) => Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 30),
+                  child: const Divider(),
+                ),
             itemCount: data.length));
   }
 }

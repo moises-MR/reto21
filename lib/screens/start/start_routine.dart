@@ -51,14 +51,7 @@ class StartRoutineScreen extends StatelessWidget {
         TextStyle(fontWeight: FontWeight.w600, letterSpacing: 0.1);
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
-          statusBarBrightness: Brightness.dark, // For iOS (dark icons)
-        ),
-        backgroundColor: Colors.transparent,
-        foregroundColor: AppTheme.blackLight,
-      ),
+      appBar: AppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

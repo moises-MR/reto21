@@ -23,12 +23,11 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(screens[currentIndex]['title']),
-        centerTitle: true,
-      ),
+          title: Text(screens[currentIndex]['title']),
+          centerTitle: true,
+          ),
       body: screens[currentIndex]['screen'],
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
@@ -39,7 +38,7 @@ class _MainScreenState extends State<MainScreen> {
             color: AppTheme.primaryColor,
             activeColor: AppTheme.white,
             tabBackgroundColor: AppTheme.primaryColor,
-            padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             onTabChange: (value) {
               currentIndex = value;
               setState(() {});

@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+// import 'package:flutter/material.dart';
 
 import '../screens/screens.dart';
 
@@ -11,6 +12,7 @@ class AppRoutes {
     'profile_screen': (BuildContext context) => const ProfileScreen(),
     'init_change_page': (BuildContext context) => const InitChange(),
     'init_start_routine': (BuildContext context) => const StartRoutineScreen(),
+    'diet_details_screen': (BuildContext context) => const DietDetailsScreen(),
   };
 
   static PageRouteBuilder<dynamic> handleNavigate(
@@ -56,4 +58,13 @@ class AppRoutes {
           // );
         });
   }
+
+  static  Set<Future> Function({required BuildContext context, required Widget pageBuilder}) pushRouteCupertino =
+      ({required BuildContext context, required Widget pageBuilder}) => {
+            Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (context) => pageBuilder,
+                ))
+          };
 }

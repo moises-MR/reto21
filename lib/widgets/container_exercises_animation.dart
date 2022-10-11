@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lottie/lottie.dart';
@@ -30,10 +31,12 @@ class ContainerExerciseAnimation extends StatelessWidget {
                   BorderRadius.only(topLeft: radius, topRight: radius));
           showModalBottomSheet(
               context: context,
-              builder: (context) => _createModal(
-                  titleExercise: titleExercise,
-                  animation: animation,
-                  durationExercise: duationExercise),
+              builder: (context) => CreateModal(
+                    titleExercise: titleExercise,
+                    animation: animation,
+                    durationExercise: duationExercise,
+                    controller: CountDownController(),
+                  ),
               shape: roundedRectangleBorder,
               isScrollControlled: true);
         },
@@ -87,36 +90,66 @@ class _Texts extends StatelessWidget {
   }
 }
 
-Widget _createModal(
-    {required String titleExercise,
-    required String animation,
-    required String durationExercise}) {
-  return DraggableScrollableSheet(
-    expand: false,
-    initialChildSize: 0.87,
-    builder: (BuildContext context, ScrollController scrollController) =>
-        ContainedTabBarView(
-      tabBarProperties: const TabBarProperties(
-        labelColor: Colors.black,
-        indicatorColor: AppTheme.primaryColor,
-      ),
-      tabs: const [
-        Text('Animacion'),
-        Text('Video'),
-      ],
-      views: [
-        ViewAnimation(
-          animation: animation,
-          duationExercise: durationExercise,
-          titleExercise: titleExercise,
+class CreateModal extends StatefulWidget {
+  const CreateModal({
+    super.key,
+    required this.titleExercise,
+    required this.animation,
+    required this.durationExercise,
+    required this.controller,
+  });
+
+  final String titleExercise;
+  final String animation;
+  final String durationExercise;
+  final CountDownController controller;
+
+  @override
+  State<CreateModal> createState() => _CreateModalState();
+}
+
+class _CreateModalState extends State<CreateModal> {
+  @override
+  void dispose() {
+    print(widget.controller.isPaused);
+    if (widget.controller.isPaused) {
+      print('si se hizo');
+    } else {
+      print('no se hizo');
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DraggableScrollableSheet(
+      expand: false,
+      initialChildSize: 0.87,
+      builder: (BuildContext context, ScrollController scrollController) =>
+          ContainedTabBarView(
+        tabBarViewProperties:
+            const TabBarViewProperties(physics: AppTheme.physics),
+        tabBarProperties: const TabBarProperties(
+          labelColor: Colors.black,
+          indicatorColor: AppTheme.primaryColor,
         ),
-        const _VideoPlayer(
-          titleExercise: 'Bir box',
-        )
-      ],
-      onChange: (index) => print(index),
-    ),
-  );
+        tabs: const [
+          Text('Animacion'),
+          Text('Video'),
+        ],
+        views: [
+          ViewAnimation(
+            animation: widget.animation,
+            duationExercise: widget.durationExercise,
+            titleExercise: widget.titleExercise,
+          ),
+          const _VideoPlayer(
+            titleExercise: 'Bir box',
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _VideoPlayer extends StatelessWidget {

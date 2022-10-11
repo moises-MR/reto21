@@ -13,6 +13,8 @@ class AppRoutes {
     'init_change_page': (BuildContext context) => const InitChange(),
     'init_start_routine': (BuildContext context) => const StartRoutineScreen(),
     'diet_details_screen': (BuildContext context) => const DietDetailsScreen(),
+    'exercise_day_screen': (BuildContext context) => const ExerciseDayScreen(),
+    'routine_screen': (BuildContext context) => const RotineScreen(),
   };
 
   static PageRouteBuilder<dynamic> handleNavigate(
@@ -27,9 +29,9 @@ class AppRoutes {
 
           if (type == 'fade') {
             return FadeTransition(
-                child: child,
                 opacity: Tween<double>(begin: 0.0, end: 1.0)
-                    .animate(curvedAnimation));
+                    .animate(curvedAnimation),
+                child: child);
           }
 
           return SlideTransition(

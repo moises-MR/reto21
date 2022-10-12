@@ -3,6 +3,8 @@ import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
 import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../widgets/custom_button_init.dart';
 import 'diet/diet_details.dart';
@@ -84,11 +86,11 @@ class ContainerSlide extends StatelessWidget {
                         color: AppTheme.blackLight,
                         borderRadius: borderRadius,
                       ),
-                      child: const Icon(
-                        Icons.lock_rounded,
-                        color: Colors.white,
-                        size: 150,
-                      ),
+                      child: Center(
+                          child: SvgPicture.asset(
+                        'assets/SVG/lock.svg',
+                        width: 120,
+                      )),
                     ),
                   ),
               ],

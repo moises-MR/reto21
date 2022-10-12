@@ -29,7 +29,8 @@ class ContainerExerciseAnimation extends StatelessWidget {
           var roundedRectangleBorder = RoundedRectangleBorder(
               borderRadius:
                   BorderRadius.only(topLeft: radius, topRight: radius));
-          showModalBottomSheet(
+          final a = showModalBottomSheet(
+              // isDismissible: false,
               context: context,
               builder: (context) => CreateModal(
                     titleExercise: titleExercise,
@@ -50,7 +51,7 @@ class ContainerExerciseAnimation extends StatelessWidget {
                 ),
                 _Texts(
                     titleExercise: titleExercise,
-                    duationExercise: duationExercise)
+                    duationExercise: duationExercise),
               ],
             ),
             const Divider()
@@ -111,11 +112,8 @@ class CreateModal extends StatefulWidget {
 class _CreateModalState extends State<CreateModal> {
   @override
   void dispose() {
-    print(widget.controller.isPaused);
     if (widget.controller.isPaused) {
-      print('si se hizo');
-    } else {
-      print('no se hizo');
+      Future.microtask(() => widget.controller.resume());
     }
     super.dispose();
   }

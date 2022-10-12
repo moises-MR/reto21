@@ -71,6 +71,9 @@ class ProfileScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const _HeaderProfile(),
+            const SizedBox(
+              height: 22,
+            ),
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
@@ -159,32 +162,47 @@ class _HeaderProfile extends StatelessWidget {
                 width: 50,
               ),
               // const SizedBox(width: 20,),
-              _createColum(title: 'Dia', icon: Icons.bolt_outlined, value: '19'),
-              _createColum(title: 'Calorias', icon: Icons.local_fire_department_outlined, value: '400'),
-              _createColum(title: 'Minutos', icon: Icons.timer_outlined, value: '190'),
-         
-              
+              _createColum(
+                  title: 'Dia', icon: Icons.bolt_outlined, value: '19'),
+              _createColum(
+                  title: 'Calorias',
+                  icon: Icons.local_fire_department_outlined,
+                  value: '400'),
+              _createColum(
+                  title: 'Minutos', icon: Icons.timer_outlined, value: '190'),
             ],
           ),
         ),
         Container(
-           margin: const EdgeInsets.only(top: 7),
+          margin: const EdgeInsets.only(top: 7),
           height: 1,
-           color: const Color.fromARGB(14, 0, 0, 0),
+          color: const Color.fromARGB(14, 0, 0, 0),
         ),
       ],
     );
   }
 
-  Column _createColum({required String title, required IconData icon,required String value}) {
+  Column _createColum(
+      {required String title, required IconData icon, required String value}) {
     return Column(
-              children:  [
-                 Icon(icon, size: 27,color: AppTheme.primaryColor),
-                 const SizedBox(height: 4,),
-                 Text(value, style: TextStyle(color: AppTheme.primaryColor, fontSize: 32, fontWeight: FontWeight.bold),),
-                Text(title, style: TextStyle(fontSize: 16, color: AppTheme.blackLight),)
-              ],
-            );
+      children: [
+        Icon(icon, size: 27, color: AppTheme.primaryColor),
+        const SizedBox(
+          height: 4,
+        ),
+        Text(
+          value,
+          style: TextStyle(
+              color: AppTheme.primaryColor,
+              fontSize: 32,
+              fontWeight: FontWeight.bold),
+        ),
+        Text(
+          title,
+          style: TextStyle(fontSize: 16, color: AppTheme.blackLight),
+        )
+      ],
+    );
   }
 }
 

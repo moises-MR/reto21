@@ -18,8 +18,7 @@ class ExerciseScreen extends StatelessWidget {
         children: [
           CardDayExercice(
             title: 'Dia 1 - Entrenamiento de abdominales',
-            subTitle:
-                '6 Min, 7 Ejercicios',
+            subTitle: '6 Min, 7 Ejercicios',
             assetSvg1: 'assets/shape2.svg',
             image: 'assets/women_purple_siluet.png',
             assetSvg2: 'assets/svg.svg',

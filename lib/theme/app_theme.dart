@@ -17,7 +17,6 @@ class AppTheme {
       BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());
 
   static final ThemeData lightTheme = ThemeData.light().copyWith(
-    
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -26,7 +25,6 @@ class AppTheme {
         statusBarBrightness: Brightness.dark, // For iOS (dark icons)
       ),
       foregroundColor: AppTheme.blackLight,
-      
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: primaryColor, selectedItemColor: white, elevation: 0),

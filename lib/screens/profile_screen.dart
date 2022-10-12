@@ -1,5 +1,6 @@
 import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -69,6 +70,7 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const _HeaderProfile(),
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
@@ -117,20 +119,72 @@ class ProfileScreen extends StatelessWidget {
                       title: e['title'],
                     ))
                 .toList(),
-              const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(12),
-                  child: Text(
-                    'Versión 0.0.5',
-                    style: TextStyle(color: AppTheme.primaryColor, fontSize: 16),
-                  ),
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.all(12),
+                child: Text(
+                  'Versión 0.0.5',
+                  style: TextStyle(color: AppTheme.primaryColor, fontSize: 16),
                 ),
               ),
-
+            ),
           ],
         ),
       ),
     ));
+  }
+}
+
+class _HeaderProfile extends StatelessWidget {
+  const _HeaderProfile({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.only(bottom: 7),
+          height: 1,
+          color: const Color.fromARGB(14, 0, 0, 0),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SvgPicture.asset(
+                'assets/SVG/girl_profile.svg',
+                width: 50,
+              ),
+              // const SizedBox(width: 20,),
+              _createColum(title: 'Dia', icon: Icons.bolt_outlined, value: '19'),
+              _createColum(title: 'Calorias', icon: Icons.local_fire_department_outlined, value: '400'),
+              _createColum(title: 'Minutos', icon: Icons.timer_outlined, value: '190'),
+         
+              
+            ],
+          ),
+        ),
+        Container(
+           margin: const EdgeInsets.only(top: 7),
+          height: 1,
+           color: const Color.fromARGB(14, 0, 0, 0),
+        ),
+      ],
+    );
+  }
+
+  Column _createColum({required String title, required IconData icon,required String value}) {
+    return Column(
+              children:  [
+                 Icon(icon, size: 27,color: AppTheme.primaryColor),
+                 const SizedBox(height: 4,),
+                 Text(value, style: TextStyle(color: AppTheme.primaryColor, fontSize: 32, fontWeight: FontWeight.bold),),
+                Text(title, style: TextStyle(fontSize: 16, color: AppTheme.blackLight),)
+              ],
+            );
   }
 }
 

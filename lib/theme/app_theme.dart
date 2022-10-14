@@ -7,6 +7,7 @@ class AppTheme {
   static const Color lightPink = Color(0xffffebee);
   static const Color blackLight = Colors.black45;
   static const Color white = Colors.white;
+  static const Color grayBlack = Color.fromARGB(255, 92, 92, 92);
   /* PADDINGS GENERAL */
   static const EdgeInsetsGeometry paddingGeneralPages =
       EdgeInsets.symmetric(horizontal: 12);

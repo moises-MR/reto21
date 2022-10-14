@@ -1,13 +1,10 @@
-import 'package:animate_do/animate_do.dart';
+import 'package:flutter/material.dart';
+import 'package:card_swiper/card_swiper.dart';
 import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
 import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
-import 'package:card_swiper/card_swiper.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import '../widgets/custom_button_init.dart';
 import 'diet/diet_details.dart';
+import '../widgets/custom_button_init.dart';
 
 class DietScreen extends StatelessWidget {
   const DietScreen({super.key});

@@ -37,6 +37,7 @@ class ContainerExerciseAnimation extends StatelessWidget {
                     animation: animation,
                     durationExercise: duationExercise,
                     controller: CountDownController(),
+                    stopTimer: () {},
                   ),
               shape: roundedRectangleBorder,
               isScrollControlled: true);
@@ -92,18 +93,22 @@ class _Texts extends StatelessWidget {
 }
 
 class CreateModal extends StatefulWidget {
-  const CreateModal({
-    super.key,
-    required this.titleExercise,
-    required this.animation,
-    required this.durationExercise,
-    required this.controller,
-  });
+  const CreateModal(
+      {super.key,
+      required this.titleExercise,
+      required this.animation,
+      required this.durationExercise,
+      required this.controller,
+      this.initialIndex = 0,
+      required this.stopTimer});
 
   final String titleExercise;
   final String animation;
   final String durationExercise;
   final CountDownController controller;
+  final int initialIndex;
+
+  final Function stopTimer;
 
   @override
   State<CreateModal> createState() => _CreateModalState();
@@ -111,10 +116,17 @@ class CreateModal extends StatefulWidget {
 
 class _CreateModalState extends State<CreateModal> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+
+  @override
   void dispose() {
     if (widget.controller.isPaused) {
       Future.microtask(() => widget.controller.resume());
     }
+    widget.stopTimer();
     super.dispose();
   }
 
@@ -125,6 +137,7 @@ class _CreateModalState extends State<CreateModal> {
       initialChildSize: 0.87,
       builder: (BuildContext context, ScrollController scrollController) =>
           ContainedTabBarView(
+        initialIndex: widget.initialIndex,
         tabBarViewProperties:
             const TabBarViewProperties(physics: AppTheme.physics),
         tabBarProperties: const TabBarProperties(

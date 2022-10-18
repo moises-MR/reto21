@@ -65,6 +65,7 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
         body: SingleChildScrollView(
+          physics: AppTheme.physics,
       child: Container(
         padding: AppTheme.paddingGeneralPages,
         child: Column(

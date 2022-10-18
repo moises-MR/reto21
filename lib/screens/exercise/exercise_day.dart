@@ -1,10 +1,8 @@
-import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
 import 'package:flutter/material.dart';
 
+import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
 import '../../widgets/widgets.dart';
-import '../exercise_screen.dart';
-import '../routine/routine_screen.dart';
-import '../start/start_routine.dart';
+import '../screens.dart';
 
 class ExerciseDayScreen extends StatelessWidget {
   const ExerciseDayScreen({super.key});
@@ -15,7 +13,7 @@ class ExerciseDayScreen extends StatelessWidget {
     const List exercises = [
       {
         'titleExercise': 'Abdominales',
-        'animation': 'assets/abdominal-crunches-exercise.json',
+        'animation': 'assets/lotties/abdominales_crunch_blank.json',
         'duationExercise': '1:55'
       },
       {
@@ -30,7 +28,7 @@ class ExerciseDayScreen extends StatelessWidget {
       },
       {
         'titleExercise': 'Abdominales',
-        'animation': 'assets/abdominal-crunches-exercise.json',
+        'animation': 'assets/lotties/abdominales_crunch_blank.json',
         'duationExercise': '1:55'
       },
       {
@@ -43,11 +41,26 @@ class ExerciseDayScreen extends StatelessWidget {
         'animation': 'assets/box-push-ups-exercise.json',
         'duationExercise': '1:20'
       },
+            {
+        'titleExercise': 'Abdominales',
+        'animation': 'assets/lotties/abdominales_crunch_blank.json',
+        'duationExercise': '1:55'
+      },
       {
-        'titleExercise': 'Plank leg up',
-        'animation': 'assets/plank leg up.json',
-        'duationExercise': '1:10'
-      }
+        'titleExercise': 'Bir box',
+        'animation': 'assets/bird_dog.json',
+        'duationExercise': '0:50'
+      },
+      {
+        'titleExercise': 'Box push up',
+        'animation': 'assets/box-push-ups-exercise.json',
+        'duationExercise': '1:20'
+      },
+      // {
+      //   'titleExercise': 'Plank leg up',
+      //   'animation': 'assets/plank leg up.json',
+      //   'duationExercise': '1:10'
+      // }
     ];
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -72,7 +85,7 @@ class ExerciseDayScreen extends StatelessWidget {
       ),
       floatingActionButton: CustomButtonInit(
           onPressed: () => AppRoutes.pushRouteCupertino(
-              context: context, pageBuilder: const RotineScreen()),
+              context: context, pageBuilder: const RoutineStart()),
           title: 'VAMOS',
           style: textStyleButton),
       floatingActionButtonLocation:

@@ -26,12 +26,25 @@ class AppRoutes {
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           final curvedAnimation =
               CurvedAnimation(parent: animation, curve: Curves.easeInOutCubic);
+          final curvedAnimation2 =
+              CurvedAnimation(parent: animation, curve: Curves.easeOutSine);
 
           if (type == 'fade') {
             return FadeTransition(
                 opacity: Tween<double>(begin: 0.0, end: 1.0)
                     .animate(curvedAnimation),
                 child: child);
+          }
+
+          if (type == 'bottom_fade_cupertino') {
+            return SlideTransition(
+                position: Tween<Offset>(
+                        begin: const Offset(0.0, 1.0), end: Offset.zero)
+                    .animate(curvedAnimation2),
+                child: FadeTransition(
+                    opacity: Tween<double>(begin: 0.0, end: 1.0)
+                        .animate(curvedAnimation2),
+                    child: child));
           }
 
           return SlideTransition(
@@ -61,7 +74,9 @@ class AppRoutes {
         });
   }
 
-  static  Set<Future> Function({required BuildContext context, required Widget pageBuilder}) pushRouteCupertino =
+  static Set<Future> Function(
+          {required BuildContext context,
+          required Widget pageBuilder}) pushRouteCupertino =
       ({required BuildContext context, required Widget pageBuilder}) => {
             Navigator.push(
                 context,

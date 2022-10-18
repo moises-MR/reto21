@@ -98,13 +98,16 @@ class ListExercisesContainer extends StatelessWidget {
         child: SingleChildScrollView(
           physics: AppTheme.physics,
           child: Column(
-            children: exercises
+            children: [
+              ...exercises
                 .map((e) => ContainerExerciseAnimation(
                       animation: e['animation'],
                       duationExercise: e['duationExercise'],
                       titleExercise: e['titleExercise'],
                     ))
                 .toList(),
+                const SizedBox(height: 77,)
+            ]
           ),
         ),
       ),

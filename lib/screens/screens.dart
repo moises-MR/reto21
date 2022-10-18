@@ -1,3 +1,4 @@
+export 'package:bajar_de_peso_21_dias/screens/routine/routine_start.dart';
 export 'package:bajar_de_peso_21_dias/screens/routine/routine_screen.dart';
 export 'package:bajar_de_peso_21_dias/screens/exercise/exercise_day.dart';
 export 'package:bajar_de_peso_21_dias/screens/diet/diet_details.dart';

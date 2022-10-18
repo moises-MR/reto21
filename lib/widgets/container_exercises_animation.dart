@@ -1,5 +1,4 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lottie/lottie.dart';
@@ -29,15 +28,15 @@ class ContainerExerciseAnimation extends StatelessWidget {
           var roundedRectangleBorder = RoundedRectangleBorder(
               borderRadius:
                   BorderRadius.only(topLeft: radius, topRight: radius));
-          final a = showModalBottomSheet(
+        showModalBottomSheet(
               // isDismissible: false,
               context: context,
               builder: (context) => CreateModal(
                     titleExercise: titleExercise,
                     animation: animation,
                     durationExercise: duationExercise,
-                    controller: CountDownController(),
                     stopTimer: () {},
+                    initTimer: () {},
                   ),
               shape: roundedRectangleBorder,
               isScrollControlled: true);
@@ -98,14 +97,14 @@ class CreateModal extends StatefulWidget {
       required this.titleExercise,
       required this.animation,
       required this.durationExercise,
-      required this.controller,
+      required this.initTimer,
       this.initialIndex = 0,
       required this.stopTimer});
 
   final String titleExercise;
   final String animation;
   final String durationExercise;
-  final CountDownController controller;
+  final Function initTimer;
   final int initialIndex;
 
   final Function stopTimer;
@@ -120,13 +119,9 @@ class _CreateModalState extends State<CreateModal> {
     super.initState();
   }
 
-
   @override
   void dispose() {
-    if (widget.controller.isPaused) {
-      Future.microtask(() => widget.controller.resume());
-    }
-    widget.stopTimer();
+    widget.initTimer();
     super.dispose();
   }
 

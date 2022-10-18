@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
 import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../widgets/container_exercises_animation.dart';
+import '../break/break_screen.dart';
 
 class RotineScreen extends StatelessWidget {
   const RotineScreen({super.key});
@@ -33,50 +35,61 @@ class _InitRoutineState extends State<_InitRoutine> {
   int milliseconds = 0;
   late Timer timer;
   bool timerWidgetActive = false;
-
-
+  int seconsRevers = 10;
   void initTimer() {
-    if(!timerWidgetActive){
-      print('milliseconds == 0');
-      timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
-      milliseconds += 100;
-      setState(() {});
-    });
-    timerWidgetActive = true;
-    return;
+    if (!timerWidgetActive) {
+      timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        if (seconsRevers <= 1) {
+          stopTimer();
+          return;
+        }
+        ;
+        seconsRevers--;
+        setState(() {});
+      });
+      timerWidgetActive = true;
+      return;
     }
     if (timer.isActive) return;
-      print('timer.is no tActive');
 
-    timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
-      milliseconds += 100;
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (seconsRevers <= 1) {
+        stopTimer();
+        return;
+      }
+      ;
+      seconsRevers--;
       setState(() {});
     });
   }
 
   void stopTimer() {
-    if (milliseconds != 0) timer.cancel();
+    if (timerWidgetActive) {
+      timer.cancel();
+      timerWidgetActive = true;
+    }
   }
 
   void restartTimer() {
-    milliseconds = 0;
+    seconsRevers = 0;
     setState(() {});
   }
 
-  String formatTimer() {
-    String formatWithTwoValues(int value) => value >= 10 ? "$value" : "0$value";
-    Duration duration = Duration(milliseconds: milliseconds);
-    String seconds = formatWithTwoValues(duration.inSeconds.remainder(60));
-    String minutes = formatWithTwoValues(duration.inMinutes);
-    return "$minutes:$seconds";
-  }
+  // String formatTimer() {
+  //   String formatWithTwoValues(int value) => value >= 10 ? "$value" : "0$value";
+  //   Duration duration = Duration(milliseconds: milliseconds);
+  //   String seconds = formatWithTwoValues(duration.inSeconds.remainder(60));
+  //   String minutes = formatWithTwoValues(duration.inMinutes);
+  //   return "$minutes:$seconds";
+  // }
 
-  void changeContainer () {
-    initTimer();    
-  }
+  // void changeContainer() {
+  //   initTimer();
+  // }
 
   @override
   void initState() {
+    initTimer();
     super.initState();
   }
 
@@ -86,38 +99,177 @@ class _InitRoutineState extends State<_InitRoutine> {
     super.dispose();
   }
 
-  final conuter = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
           _LottieContainer(
-            controller: widget.controller,
             stopTimer: stopTimer,
+            initTimer: initTimer,
+          ),
+          Expanded(child: Container()),
+          const Text(
+            'Abdominales',
+            style: TextStyle(
+                fontSize: 27, fontWeight: FontWeight.w800, letterSpacing: 0.3),
+          ),
+          //
+          const SizedBox(
+            height: 12,
+          ),
+
+          _Counter(seconsRevers: seconsRevers),
+          const SizedBox(
+            height: 20,
+          ),
+          LinearCounter(
+            seconsRevers: seconsRevers,
+            stopTimer: stopTimer,
+            initTimer: initTimer,
           ),
           const SizedBox(
             height: 40,
           ),
-          _Texts(
-            controller: widget.controller,
-            stopTimer: stopTimer,
+          const ButtonTabsBottom(),
+          const SizedBox(
+            height: 32,
           ),
-          Expanded(child: Container()), 
-         
-          CircleBottom(
-            controller: widget.controller, changeContainer: changeContainer,
-          ) ,
-          Center(
-            child: Text(
-              formatTimer(),
-              style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+          
+        ],
+      ),
+    );
+  }
+}
+
+class ButtonTabsBottom extends StatelessWidget {
+  const ButtonTabsBottom({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        GestureDetector(
+          onTap: () => AppRoutes.pushRouteCupertino(context: context,pageBuilder: const  BreackScreen()),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Icon(
+                Icons.keyboard_arrow_left,
+                color: Colors.grey,
+              ),
+              Text(
+                'Anterior',
+                style: TextStyle(color: Colors.grey),
+              )
+            ],
+          ),
+        ),
+        Container(
+          color: AppTheme.blackLight,
+          height: 20,
+          width: 2,
+        ),
+        Row(
+          children: const [Text('Anterior'), Icon(Icons.keyboard_arrow_right)],
+        )
+      ],
+    );
+  }
+}
+
+class LinearCounter extends StatefulWidget {
+  const LinearCounter({
+    Key? key,
+    required this.seconsRevers,
+    required this.stopTimer,
+    required this.initTimer,
+  }) : super(key: key);
+
+  final int seconsRevers;
+  final Function stopTimer;
+  final Function initTimer;
+
+  @override
+  State<LinearCounter> createState() => _LinearCounterState();
+}
+
+class _LinearCounterState extends State<LinearCounter> {
+  bool isPause = false;
+  @override
+  Widget build(BuildContext context) {
+    const textStyle = TextStyle(
+        fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white);
+    return GestureDetector(
+      onTap: () {
+        isPause ? widget.initTimer() : widget.stopTimer();
+        setState(() {
+          isPause = !isPause;
+        });
+      },
+      child: Stack(
+        alignment: AlignmentDirectional.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: LinearProgressIndicator(
+                semanticsValue: widget.seconsRevers.toString(),
+                semanticsLabel: widget.seconsRevers.toString(),
+                minHeight: 60,
+                value: widget.seconsRevers / 10,
+                color: AppTheme.primaryColor,
+                backgroundColor: AppTheme.lightPink,
+              ),
             ),
           ),
-        const SizedBox(
-            height: 40,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                isPause ? Icons.play_arrow : Icons.pause,
+                color: Colors.white,
+                size: 25,
+              ),
+              const SizedBox(
+                width: 7,
+              ),
+              Text(
+                isPause ? 'REANUDAR' : 'PAUSA',
+                style: textStyle,
+              ),
+            ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _Counter extends StatelessWidget {
+  const _Counter({
+    Key? key,
+    required this.seconsRevers,
+  }) : super(key: key);
+
+  final int seconsRevers;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        // formatTimer(),
+        '00:${seconsRevers >= 10 ? "$seconsRevers" : "0$seconsRevers"}',
+        style: const TextStyle(
+            fontSize: 50,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Artico',
+            color: AppTheme.grayBlack),
       ),
     );
   }
@@ -126,27 +278,41 @@ class _InitRoutineState extends State<_InitRoutine> {
 class _LottieContainer extends StatelessWidget {
   const _LottieContainer({
     Key? key,
-    required this.controller,
     required this.stopTimer,
+    required this.initTimer,
   }) : super(key: key);
 
-  final CountDownController controller;
   final Function stopTimer;
+  final Function initTimer;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       child: Stack(
         children: [
-          Lottie.asset('assets/plank leg up.json', width: double.infinity),
+          Lottie.asset('assets/abdominal-crunches-exercise.json',
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * 0.50,
+              fit: BoxFit.fill),
           Positioned(
               top: 73,
               left: 10,
-              child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: const Icon(
-                    Icons.arrow_back_ios_outlined,
-                    color: AppTheme.blackLight,
-                  ))),
+              child: Row(
+                children: [
+                  GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: const Icon(
+                        Icons.arrow_back_ios_outlined,
+                        color: AppTheme.blackLight,
+                      )),
+                  const SizedBox(
+                    width: 7,
+                  ),
+                  const Text(
+                    '1/7',
+                    style: TextStyle(color: AppTheme.blackLight, fontSize: 22),
+                  )
+                ],
+              )),
           Positioned(
               right: 12,
               top: 73,
@@ -154,8 +320,13 @@ class _LottieContainer extends StatelessWidget {
                 children: [
                   _IconButton(
                     icon: Icons.videocam,
-                    onPressed: () => openModal(context,
-                        const Radius.circular(20), controller, 1, stopTimer),
+                    onPressed: () => openModal(
+                      stopTimer: stopTimer,
+                      context: context,
+                      initTimer: initTimer,
+                      initialIndex: 1,
+                      radius: const Radius.circular(20),
+                    ),
                   ),
                   const SizedBox(
                     height: 12,
@@ -163,7 +334,7 @@ class _LottieContainer extends StatelessWidget {
                   _IconButton(
                     icon: Icons.volume_up,
                     onPressed: () {
-                      print('object');
+                      initTimer();
                     },
                   ),
                   const SizedBox(
@@ -172,7 +343,7 @@ class _LottieContainer extends StatelessWidget {
                   _IconButton(
                     icon: Icons.queue_music,
                     onPressed: () {
-                      print('object');
+                      stopTimer();
                     },
                   )
                 ],
@@ -211,130 +382,15 @@ class _IconButton extends StatelessWidget {
   }
 }
 
-class CircleBottom extends StatelessWidget {
-  const CircleBottom({
-    Key? key,
-    this.controller, required this.changeContainer,
-  }) : super(key: key);
-  final Function changeContainer;
-  final CountDownController? controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Stack(
-        alignment: AlignmentDirectional.center,
-        clipBehavior: Clip.none,
-        children: [
-          CircularCountDownTimer(
-            onChange: (value) {
-              if(value == '9') changeContainer();
-            },
-            duration: 10,
-            initialDuration: 0,
-            controller: controller,
-            width: 140,
-            height: 140,
-            ringColor: Colors.grey[300]!,
-            fillColor: AppTheme.primaryColor,
-            strokeWidth: 10.0,
-            strokeCap: StrokeCap.round,
-            textStyle: const TextStyle(
-                fontSize: 80,
-                color: AppTheme.grayBlack,
-                fontWeight: FontWeight.bold),
-            isReverse: true,
-            isReverseAnimation: true,
-            isTimerTextShown: true,
-            autoStart: true,
-          ),
-          Positioned(
-              right: 7,
-              child: InkWell(
-                  borderRadius: BorderRadius.circular(100),
-                  onTap: () => {},
-                  child: const Icon(
-                    Icons.chevron_right,
-                    size: 60,
-                    color: AppTheme.blackLight,
-                  )))
-        ],
-      ),
-    );
-  }
-}
-
-class _Texts extends StatelessWidget {
-  const _Texts({
-    Key? key,
-    required this.controller,
-    required this.stopTimer,
-  }) : super(key: key);
-
-  final Function stopTimer;
-  final CountDownController controller;
-
-  Widget build(BuildContext context) {
-    var radius = const Radius.circular(20);
-
-    return Column(
-      children: [
-        const Text(
-          'PREPARADOS',
-          style: TextStyle(
-              fontSize: 33,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.3,
-              color: AppTheme.primaryColor),
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'LAGARTIJAS',
-              style: TextStyle(
-                  fontSize: 19,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                  letterSpacing: 0.3),
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-            InkWell(
-              borderRadius: BorderRadius.all(radius),
-              onTap: () {
-                openModal(
-                  context,
-                  radius,
-                  controller,
-                  0,
-                  stopTimer,
-                );
-              },
-              child: const Icon(
-                Icons.help_outline_outlined,
-                color: AppTheme.grayBlack,
-                size: 24,
-              ),
-            )
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-void openModal(BuildContext context, Radius radius,
-    CountDownController controller, int initialIndex, Function stopTimer) {
+void openModal(
+    {required BuildContext context,
+    required Radius radius,
+    required Function initTimer,
+    required int initialIndex,
+    required Function stopTimer}) {
   var roundedRectangleBorder = RoundedRectangleBorder(
       borderRadius: BorderRadius.only(topLeft: radius, topRight: radius));
-  if (controller.isStarted) controller.pause();
-
+  stopTimer();
   showModalBottomSheet(
       context: context,
       shape: roundedRectangleBorder,
@@ -343,7 +399,7 @@ void openModal(BuildContext context, Radius radius,
             titleExercise: 'Lagartijas',
             animation: 'assets/plank leg up.json',
             durationExercise: '10:min',
-            controller: controller,
+            initTimer: initTimer,
             stopTimer: stopTimer,
           ),
       isScrollControlled: true);

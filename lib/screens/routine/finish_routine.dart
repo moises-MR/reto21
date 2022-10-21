@@ -16,7 +16,7 @@ class FinishScreen extends StatefulWidget {
 class _FinishScreenState extends State<FinishScreen> {
   @override
   void initState() {
-    Timer(const Duration(seconds: 5), onCloseDialog);
+    Timer(const Duration(seconds: 4), onCloseDialog);
     super.initState();
   }
 
@@ -33,6 +33,8 @@ class _FinishScreenState extends State<FinishScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(),
       body: Stack(
         alignment: AlignmentDirectional.center,
         children: [

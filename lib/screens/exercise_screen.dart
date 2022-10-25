@@ -55,6 +55,7 @@ class ExerciseScreen extends StatelessWidget {
                             image: day.image ?? '',
                             assetSvg2: day.assetSvg2.toString(),
                             heightImage: day.heightImage,
+                            rightImage: day.rightImage,
                             colorContainer:
                                 Color(int.parse(day.colorContainer.toString())),
                             colorSvg: Color(int.parse(day.colorSvg.toString())),
@@ -65,6 +66,16 @@ class ExerciseScreen extends StatelessWidget {
                                       day.pathJsonRoutine.toString(),
                                   subTitleDay: day.subTitleDay.toString(),
                                   titleDay: 'Dia ${day.day}',
+                                  assetSvg1: day.assetSvg1.toString(),
+                                  assetSvg2: day.assetSvg2.toString(),
+                                  image: day.image.toString(),
+                                  heightImage:
+                                      double.parse(day.heightImage.toString()),
+                                  rightImage:
+                                      double.parse(day.rightImage.toString()),
+                                  colorContainer:
+                                      int.parse(day.colorContainer.toString()),
+                                  colorSvg: int.parse(day.colorSvg.toString()),
                                 ))),
                       )
                       .toList(),
@@ -171,7 +182,7 @@ class CardDayExercice extends StatelessWidget {
                     bottom: bottomImage,
                     left: leftImage,
                     child: Image.asset(
-                      'assets/women_purple_siluet.png',
+                      image,
                       height: heightImage,
                     )),
                 positionWidget(

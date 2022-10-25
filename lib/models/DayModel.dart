@@ -10,6 +10,7 @@ class DayModel {
   String? subTitleDay;
   String? colorContainer;
   String? colorSvg;
+  double? rightImage;
 
   DayModel(
       this.day,
@@ -21,7 +22,9 @@ class DayModel {
       this.subTitle,
       this.subTitleDay,
       this.title,
-      this.colorContainer,this.colorSvg);
+      this.colorContainer,
+      this.colorSvg,
+      this.rightImage);
 
   DayModel.fromJson(Map<String, dynamic> json) {
     day = json["day"];
@@ -35,5 +38,6 @@ class DayModel {
     subTitleDay = json["subTitleDay"];
     colorContainer = json["colorContainer"];
     colorSvg = json["colorSvg"];
+    rightImage = json["rightImage"];
   }
 }

@@ -28,7 +28,13 @@ class _RoutineStartScreenState extends State<RoutineStartScreen> {
   bool changeScreenActive = false;
   void changeScreen() {
     AppRoutes.pushRouteCupertino(
-        context: context, pageBuilder: const ExerciseDayScreen());
+        context: context,
+        pageBuilder: const ExerciseDayScreen(
+          pathJsonRoutine: 'assets/routines/day1.json',
+          subTitleDay:
+              'Entrenamientos eficientes de 3-10 min para ayudarte a perder grasa y mantenerte en forma. ¡Consigue rápido tu objetivo de pérdida de peso!',
+          titleDay: 'Dia 1',
+        ));
   }
 
   @override

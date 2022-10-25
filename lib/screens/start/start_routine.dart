@@ -1,5 +1,6 @@
 import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
 import 'package:flutter/material.dart';
+import '../../models/Excercices.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/widgets.dart';
 import '../screens.dart';
@@ -69,14 +70,33 @@ class StartRoutineScreen extends StatelessWidget {
             ),
           ),
           const Instructions(),
-          const ListExercisesContainer(exercises: exercises),
+          FutureBuilder(
+            future: getJsonExercices(pathJson: 'assets/routines/day1.json'),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<ExercicesModel>> snapshot) {
+              if (snapshot.hasError) {
+                return const Text('Hubo un error');
+              } else if (snapshot.hasData) {
+                final exercices = snapshot.data as List<ExercicesModel>;
+                return ListExercisesContainer(exercises: exercices);
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          )
         ],
       ),
       floatingActionButton: CustomButtonInit(
-          onPressed: () => Navigator.push(context, AppRoutes.handleNavigate(pageBuilder: const MainScreen(), type: 'fade')),
+          onPressed: () => Navigator.push(
+              context,
+              AppRoutes.handleNavigate(
+                  pageBuilder: const MainScreen(), type: 'fade')),
           title: 'VAMOS',
           style: textStyleButton),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterFloat,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
     );
   }
 }
@@ -87,29 +107,26 @@ class ListExercisesContainer extends StatelessWidget {
     required this.exercises,
   }) : super(key: key);
 
-  final List exercises;
+  final List<ExercicesModel> exercises;
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        margin: const EdgeInsets.only(top: 22, bottom: 22),
-        padding: AppTheme.paddingPagesExercises,
-        child: SingleChildScrollView(
-          physics: AppTheme.physics,
-          child: Column(
-            children: [
-              ...exercises
-                .map((e) => ContainerExerciseAnimation(
-                      animation: e['animation'],
-                      duationExercise: e['duationExercise'],
-                      titleExercise: e['titleExercise'],
-                    ))
-                .toList(),
-                const SizedBox(height: 77,)
-            ]
-          ),
-        ),
+    return Padding(
+      padding: AppTheme.paddingPagesExercises,
+      child: SingleChildScrollView(
+        physics: AppTheme.physics,
+        child: Column(children: [
+          ...exercises
+              .map((exercice) => ContainerExerciseAnimation(
+                    animation: exercice.animation_normal.toString(),
+                    duationExercise: exercice.duration.toString(),
+                    titleExercise: exercice.title.toString(),
+                  ))
+              .toList(),
+          const SizedBox(
+            height: 77,
+          )
+        ]),
       ),
     );
   }

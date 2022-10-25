@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:lottie/lottie.dart';
 
 import '../theme/app_theme.dart';
 import 'screens.dart';
@@ -27,9 +28,12 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         title: Text(
           screens[currentIndex]['title'],
-          style: const TextStyle(color: AppTheme.primaryColor),
+          style: const TextStyle(color: AppTheme.primaryColor, fontWeight: FontWeight.w600,),
         ),
-        centerTitle: true,
+        centerTitle: false,
+        actions: [
+            LottieBuilder.asset('assets/lotties/diamond.json')
+        ],
       ),
       body: screens[currentIndex]['screen'],
       bottomNavigationBar: Container(

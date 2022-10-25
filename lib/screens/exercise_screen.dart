@@ -1,10 +1,29 @@
+import 'dart:convert';
+
 import 'package:animate_do/animate_do.dart';
-import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
-import 'package:bajar_de_peso_21_dias/screens/screens.dart';
+import 'package:bajar_de_peso_21_dias/models/Excercices.dart';
+
 import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/services.dart' show rootBundle;
+
+import '../models/DayModel.dart';
+import '../router/app_routes.dart';
+import 'exercise/exercise_day.dart';
+
+Future<List<ExercicesModel>> getJsonExercices(
+    {required String pathJson}) async {
+  final jsonData = await rootBundle.loadString(pathJson);
+  final exercices = jsonDecode(jsonData) as List<dynamic>;
+  return exercices.map((e) => ExercicesModel.fromJson(e)).toList();
+}
+
+Future<List<DayModel>> getJsonDays({required String pathJson}) async {
+  final jsonData = await rootBundle.loadString(pathJson);
+  final days = jsonDecode(jsonData) as List<dynamic>;
+  return days.map((e) => DayModel.fromJson(e)).toList();
+}
 
 class ExerciseScreen extends StatelessWidget {
   const ExerciseScreen({super.key});
@@ -13,188 +32,57 @@ class ExerciseScreen extends StatelessWidget {
     return Scaffold(
         body: Container(
       padding: AppTheme.paddingGeneralPages,
-      child: ListView(
+      child: SingleChildScrollView(
         physics: AppTheme.physics,
-        children: [
-          CardDayExercice(
-            title: 'Dia 1 - Entrenamiento de abdominales',
-            subTitle: '6 Min, 7 Ejercicios',
-            assetSvg1: 'assets/shape2.svg',
-            image: 'assets/women_purple_siluet.png',
-            assetSvg2: 'assets/svg.svg',
-            heightImage: 300,
-            onTap: () => AppRoutes.pushRouteCupertino(
-                context: context, pageBuilder: const ExerciseDayScreen()),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          // CardDayExercice(
-          //   assetSvg1: 'assets/shape.svg',
-          //   image: 'assets/women-yoga.png',
-          //   assetSvg2: 'assets/shape2.1.svg',
-          //   colorContainer: Color(0xffe2f9ff),
-          //   colorSvg: Color(0xffc0f1ff),
-          // ),
-          // SizedBox(
-          //   height: 20,
-          // ),
-          // CardDayExercice(
-          //   assetSvg1: 'assets/shape3.svg',
-          //   image: 'assets/women_days/women-day3.png',
-          //   assetSvg2: 'assets/shape3-1.svg',
-          //   colorContainer: Color(0xfff0fefe),
-          //   colorSvg: Color(0xffcef7e9),
-          // ),
-          // SizedBox(
-          //   height: 20,
-          // ),
-          // CardDayExercice(
-          //   assetSvg1: 'assets/shape5.svg',
-          //   image: 'assets/women_days/women-day4.png',
-          //   assetSvg2: 'assets/shape5-1.svg',
-          //   colorContainer: Color(0xffecf6ff),
-          //   colorSvg: Color(0xffadddff),
-          // ),
-          // SizedBox(
-          //   height: 20,
-          // ),
-          // CardDayExercice(
-          //   assetSvg1: 'assets/shape6.svg',
-          //   image: 'assets/women_days/women-day5.png',
-          //   assetSvg2: 'assets/shape6.svg',
-          //   colorContainer: Color(0xffecedff),
-          //   colorSvg: Color(0xffccd4ff),
-          // ),
-          // SizedBox(
-          //   height: 20,
-          // ),
-          // CardDayExercice(
-          //   assetSvg1: 'assets/shape2.svg',
-          //   image: 'assets/women_purple_siluet.png',
-          //   assetSvg2: 'assets/svg.svg',
-          //   heightImage: 300,
-          // ),
-          // SizedBox(
-          //   height: 20,
-          // ),
-          // CardDayExercice(
-          //   assetSvg1: 'assets/shape.svg',
-          //   image: 'assets/women-yoga.png',
-          //   assetSvg2: 'assets/shape2.1.svg',
-          //   colorContainer: Color(0xffe2f9ff),
-          //   colorSvg: Color(0xffc0f1ff),
-          // ),
-          // SizedBox(
-          //   height: 20,
-          // ),
-          // CardDayExercice(
-          //   assetSvg1: 'assets/shape3.svg',
-          //   image: 'assets/women_days/women-day3.png',
-          //   assetSvg2: 'assets/shape3-1.svg',
-          //   colorContainer: Color(0xfff0fefe),
-          //   colorSvg: Color(0xffcef7e9),
-          // ),
-          // SizedBox(
-          //   height: 20,
-          // ),
-          // CardDayExercice(
-          //   assetSvg1: 'assets/shape5.svg',
-          //   image: 'assets/women_days/women-day4.png',
-          //   assetSvg2: 'assets/shape5-1.svg',
-          //   colorContainer: Color(0xffecf6ff),
-          //   colorSvg: Color(0xffadddff),
-          // ),
-          // SizedBox(
-          //   height: 20,
-          // ),
-          // CardDayExercice(
-          //   assetSvg1: 'assets/shape6.svg',
-          //   image: 'assets/women_days/women-day5.png',
-          //   assetSvg2: 'assets/shape6.svg',
-          //   colorContainer: Color(0xffecedff),
-          //   colorSvg: Color(0xffccd4ff),
-          // ),
-          // SizedBox(
-          //   height: 20,
-          // ),
-          // CardDayExercice(
-          //   assetSvg1: 'assets/shape2.svg',
-          //   image: 'assets/women_purple_siluet.png',
-          //   assetSvg2: 'assets/svg.svg',
-          //   heightImage: 300,
-          // ),
-          // SizedBox(
-          //   height: 20,
-          // ),
-          // CardDayExercice(
-          //   assetSvg1: 'assets/shape.svg',
-          //   image: 'assets/women-yoga.png',
-          //   assetSvg2: 'assets/shape2.1.svg',
-          //   colorContainer: Color(0xffe2f9ff),
-          //   colorSvg: Color(0xffc0f1ff),
-          // ),
-          // SizedBox(
-          //   height: 20,
-          // ),
-          // CardDayExercice(
-          //   assetSvg1: 'assets/shape3.svg',
-          //   image: 'assets/women_days/women-day3.png',
-          //   assetSvg2: 'assets/shape3-1.svg',
-          //   colorContainer: Color(0xfff0fefe),
-          //   colorSvg: Color(0xffcef7e9),
-          // ),
-          // SizedBox(
-          //   height: 20,
-          // ),
-          // CardDayExercice(
-          //   assetSvg1: 'assets/shape5.svg',
-          //   image: 'assets/women_days/women-day4.png',
-          //   assetSvg2: 'assets/shape5-1.svg',
-          //   colorContainer: Color(0xffecf6ff),
-          //   colorSvg: Color(0xffadddff),
-          // ),
-          // SizedBox(
-          //   height: 20,
-          // ),
-          // CardDayExercice(
-          //   assetSvg1: 'assets/shape6.svg',
-          //   image: 'assets/women_days/women-day5.png',
-          //   assetSvg2: 'assets/shape6.svg',
-          //   colorContainer: Color(0xffecedff),
-          //   colorSvg: Color(0xffccd4ff),
-          // ),
-          // SizedBox(
-          //   height: 20,
-          // ),
-        ],
+        child: FutureBuilder(
+          future: getJsonDays(pathJson: 'assets/days/days.json'),
+          builder:
+              (BuildContext context, AsyncSnapshot<List<DayModel>> snapshot) {
+            if (snapshot.hasError) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasData) {
+              final days = snapshot.data as List<DayModel>;
+              return SingleChildScrollView(
+                child: Column(
+                  children: days
+                      .map(
+                        (day) => CardDayExercice(
+                            title: 'Dia ${day.day} - ${day.title}',
+                            subTitle: day.subTitle.toString(),
+                            assetSvg1: day.assetSvg1.toString(),
+                            image: day.image ?? '',
+                            assetSvg2: day.assetSvg2.toString(),
+                            heightImage: day.heightImage,
+                            colorContainer:
+                                Color(int.parse(day.colorContainer.toString())),
+                            colorSvg: Color(int.parse(day.colorSvg.toString())),
+                            onTap: () => AppRoutes.pushRouteCupertino(
+                                context: context,
+                                pageBuilder: ExerciseDayScreen(
+                                  pathJsonRoutine:
+                                      day.pathJsonRoutine.toString(),
+                                  subTitleDay: day.subTitleDay.toString(),
+                                  titleDay: 'Dia ${day.day}',
+                                ))),
+                      )
+                      .toList(),
+                ),
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
       ),
     ));
   }
 }
 
 class CardDayExercice extends StatelessWidget {
-  final String assetSvg1;
-  final String image;
-  final String title;
-  final String subTitle;
-  final String assetSvg2;
-  final double? topImage;
-  final double? bottomImage;
-  final double? leftImage;
-  final double? rightImage;
-  final double? topTexts;
-  final double? bottomTexts;
-  final double? leftTexts;
-  final double? rightTexts;
-  final double? heightImage;
-  final double? heightContainer;
-  final void Function()? onTap;
-  final int durationFade;
-  final int delayFade;
-  final Color colorSvg;
-  final Color colorContainer;
-
   const CardDayExercice({
     Key? key,
     required this.assetSvg1,
@@ -219,6 +107,27 @@ class CardDayExercice extends StatelessWidget {
     this.subTitle = '',
   }) : super(key: key);
 
+  final String assetSvg1;
+  final String image;
+  final String title;
+  final String subTitle;
+  final String assetSvg2;
+  final double? topImage;
+  final double? bottomImage;
+  final double? leftImage;
+  final double? rightImage;
+  final double? topTexts;
+  final double? bottomTexts;
+  final double? leftTexts;
+  final double? rightTexts;
+  final double? heightImage;
+  final double? heightContainer;
+  final void Function()? onTap;
+  final int durationFade;
+  final int delayFade;
+  final Color colorSvg;
+  final Color colorContainer;
+
   @override
   Widget build(BuildContext context) {
     var borderRadius = BorderRadius.circular(20);
@@ -228,52 +137,54 @@ class CardDayExercice extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         borderRadius: borderRadius,
-        child: ClipRRect(
-          borderRadius: borderRadius,
-          child: Stack(
-            children: [
-              Container(
-                width: double.infinity,
-                height: heightContainer,
-                decoration: BoxDecoration(
-                    borderRadius: borderRadius, color: colorContainer),
-              ),
-              positionWidget(
-                left: -150,
-                top: 10,
-                child: SvgPicture.asset(
-                  assetSvg1,
-                  color: colorSvg,
-                  width: 300,
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 17),
+          child: ClipRRect(
+            borderRadius: borderRadius,
+            child: Stack(
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: heightContainer,
+                  decoration: BoxDecoration(
+                      borderRadius: borderRadius, color: colorContainer),
                 ),
-              ),
-              positionWidget(
+                positionWidget(
+                  left: -150,
+                  top: 10,
                   child: SvgPicture.asset(
-                    assetSvg2,
+                    assetSvg1,
                     color: colorSvg,
-                    width: 200,
+                    width: 300,
                   ),
-                  right: -70),
-              positionWidget(
-                  right: rightImage,
-                  top: topImage,
-                  bottom: bottomImage,
-                  left: leftImage,
-                  child: Image.asset(
-                    image,
-                    height: heightImage,
-                  )),
-              // const _Texts(),
-              positionWidget(
-                  child: _Texts(
-                    title: title,
-                    subtitle: subTitle,
-                  ),
-                  bottom: bottomTexts,
-                  left: leftTexts,
-                  right: rightTexts,
-                  top: topTexts)
-            ],
+                ),
+                positionWidget(
+                    child: SvgPicture.asset(
+                      assetSvg2,
+                      color: colorSvg,
+                      width: 200,
+                    ),
+                    right: -70),
+                positionWidget(
+                    right: rightImage,
+                    top: topImage,
+                    bottom: bottomImage,
+                    left: leftImage,
+                    child: Image.asset(
+                      'assets/women_purple_siluet.png',
+                      height: heightImage,
+                    )),
+                positionWidget(
+                    child: _Texts(
+                      title: title,
+                      subtitle: subTitle,
+                    ),
+                    bottom: bottomTexts,
+                    left: leftTexts,
+                    right: rightTexts,
+                    top: topTexts)
+              ],
+            ),
           ),
         ),
       ),
@@ -310,7 +221,7 @@ class _Texts extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title.toUpperCase(),
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               maxLines: 3,
               overflow: TextOverflow.ellipsis),
           const SizedBox(
@@ -325,3 +236,165 @@ class _Texts extends StatelessWidget {
     );
   }
 }
+
+
+
+// [
+//           CardDayExercice(
+//             title: 'Dia 1 - Entrenamiento de abdominales',
+//             subTitle: 'Ejercicios adominales',
+//             assetSvg1: 'assets/shape2.svg',
+//             image: 'assets/women_purple_siluet.png',
+//             assetSvg2: 'assets/svg.svg',
+//             heightImage: 300,
+          //   onTap: () => AppRoutes.pushRouteCupertino(
+          //       context: context,
+          //       pageBuilder: const ExerciseDayScreen(
+          //         pathJsonRoutine: 'assets/routines/day1.json',
+          //         subTitleDay: 'Entrenamientos eficientes de 3-10 min para ayudarte a perder grasa y mantenerte en forma. ¡Consigue rápido tu objetivo de pérdida de peso!',
+          //         titleDay: 'Dia 1',
+          //       )),
+          // ),
+//           const SizedBox(
+//             height: 20,
+//           ),
+
+//           // CardDayExercice(
+//           //   assetSvg1: 'assets/shape.svg',
+//           //   image: 'assets/women-yoga.png',
+//           //   assetSvg2: 'assets/shape2.1.svg',
+//           //   colorContainer: Color(0xffe2f9ff),
+//           //   colorSvg: Color(0xffc0f1ff),
+//           // ),
+//           // SizedBox(
+//           //   height: 20,
+//           // ),
+//           // CardDayExercice(
+//           //   assetSvg1: 'assets/shape3.svg',
+//           //   image: 'assets/women_days/women-day3.png',
+//           //   assetSvg2: 'assets/shape3-1.svg',
+//           //   colorContainer: Color(0xfff0fefe),
+//           //   colorSvg: Color(0xffcef7e9),
+//           // ),
+//           // SizedBox(
+//           //   height: 20,
+//           // ),
+//           // CardDayExercice(
+//           //   assetSvg1: 'assets/shape5.svg',
+//           //   image: 'assets/women_days/women-day4.png',
+//           //   assetSvg2: 'assets/shape5-1.svg',
+//           //   colorContainer: Color(0xffecf6ff),
+//           //   colorSvg: Color(0xffadddff),
+//           // ),
+//           // SizedBox(
+//           //   height: 20,
+//           // ),
+//           // CardDayExercice(
+//           //   assetSvg1: 'assets/shape6.svg',
+//           //   image: 'assets/women_days/women-day5.png',
+//           //   assetSvg2: 'assets/shape6.svg',
+//           //   colorContainer: Color(0xffecedff),
+//           //   colorSvg: Color(0xffccd4ff),
+//           // ),
+//           // SizedBox(
+//           //   height: 20,
+//           // ),
+//           // CardDayExercice(
+//           //   assetSvg1: 'assets/shape2.svg',
+//           //   image: 'assets/women_purple_siluet.png',
+//           //   assetSvg2: 'assets/svg.svg',
+//           //   heightImage: 300,
+//           // ),
+//           // SizedBox(
+//           //   height: 20,
+//           // ),
+//           // CardDayExercice(
+//           //   assetSvg1: 'assets/shape.svg',
+//           //   image: 'assets/women-yoga.png',
+//           //   assetSvg2: 'assets/shape2.1.svg',
+//           //   colorContainer: Color(0xffe2f9ff),
+//           //   colorSvg: Color(0xffc0f1ff),
+//           // ),
+//           // SizedBox(
+//           //   height: 20,
+//           // ),
+//           // CardDayExercice(
+//           //   assetSvg1: 'assets/shape3.svg',
+//           //   image: 'assets/women_days/women-day3.png',
+//           //   assetSvg2: 'assets/shape3-1.svg',
+//           //   colorContainer: Color(0xfff0fefe),
+//           //   colorSvg: Color(0xffcef7e9),
+//           // ),
+//           // SizedBox(
+//           //   height: 20,
+//           // ),
+//           // CardDayExercice(
+//           //   assetSvg1: 'assets/shape5.svg',
+//           //   image: 'assets/women_days/women-day4.png',
+//           //   assetSvg2: 'assets/shape5-1.svg',
+//           //   colorContainer: Color(0xffecf6ff),
+//           //   colorSvg: Color(0xffadddff),
+//           // ),
+//           // SizedBox(
+//           //   height: 20,
+//           // ),
+//           // CardDayExercice(
+//           //   assetSvg1: 'assets/shape6.svg',
+//           //   image: 'assets/women_days/women-day5.png',
+//           //   assetSvg2: 'assets/shape6.svg',
+//           //   colorContainer: Color(0xffecedff),
+//           //   colorSvg: Color(0xffccd4ff),
+//           // ),
+//           // SizedBox(
+//           //   height: 20,
+//           // ),
+//           // CardDayExercice(
+//           //   assetSvg1: 'assets/shape2.svg',
+//           //   image: 'assets/women_purple_siluet.png',
+//           //   assetSvg2: 'assets/svg.svg',
+//           //   heightImage: 300,
+//           // ),
+//           // SizedBox(
+//           //   height: 20,
+//           // ),
+//           // CardDayExercice(
+//           //   assetSvg1: 'assets/shape.svg',
+//           //   image: 'assets/women-yoga.png',
+//           //   assetSvg2: 'assets/shape2.1.svg',
+//           //   colorContainer: Color(0xffe2f9ff),
+//           //   colorSvg: Color(0xffc0f1ff),
+//           // ),
+//           // SizedBox(
+//           //   height: 20,
+//           // ),
+//           // CardDayExercice(
+//           //   assetSvg1: 'assets/shape3.svg',
+//           //   image: 'assets/women_days/women-day3.png',
+//           //   assetSvg2: 'assets/shape3-1.svg',
+//           //   colorContainer: Color(0xfff0fefe),
+//           //   colorSvg: Color(0xffcef7e9),
+//           // ),
+//           // SizedBox(
+//           //   height: 20,
+//           // ),
+//           // CardDayExercice(
+//           //   assetSvg1: 'assets/shape5.svg',
+//           //   image: 'assets/women_days/women-day4.png',
+//           //   assetSvg2: 'assets/shape5-1.svg',
+//           //   colorContainer: Color(0xffecf6ff),
+//           //   colorSvg: Color(0xffadddff),
+//           // ),
+//           // SizedBox(
+//           //   height: 20,
+//           // ),
+//           // CardDayExercice(
+//           //   assetSvg1: 'assets/shape6.svg',
+//           //   image: 'assets/women_days/women-day5.png',
+//           //   assetSvg2: 'assets/shape6.svg',
+//           //   colorContainer: Color(0xffecedff),
+//           //   colorSvg: Color(0xffccd4ff),
+//           // ),
+//           // SizedBox(
+//           //   height: 20,
+//           // ),
+//         ]

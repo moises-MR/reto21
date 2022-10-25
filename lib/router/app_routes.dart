@@ -13,7 +13,7 @@ class AppRoutes {
     'init_change_page': (BuildContext context) => const InitChange(),
     'init_start_routine': (BuildContext context) => const StartRoutineScreen(),
     'diet_details_screen': (BuildContext context) => const DietDetailsScreen(),
-    'exercise_day_screen': (BuildContext context) => const ExerciseDayScreen(),
+    // 'exercise_day_screen': (BuildContext context) => const ExerciseDayScreen(),
     'routine_screen': (BuildContext context) => const RotineScreen(),
   };
 

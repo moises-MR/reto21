@@ -19,7 +19,10 @@ class BreackScreen extends StatelessWidget {
           Expanded(child: Container()),
           const _ContainerCenter(),
           Expanded(child: Container()),
-          InkWell( onTap: () =>  AppRoutes.pushRouteCupertino(context: context,pageBuilder: FinishScreen()),child: const _BottomInfo()),
+          InkWell(
+              onTap: () => AppRoutes.pushRouteCupertino(
+                  context: context, pageBuilder: FinishScreen()),
+              child: const _BottomInfo()),
         ],
       ),
     );
@@ -45,7 +48,8 @@ class _BottomInfo extends StatelessWidget {
           Container(
             width: double.infinity,
             color: Colors.white,
-            padding: const EdgeInsets.only(bottom: 32,left: 12, right: 12, top: 12),
+            padding:
+                const EdgeInsets.only(bottom: 32, left: 12, right: 12, top: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -72,9 +76,7 @@ class _BottomInfo extends StatelessWidget {
                         openModal(
                           radius: const Radius.circular(20),
                           context: context,
-                          initTimer: () {},
                           initialIndex: 0,
-                          stopTimer: () {},
                         );
                       },
                       child: const Icon(
@@ -119,7 +121,9 @@ class _ContainerCenter extends StatelessWidget {
             const Text(
               'DESCANSO',
               style: TextStyle(
-                  color: Colors.white, fontWeight: FontWeight.w800, fontSize: 22),
+                  color: Colors.white,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 22),
             ),
             const Text(
               '00:28',

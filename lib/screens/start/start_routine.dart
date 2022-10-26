@@ -10,43 +10,6 @@ class StartRoutineScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const List exercises = [
-      {
-        'titleExercise': 'Abdominales',
-        'animation': 'assets/abdominal-crunches-exercise.json',
-        'duationExercise': '1:55'
-      },
-      {
-        'titleExercise': 'Bir box',
-        'animation': 'assets/bird_dog.json',
-        'duationExercise': '0:50'
-      },
-      {
-        'titleExercise': 'Box push up',
-        'animation': 'assets/box-push-ups-exercise.json',
-        'duationExercise': '1:20'
-      },
-      {
-        'titleExercise': 'Abdominales',
-        'animation': 'assets/abdominal-crunches-exercise.json',
-        'duationExercise': '1:55'
-      },
-      {
-        'titleExercise': 'Bir box',
-        'animation': 'assets/bird_dog.json',
-        'duationExercise': '0:50'
-      },
-      {
-        'titleExercise': 'Box push up',
-        'animation': 'assets/box-push-ups-exercise.json',
-        'duationExercise': '1:20'
-      },
-      {
-        'titleExercise': 'Plank leg up',
-        'animation': 'assets/plank leg up.json',
-        'duationExercise': '1:10'
-      }
-    ];
     const textStyleButton =
         TextStyle(fontWeight: FontWeight.w600, letterSpacing: 0.1);
     return Scaffold(

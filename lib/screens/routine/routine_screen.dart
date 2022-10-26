@@ -135,7 +135,6 @@ class _InitRoutineState extends State<_InitRoutine> {
           const SizedBox(
             height: 32,
           ),
-          
         ],
       ),
     );
@@ -153,7 +152,8 @@ class ButtonTabsBottom extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         GestureDetector(
-          onTap: () => AppRoutes.pushRouteCupertino(context: context,pageBuilder: const  BreackScreen()),
+          onTap: () => AppRoutes.pushRouteCupertino(
+              context: context, pageBuilder: const BreackScreen()),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
@@ -321,9 +321,7 @@ class _LottieContainer extends StatelessWidget {
                   _IconButton(
                     icon: Icons.videocam,
                     onPressed: () => openModal(
-                      stopTimer: stopTimer,
                       context: context,
-                      initTimer: initTimer,
                       initialIndex: 1,
                       radius: const Radius.circular(20),
                     ),
@@ -382,15 +380,13 @@ class _IconButton extends StatelessWidget {
   }
 }
 
-void openModal(
-    {required BuildContext context,
-    required Radius radius,
-    required Function initTimer,
-    required int initialIndex,
-    required Function stopTimer}) {
+void openModal({
+  required BuildContext context,
+  required Radius radius,
+  required int initialIndex,
+}) {
   var roundedRectangleBorder = RoundedRectangleBorder(
       borderRadius: BorderRadius.only(topLeft: radius, topRight: radius));
-  stopTimer();
   showModalBottomSheet(
       context: context,
       shape: roundedRectangleBorder,
@@ -399,8 +395,6 @@ void openModal(
             titleExercise: 'Lagartijas',
             animation: 'assets/plank leg up.json',
             durationExercise: '10:min',
-            initTimer: initTimer,
-            stopTimer: stopTimer,
           ),
       isScrollControlled: true);
 }

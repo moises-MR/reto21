@@ -19,17 +19,18 @@ class AppTheme {
       BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());
 
   static final ThemeData lightTheme = ThemeData.light().copyWith(
-    textTheme: ThemeData.light().textTheme.apply(fontFamily: 'Source Sans Pro',),
+    textTheme: ThemeData.light().textTheme.apply(
+          fontFamily: 'Source Sans Pro',
+        ),
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.transparent,
       elevation: 0,
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
-        statusBarBrightness: Brightness.dark, // For iOS (dark icons)
+        statusBarIconBrightness: Brightness.light, // For Android (dark icons)
+        statusBarBrightness: Brightness.light, // For iOS (dark icons)
       ),
       foregroundColor: AppTheme.blackLight,
     ),
-    
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: primaryColor, selectedItemColor: white, elevation: 0),
     scaffoldBackgroundColor: white,

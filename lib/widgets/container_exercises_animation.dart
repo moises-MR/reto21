@@ -28,15 +28,13 @@ class ContainerExerciseAnimation extends StatelessWidget {
           var roundedRectangleBorder = RoundedRectangleBorder(
               borderRadius:
                   BorderRadius.only(topLeft: radius, topRight: radius));
-        showModalBottomSheet(
+          showModalBottomSheet(
               // isDismissible: false,
               context: context,
               builder: (context) => CreateModal(
                     titleExercise: titleExercise,
                     animation: animation,
                     durationExercise: duationExercise,
-                    stopTimer: () {},
-                    initTimer: () {},
                   ),
               shape: roundedRectangleBorder,
               isScrollControlled: true);
@@ -92,22 +90,18 @@ class _Texts extends StatelessWidget {
 }
 
 class CreateModal extends StatefulWidget {
-  const CreateModal(
-      {super.key,
-      required this.titleExercise,
-      required this.animation,
-      required this.durationExercise,
-      required this.initTimer,
-      this.initialIndex = 0,
-      required this.stopTimer});
+  const CreateModal({
+    super.key,
+    required this.titleExercise,
+    required this.animation,
+    required this.durationExercise,
+    this.initialIndex = 0,
+  });
 
   final String titleExercise;
   final String animation;
   final String durationExercise;
-  final Function initTimer;
   final int initialIndex;
-
-  final Function stopTimer;
 
   @override
   State<CreateModal> createState() => _CreateModalState();
@@ -121,26 +115,22 @@ class _CreateModalState extends State<CreateModal> {
 
   @override
   void dispose() {
-    widget.initTimer();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      
       expand: false,
       initialChildSize: 0.87,
       builder: (BuildContext context, ScrollController scrollController) =>
           ContainedTabBarView(
-
         initialIndex: widget.initialIndex,
         tabBarViewProperties:
             const TabBarViewProperties(physics: AppTheme.physics),
         tabBarProperties: const TabBarProperties(
           labelColor: Colors.black,
           indicatorColor: AppTheme.primaryColor,
-        
         ),
         tabs: const [
           Text('Animacion'),
@@ -225,7 +215,8 @@ class ViewAnimation extends StatelessWidget {
               padding: const EdgeInsets.only(left: 12, top: 12),
               child: Text(
                 titleExercise,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
               ),
             ),
             const Padding(
@@ -233,8 +224,8 @@ class ViewAnimation extends StatelessWidget {
               child: Divider(),
             ),
             Padding(
-              padding:
-                  const EdgeInsets.only(left: 12, right: 12, top: 10, bottom: 20),
+              padding: const EdgeInsets.only(
+                  left: 12, right: 12, top: 10, bottom: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,

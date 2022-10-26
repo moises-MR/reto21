@@ -32,6 +32,7 @@ class ExerciseDayScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<ExercicesModel> exercises = [];
     const textStyleButton =
         TextStyle(fontWeight: FontWeight.w600, letterSpacing: 0.1);
 
@@ -66,8 +67,9 @@ class ExerciseDayScreen extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   );
                 } else if (snapshot.hasData) {
-                  final exercices = snapshot.data as List<ExercicesModel>;
-                  return ListExercisesContainer(exercises: exercices);
+                  final exercicesJson = snapshot.data as List<ExercicesModel>;
+                  exercises = exercicesJson;
+                  return ListExercisesContainer(exercises: exercicesJson);
                 } else {
                   return const Center(
                     child: CircularProgressIndicator(),
@@ -80,7 +82,10 @@ class ExerciseDayScreen extends StatelessWidget {
       ),
       floatingActionButton: CustomButtonInit(
           onPressed: () => AppRoutes.pushRouteCupertino(
-              context: context, pageBuilder: const RoutineStart()),
+              context: context,
+              pageBuilder: RoutineStart(
+                exercices: exercises,
+              )),
           title: 'VAMOS',
           style: textStyleButton),
       floatingActionButtonLocation:

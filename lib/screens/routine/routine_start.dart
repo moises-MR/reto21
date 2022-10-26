@@ -3,22 +3,26 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../models/Excercices.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/container_exercises_animation.dart';
 // import '../exercise/exercise_day.dart';
 import 'routine_screen.dart';
 
 class RoutineStart extends StatelessWidget {
-  const RoutineStart({super.key});
-
+  const RoutineStart({super.key, required this.exercices});
+  final List<ExercicesModel> exercices;
   @override
   Widget build(BuildContext context) {
-    return const RoutineStartScreen();
+    return RoutineStartScreen(
+      exercices: exercices,
+    );
   }
 }
 
 class RoutineStartScreen extends StatefulWidget {
-  const RoutineStartScreen({super.key});
+  const RoutineStartScreen({super.key, required this.exercices});
+  final List<ExercicesModel> exercices;
 
   @override
   State<RoutineStartScreen> createState() => _RoutineStartScreenState();
@@ -53,7 +57,7 @@ class _RoutineStartScreenState extends State<RoutineStartScreen> {
             height: 40,
           ),
           _Texts(
-            controller: controller,
+            exercices: widget.exercices,
           ),
           Expanded(child: Container()),
           _CircleBottom(
@@ -72,10 +76,10 @@ class _RoutineStartScreenState extends State<RoutineStartScreen> {
 class _Texts extends StatelessWidget {
   const _Texts({
     Key? key,
-    required this.controller,
+    required this.exercices,
   }) : super(key: key);
 
-  final CountDownController controller;
+  final List<ExercicesModel> exercices;
 
   Widget build(BuildContext context) {
     var radius = const Radius.circular(20);
@@ -96,9 +100,9 @@ class _Texts extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'LAGARTIJAS',
-              style: TextStyle(
+            Text(
+              exercices[0].title.toString(),
+              style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
                   color: AppTheme.grayBlack,
@@ -110,12 +114,10 @@ class _Texts extends StatelessWidget {
             InkWell(
               borderRadius: BorderRadius.all(radius),
               onTap: () {
-                _openModal(
+                openModal(
                   radius: radius,
                   context: context,
-                  initTimer: () {},
                   initialIndex: 0,
-                  stopTimer: () {},
                 );
               },
               child: const Icon(
@@ -189,25 +191,23 @@ class _CircleBottom extends StatelessWidget {
   }
 }
 
-void _openModal(
-    {required BuildContext context,
-    required Radius radius,
-    required Function initTimer,
-    required int initialIndex,
-    required Function stopTimer}) {
-  var roundedRectangleBorder = RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(topLeft: radius, topRight: radius));
-  stopTimer();
-  showModalBottomSheet(
-      context: context,
-      shape: roundedRectangleBorder,
-      builder: (context) => CreateModal(
-            initialIndex: initialIndex,
-            titleExercise: 'Lagartijas',
-            animation: 'assets/plank leg up.json',
-            durationExercise: '10:min',
-            stopTimer: () {},
-            initTimer: initTimer,
-          ),
-      isScrollControlled: true);
-}
+// void _openModal(
+//     {required BuildContext context,
+//     required Radius radius,
+//     required Function initTimer,
+//     required int initialIndex,
+//     required Function stopTimer}) {
+//   var roundedRectangleBorder = RoundedRectangleBorder(
+//       borderRadius: BorderRadius.only(topLeft: radius, topRight: radius));
+//   stopTimer();
+//   showModalBottomSheet(
+//       context: context,
+//       shape: roundedRectangleBorder,
+//       builder: (context) => CreateModal(
+//             initialIndex: initialIndex,
+//             titleExercise: 'Lagartijas',
+//             animation: 'assets/plank leg up.json',
+//             durationExercise: '10:min',
+//           ),
+//       isScrollControlled: true);
+// }

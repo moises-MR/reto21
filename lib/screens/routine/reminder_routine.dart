@@ -88,7 +88,9 @@ class _RemeinderScreenState extends State<RemeinderScreen>
                 const SizedBox(
                   height: 22,
                 ),
-                 _ContainerEmojis(animateHeart: animateHeart,),
+                _ContainerEmojis(
+                  animateHeart: animateHeart,
+                ),
                 const SizedBox(
                   height: 22,
                 ),
@@ -225,9 +227,6 @@ GestureDetector createEmojiButton(
   );
 }
 
-
-
-
 class _ContainerEmojis extends StatelessWidget {
   const _ContainerEmojis({super.key, required this.animateHeart});
   final Function animateHeart;
@@ -241,12 +240,14 @@ class _ContainerEmojis extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            '¿ Como te sentiste el dia de hoy ?',
-            style: TextStyle(
-                fontSize: 23,
-                fontWeight: FontWeight.w600,
-                color: AppTheme.primaryColor),
+          const Center(
+            child: Text(
+              '¿ Como te sentiste el dia de hoy ?',
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.primaryColor),
+            ),
           ),
           const SizedBox(
             height: 12,
@@ -266,12 +267,16 @@ class _ContainerEmojis extends StatelessWidget {
             children: [
               createEmojiButton(
                   emoji: 'assets/lotties/smiling-face-with-heart-eyes.json',
-                  text: 'feliz', onTap: animateHeart ),
+                  text: 'feliz',
+                  onTap: animateHeart),
               createEmojiButton(
                   emoji: 'assets/lotties/face-with-rolling-eyes-emoji.json',
-                  text: 'normal', onTap: (){}),
+                  text: 'normal',
+                  onTap: () {}),
               createEmojiButton(
-                  emoji: 'assets/lotties/sad-face-emoji.json', text: 'cansada', onTap: (){}),
+                  emoji: 'assets/lotties/sad-face-emoji.json',
+                  text: 'cansada',
+                  onTap: () {}),
             ],
           ),
           const SizedBox(

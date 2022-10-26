@@ -5,7 +5,7 @@ import 'package:lottie/lottie.dart';
 
 import '../../theme/app_theme.dart';
 import '../../widgets/container_exercises_animation.dart';
-import '../exercise/exercise_day.dart';
+// import '../exercise/exercise_day.dart';
 import 'routine_screen.dart';
 
 class RoutineStart extends StatelessWidget {

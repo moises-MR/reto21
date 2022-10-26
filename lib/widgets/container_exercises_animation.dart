@@ -213,7 +213,6 @@ class ViewAnimation extends StatelessWidget {
     return Container(
       color: Colors.white,
       child: SingleChildScrollView(
-        
         physics: AppTheme.physics,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -221,7 +220,7 @@ class ViewAnimation extends StatelessWidget {
             const SizedBox(
               height: 1,
             ),
-            Lottie.asset(animation, width: double.infinity),
+            Lottie.asset('assets/plank leg up.json', width: double.infinity),
             Padding(
               padding: const EdgeInsets.only(left: 12, top: 12),
               child: Text(

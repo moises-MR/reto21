@@ -1,6 +1,8 @@
 import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../models/Excercices.dart';
+import '../../provider/state_global.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/widgets.dart';
 import '../screens.dart';
@@ -34,7 +36,7 @@ class StartRoutineScreen extends StatelessWidget {
           ),
           const Instructions(),
           FutureBuilder(
-            future: getJsonExercices(pathJson: 'assets/routines/day1.json'),
+            future: getJsonExercices(pathJson: 'assets/routines/day1.json', context: context),
             builder: (BuildContext context,
                 AsyncSnapshot<List<ExercicesModel>> snapshot) {
               if (snapshot.hasError) {
@@ -74,6 +76,8 @@ class ListExercisesContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final exerciceState = Provider.of<StateGlobal>(context);
+    // exerciceState.excercicesAdd(exercises);
     return Padding(
       padding: AppTheme.paddingPagesExercises,
       child: SingleChildScrollView(

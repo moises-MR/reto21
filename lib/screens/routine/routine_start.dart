@@ -1,11 +1,11 @@
-import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
-import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/Excercices.dart';
+import '../../provider/state_global.dart';
+import '../../router/app_routes.dart';
 import '../../theme/app_theme.dart';
-import '../../widgets/container_exercises_animation.dart';
 // import '../exercise/exercise_day.dart';
 import 'routine_screen.dart';
 
@@ -46,7 +46,8 @@ class _RoutineStartScreenState extends State<RoutineStartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = CountDownController();
+  final exerciceState = Provider.of<StateGlobal>(context);
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(),
@@ -60,9 +61,52 @@ class _RoutineStartScreenState extends State<RoutineStartScreen> {
             exercices: widget.exercices,
           ),
           Expanded(child: Container()),
-          _CircleBottom(
-            controller: controller,
-            changeScreen: changeScreen,
+          SizedBox(
+            width: double.infinity,
+            height: 120,
+            child: Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                
+                // Cambiarlo el value a un timer
+                TweenAnimationBuilder(
+                  duration: const Duration(seconds: 10),
+                  tween: Tween(begin: 0.0, end: 1.0),
+                  builder: (BuildContext context, double value, Widget? child) {
+                    return SizedBox(
+                      width: 120,
+                      height: 120,
+                      child: CircularProgressIndicator(
+                        value: value,
+                        strokeWidth: 11,
+                        backgroundColor: Colors.grey[300],
+                        color: AppTheme.primaryColor,
+                      ),
+                    );
+                  },
+                ),
+                const Text('0', style: TextStyle(
+                fontFamily: 'Artico',
+                fontSize: 65,
+                color: AppTheme.grayBlack,
+                fontWeight: FontWeight.bold),),
+                Positioned(
+                    right: 7,
+                    child: InkWell(
+                        borderRadius: BorderRadius.circular(100),
+                        onTap: (){
+                          AppRoutes.pushRouteCupertino(
+                            context: context,
+                            pageBuilder:  RotineScreen(exercices: widget.exercices,));
+                            exerciceState.execiceActive++;
+                        },
+                        child: const Icon(
+                          Icons.chevron_right,
+                          size: 60,
+                          color: AppTheme.blackLight,
+                        )))
+              ],
+            ),
           ),
           const SizedBox(
             height: 40,
@@ -102,6 +146,7 @@ class _Texts extends StatelessWidget {
           children: [
             Text(
               exercices[0].title.toString(),
+              // exerciceState.excercices[0].title.toString(),
               style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
@@ -133,63 +178,63 @@ class _Texts extends StatelessWidget {
   }
 }
 
-class _CircleBottom extends StatelessWidget {
-  const _CircleBottom({
-    Key? key,
-    required this.controller,
-    required this.changeScreen,
-  }) : super(key: key);
-  final Function changeScreen;
+// class _CircleBottom extends StatelessWidget {
+//   const _CircleBottom({
+//     Key? key,
+//     required this.controller,
+//     required this.changeScreen,
+//   }) : super(key: key);
+//   final Function changeScreen;
 
-  final CountDownController controller;
+//   final CountDownController controller;
 
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Stack(
-        alignment: AlignmentDirectional.center,
-        clipBehavior: Clip.none,
-        children: [
-          CircularCountDownTimer(
-            onChange: (value) {
-              if (value == '6') {}
-            },
-            duration: 10,
-            initialDuration: 0,
-            controller: controller,
-            width: 130,
-            height: 130,
-            ringColor: Colors.grey[300]!,
-            fillColor: AppTheme.primaryColor,
-            strokeWidth: 10.0,
-            strokeCap: StrokeCap.round,
-            textStyle: const TextStyle(
-                fontFamily: 'Artico',
-                fontSize: 65,
-                color: AppTheme.grayBlack,
-                fontWeight: FontWeight.bold),
-            isReverse: true,
-            isReverseAnimation: true,
-            isTimerTextShown: true,
-            autoStart: true,
-          ),
-          Positioned(
-              right: 7,
-              child: InkWell(
-                  borderRadius: BorderRadius.circular(100),
-                  onTap: () => AppRoutes.pushRouteCupertino(
-                      context: context, pageBuilder: const RotineScreen()),
-                  child: const Icon(
-                    Icons.chevron_right,
-                    size: 60,
-                    color: AppTheme.blackLight,
-                  )))
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return SizedBox(
+//       width: double.infinity,
+//       child: Stack(
+//         alignment: AlignmentDirectional.center,
+//         clipBehavior: Clip.none,
+//         children: [
+//           CircularCountDownTimer(
+//             onChange: (value) {
+//               if (value == '6') {}
+//             },
+//             duration: 10,
+//             initialDuration: 0,
+//             controller: controller,
+//             width: 130,
+//             height: 130,
+//             ringColor: Colors.grey[300]!,
+//             fillColor: AppTheme.primaryColor,
+//             strokeWidth: 10.0,
+//             strokeCap: StrokeCap.round,
+//             textStyle: const TextStyle(
+//                 fontFamily: 'Artico',
+//                 fontSize: 65,
+//                 color: AppTheme.grayBlack,
+//                 fontWeight: FontWeight.bold),
+//             isReverse: true,
+//             isReverseAnimation: true,
+//             isTimerTextShown: true,
+//             autoStart: true,
+//           ),
+//           Positioned(
+//               right: 7,
+//               child: InkWell(
+//                   borderRadius: BorderRadius.circular(100),
+//                   onTap: () => AppRoutes.pushRouteCupertino(
+//                       context: context, pageBuilder: const RotineScreen()),
+//                   child: const Icon(
+//                     Icons.chevron_right,
+//                     size: 60,
+//                     color: AppTheme.blackLight,
+//                   )))
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 // void _openModal(
 //     {required BuildContext context,

@@ -1,20 +1,5 @@
-
-
 [
-{
-    "day":1,
-    "title":"Entrenamiento de abdominales",
-    "pathJsonRoutine":"assets/routines/day1.json",
-    "subTitle":"Ejercicios adominales",
-    "assetSvg1":"assets/shape2.svg",
-    "assetSvg2":"assets/svg.svg",
-    "image":"assets/women_purple_siluet.png",
-    "heightImage":300.0,
-    "rightImage":0.0,
-    "colorContainer":"0xfffef0ff",
-    "colorSvg":"0xffffe0ff",
-    "subTitleDay":"Entrenamientos eficientes de 3-10 min para ayudarte a perder grasa y mantenerte en forma. ¡Consigue rápido tu objetivo de pérdida de peso!"
-},
+
 {
     "day":2,
     "title":"Entrenamiento de gluteos",
@@ -115,5 +100,3 @@
 }
 
 ]
-
-

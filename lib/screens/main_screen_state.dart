@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
+
+import '../provider/state_global.dart';
 import '../theme/app_theme.dart';
 import 'screens.dart';
 
@@ -16,14 +19,18 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int currentIndex = 1;
 
-  final List screens = [
-    {'title': 'Dieta - Dia 1', 'screen': const DietScreen()},
-    {'title': 'Reto - Dia 1', 'screen': const ExerciseScreen()},
-    {'title': 'Ajustes', 'screen': const ProfileScreen()},
-  ];
+
 
   @override
   Widget build(BuildContext context) {
+    final elapseDays = Provider.of<StateGlobal>(context);
+    final day = elapseDays.dayActive + 1;
+      final List screens = [
+    {'title': 'Dieta - Dia $day', 'screen': const DietScreen()},
+    {'title': 'Reto - Dia $day', 'screen': const ExerciseScreen()},
+    {'title': 'Ajustes', 'screen': const ProfileScreen()},
+  ];
+
     return Scaffold(
       appBar: AppBar(
         title: Text(

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
+import 'package:provider/provider.dart';
 import '../../models/Excercices.dart';
+import '../../provider/state_global.dart';
 import '../../widgets/widgets.dart';
 import '../screens.dart';
 
@@ -35,6 +37,7 @@ class ExerciseDayScreen extends StatelessWidget {
     List<ExercicesModel> exercises = [];
     const textStyleButton =
         TextStyle(fontWeight: FontWeight.w600, letterSpacing: 0.1);
+  // final exerciceState = Provider.of<StateGlobal>(context);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -59,7 +62,7 @@ class ExerciseDayScreen extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(top: 307),
             child: FutureBuilder(
-              future: getJsonExercices(pathJson: pathJsonRoutine),
+              future: getJsonExercices(pathJson: pathJsonRoutine, context: context),
               builder: (BuildContext context,
                   AsyncSnapshot<List<ExercicesModel>> snapshot) {
                 if (snapshot.hasError) {
@@ -81,11 +84,14 @@ class ExerciseDayScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: CustomButtonInit(
-          onPressed: () => AppRoutes.pushRouteCupertino(
-              context: context,
-              pageBuilder: RoutineStart(
-                exercices: exercises,
-              )),
+          onPressed: () {
+            AppRoutes.pushRouteCupertino(
+                context: context,
+                pageBuilder: RoutineStart(
+                  exercices: exercises,
+                ));
+                
+          },
           title: 'VAMOS',
           style: textStyleButton),
       floatingActionButtonLocation:

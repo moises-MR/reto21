@@ -7,19 +7,22 @@ import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:provider/provider.dart';
 
 import '../models/DayModel.dart';
+import '../provider/state_global.dart';
 import '../router/app_routes.dart';
 import 'exercise/exercise_day.dart';
 
 Future<List<ExercicesModel>> getJsonExercices(
-    {required String pathJson}) async {
+    {required String pathJson, required BuildContext context}) async {
   final jsonData = await rootBundle.loadString(pathJson);
   final exercices = jsonDecode(jsonData) as List<dynamic>;
-  return exercices.map((e) => ExercicesModel.fromJson(e)).toList();
+ 
+  return exercices.map((e) => ExercicesModel.fromJson(e)).toList();;
 }
 
-Future<List<DayModel>> getJsonDays({required String pathJson}) async {
+Future<List<DayModel>> getJsonDays({required String pathJson, }) async {
   final jsonData = await rootBundle.loadString(pathJson);
   final days = jsonDecode(jsonData) as List<dynamic>;
   return days.map((e) => DayModel.fromJson(e)).toList();
@@ -29,6 +32,7 @@ class ExerciseScreen extends StatelessWidget {
   const ExerciseScreen({super.key});
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         body: Container(
       padding: AppTheme.paddingGeneralPages,
@@ -59,7 +63,8 @@ class ExerciseScreen extends StatelessWidget {
                             colorContainer:
                                 Color(int.parse(day.colorContainer.toString())),
                             colorSvg: Color(int.parse(day.colorSvg.toString())),
-                            onTap: () => AppRoutes.pushRouteCupertino(
+                            onTap: () {
+                              AppRoutes.pushRouteCupertino(
                                 context: context,
                                 pageBuilder: ExerciseDayScreen(
                                   pathJsonRoutine:
@@ -76,7 +81,9 @@ class ExerciseScreen extends StatelessWidget {
                                   colorContainer:
                                       int.parse(day.colorContainer.toString()),
                                   colorSvg: int.parse(day.colorSvg.toString()),
-                                ))),
+                                ));
+                                
+                            }),
                       )
                       .toList(),
                 ),
@@ -248,164 +255,3 @@ class _Texts extends StatelessWidget {
   }
 }
 
-
-
-// [
-//           CardDayExercice(
-//             title: 'Dia 1 - Entrenamiento de abdominales',
-//             subTitle: 'Ejercicios adominales',
-//             assetSvg1: 'assets/shape2.svg',
-//             image: 'assets/women_purple_siluet.png',
-//             assetSvg2: 'assets/svg.svg',
-//             heightImage: 300,
-          //   onTap: () => AppRoutes.pushRouteCupertino(
-          //       context: context,
-          //       pageBuilder: const ExerciseDayScreen(
-          //         pathJsonRoutine: 'assets/routines/day1.json',
-          //         subTitleDay: 'Entrenamientos eficientes de 3-10 min para ayudarte a perder grasa y mantenerte en forma. ¡Consigue rápido tu objetivo de pérdida de peso!',
-          //         titleDay: 'Dia 1',
-          //       )),
-          // ),
-//           const SizedBox(
-//             height: 20,
-//           ),
-
-//           // CardDayExercice(
-//           //   assetSvg1: 'assets/shape.svg',
-//           //   image: 'assets/women-yoga.png',
-//           //   assetSvg2: 'assets/shape2.1.svg',
-//           //   colorContainer: Color(0xffe2f9ff),
-//           //   colorSvg: Color(0xffc0f1ff),
-//           // ),
-//           // SizedBox(
-//           //   height: 20,
-//           // ),
-//           // CardDayExercice(
-//           //   assetSvg1: 'assets/shape3.svg',
-//           //   image: 'assets/women_days/women-day3.png',
-//           //   assetSvg2: 'assets/shape3-1.svg',
-//           //   colorContainer: Color(0xfff0fefe),
-//           //   colorSvg: Color(0xffcef7e9),
-//           // ),
-//           // SizedBox(
-//           //   height: 20,
-//           // ),
-//           // CardDayExercice(
-//           //   assetSvg1: 'assets/shape5.svg',
-//           //   image: 'assets/women_days/women-day4.png',
-//           //   assetSvg2: 'assets/shape5-1.svg',
-//           //   colorContainer: Color(0xffecf6ff),
-//           //   colorSvg: Color(0xffadddff),
-//           // ),
-//           // SizedBox(
-//           //   height: 20,
-//           // ),
-//           // CardDayExercice(
-//           //   assetSvg1: 'assets/shape6.svg',
-//           //   image: 'assets/women_days/women-day5.png',
-//           //   assetSvg2: 'assets/shape6.svg',
-//           //   colorContainer: Color(0xffecedff),
-//           //   colorSvg: Color(0xffccd4ff),
-//           // ),
-//           // SizedBox(
-//           //   height: 20,
-//           // ),
-//           // CardDayExercice(
-//           //   assetSvg1: 'assets/shape2.svg',
-//           //   image: 'assets/women_purple_siluet.png',
-//           //   assetSvg2: 'assets/svg.svg',
-//           //   heightImage: 300,
-//           // ),
-//           // SizedBox(
-//           //   height: 20,
-//           // ),
-//           // CardDayExercice(
-//           //   assetSvg1: 'assets/shape.svg',
-//           //   image: 'assets/women-yoga.png',
-//           //   assetSvg2: 'assets/shape2.1.svg',
-//           //   colorContainer: Color(0xffe2f9ff),
-//           //   colorSvg: Color(0xffc0f1ff),
-//           // ),
-//           // SizedBox(
-//           //   height: 20,
-//           // ),
-//           // CardDayExercice(
-//           //   assetSvg1: 'assets/shape3.svg',
-//           //   image: 'assets/women_days/women-day3.png',
-//           //   assetSvg2: 'assets/shape3-1.svg',
-//           //   colorContainer: Color(0xfff0fefe),
-//           //   colorSvg: Color(0xffcef7e9),
-//           // ),
-//           // SizedBox(
-//           //   height: 20,
-//           // ),
-//           // CardDayExercice(
-//           //   assetSvg1: 'assets/shape5.svg',
-//           //   image: 'assets/women_days/women-day4.png',
-//           //   assetSvg2: 'assets/shape5-1.svg',
-//           //   colorContainer: Color(0xffecf6ff),
-//           //   colorSvg: Color(0xffadddff),
-//           // ),
-//           // SizedBox(
-//           //   height: 20,
-//           // ),
-//           // CardDayExercice(
-//           //   assetSvg1: 'assets/shape6.svg',
-//           //   image: 'assets/women_days/women-day5.png',
-//           //   assetSvg2: 'assets/shape6.svg',
-//           //   colorContainer: Color(0xffecedff),
-//           //   colorSvg: Color(0xffccd4ff),
-//           // ),
-//           // SizedBox(
-//           //   height: 20,
-//           // ),
-//           // CardDayExercice(
-//           //   assetSvg1: 'assets/shape2.svg',
-//           //   image: 'assets/women_purple_siluet.png',
-//           //   assetSvg2: 'assets/svg.svg',
-//           //   heightImage: 300,
-//           // ),
-//           // SizedBox(
-//           //   height: 20,
-//           // ),
-//           // CardDayExercice(
-//           //   assetSvg1: 'assets/shape.svg',
-//           //   image: 'assets/women-yoga.png',
-//           //   assetSvg2: 'assets/shape2.1.svg',
-//           //   colorContainer: Color(0xffe2f9ff),
-//           //   colorSvg: Color(0xffc0f1ff),
-//           // ),
-//           // SizedBox(
-//           //   height: 20,
-//           // ),
-//           // CardDayExercice(
-//           //   assetSvg1: 'assets/shape3.svg',
-//           //   image: 'assets/women_days/women-day3.png',
-//           //   assetSvg2: 'assets/shape3-1.svg',
-//           //   colorContainer: Color(0xfff0fefe),
-//           //   colorSvg: Color(0xffcef7e9),
-//           // ),
-//           // SizedBox(
-//           //   height: 20,
-//           // ),
-//           // CardDayExercice(
-//           //   assetSvg1: 'assets/shape5.svg',
-//           //   image: 'assets/women_days/women-day4.png',
-//           //   assetSvg2: 'assets/shape5-1.svg',
-//           //   colorContainer: Color(0xffecf6ff),
-//           //   colorSvg: Color(0xffadddff),
-//           // ),
-//           // SizedBox(
-//           //   height: 20,
-//           // ),
-//           // CardDayExercice(
-//           //   assetSvg1: 'assets/shape6.svg',
-//           //   image: 'assets/women_days/women-day5.png',
-//           //   assetSvg2: 'assets/shape6.svg',
-//           //   colorContainer: Color(0xffecedff),
-//           //   colorSvg: Color(0xffccd4ff),
-//           // ),
-//           // SizedBox(
-//           //   height: 20,
-//           // ),
-//         ]

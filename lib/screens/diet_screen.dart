@@ -1,8 +1,10 @@
+import 'package:bajar_de_peso_21_dias/provider/state_global.dart';
 import 'package:flutter/material.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
 import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'diet/diet_details.dart';
 import '../widgets/custom_button_init.dart';
 
@@ -10,6 +12,8 @@ class DietScreen extends StatelessWidget {
   const DietScreen({super.key});
   @override
   Widget build(BuildContext context) {
+
+  
     return Scaffold(
         body: Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -27,6 +31,8 @@ class ContainerSlide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final daysActive = Provider.of<StateGlobal>(context);
+
     const List<String> images = [
       "assets/meal.jpeg",
       "assets/meal.jpeg",
@@ -67,14 +73,18 @@ class ContainerSlide extends StatelessWidget {
                   child: CustomButtonInit(
                     style: const TextStyle(
                         fontWeight: FontWeight.w700, letterSpacing: .3),
-                    onPressed: () => AppRoutes.pushRouteCupertino(
+                    onPressed: () {
+                      AppRoutes.pushRouteCupertino(
                         context: context,
-                        pageBuilder: const DietDetailsScreen()),
+                        pageBuilder: const DietDetailsScreen());
+                        // daysActive.dayActive = 1;
+                        // daysActive.elapsedDaysAdd = 1;
+                    },
                     // Navigator.pushNamed(context, 'diet_details_screen'),
                     title: 'VAMOS',
                   ),
                 ),
-                if (index != 0)
+                  if(!daysActive.elapsedDays.contains(index))
                   Positioned(
                     child: Container(
                       width: double.infinity,

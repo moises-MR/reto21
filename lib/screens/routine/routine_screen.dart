@@ -2,30 +2,32 @@ import 'dart:async';
 
 import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
 import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
-import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
+import '../../models/Excercices.dart';
+import '../../provider/state_global.dart';
 import '../../widgets/container_exercises_animation.dart';
 import '../break/break_screen.dart';
 
 class RotineScreen extends StatelessWidget {
-  const RotineScreen({super.key});
-
+  const RotineScreen({super.key, required this.exercices});
+  final List<ExercicesModel> exercices; 
   @override
   Widget build(BuildContext context) {
-    final controller = CountDownController();
-    return _InitRoutine(controller: controller);
+    return  _InitRoutine(exercices: exercices,);
   }
 }
 
 class _InitRoutine extends StatefulWidget {
   const _InitRoutine({
-    Key? key,
-    required this.controller,
+    Key? key, required this.exercices,
+    
   }) : super(key: key);
 
-  final CountDownController controller;
+
+  final List<ExercicesModel> exercices; 
 
   @override
   State<_InitRoutine> createState() => _InitRoutineState();
@@ -43,7 +45,6 @@ class _InitRoutineState extends State<_InitRoutine> {
           stopTimer();
           return;
         }
-        ;
         seconsRevers--;
         setState(() {});
       });
@@ -101,6 +102,8 @@ class _InitRoutineState extends State<_InitRoutine> {
 
   @override
   Widget build(BuildContext context) {
+  final exerciceState = Provider.of<StateGlobal>(context);
+
     return Scaffold(
       body: Column(
         children: [
@@ -109,9 +112,9 @@ class _InitRoutineState extends State<_InitRoutine> {
             initTimer: initTimer,
           ),
           Expanded(child: Container()),
-          const Text(
-            'Abdominales',
-            style: TextStyle(
+           Text(
+            widget.exercices[exerciceState.execiceActive].title.toString(),
+            style:const TextStyle(
                 fontSize: 27, fontWeight: FontWeight.w800, letterSpacing: 0.3),
           ),
           //
@@ -152,8 +155,6 @@ class ButtonTabsBottom extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         GestureDetector(
-          onTap: () => AppRoutes.pushRouteCupertino(
-              context: context, pageBuilder: const BreackScreen()),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
@@ -173,8 +174,15 @@ class ButtonTabsBottom extends StatelessWidget {
           height: 20,
           width: 2,
         ),
-        Row(
-          children: const [Text('Anterior'), Icon(Icons.keyboard_arrow_right)],
+        GestureDetector(
+          onTap: () => AppRoutes.pushRouteCupertino(
+              context: context, pageBuilder: const BreackScreen()),
+          child: Row(
+            children: const [
+              Text('Siguiente'),
+              Icon(Icons.keyboard_arrow_right)
+            ],
+          ),
         )
       ],
     );
@@ -201,6 +209,7 @@ class _LinearCounterState extends State<LinearCounter> {
   bool isPause = false;
   @override
   Widget build(BuildContext context) {
+    
     const textStyle = TextStyle(
         fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white);
     return GestureDetector(

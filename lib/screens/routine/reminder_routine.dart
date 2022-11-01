@@ -22,8 +22,8 @@ class _RemeinderScreenState extends State<RemeinderScreen>
   late final AnimationController _controller;
 
   _open() {
-    final radius = Radius.circular(20);
-    final roundedRectangleBorder = RoundedRectangleBorder(
+    const radius =  Radius.circular(20);
+    const roundedRectangleBorder = RoundedRectangleBorder(
         borderRadius: BorderRadius.only(topLeft: radius, topRight: radius));
     showModalBottomSheet(
       shape: roundedRectangleBorder,
@@ -123,7 +123,7 @@ class _ContainerButton extends StatelessWidget {
       width: double.infinity,
       child: CustomButtonInit(
         onPressed: () => Navigator.push(context,
-            AppRoutes.handleNavigate(pageBuilder: MainScreen(), type: 'fade')),
+            AppRoutes.handleNavigate(pageBuilder: const MainScreen(), type: 'fade')),
         title: 'TERMINAR',
         style: const TextStyle(
             fontWeight: FontWeight.bold, letterSpacing: 0.4, fontSize: 19),

@@ -1,6 +1,8 @@
-import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
+import 'package:bajar_de_peso_21_dias/provider/state_global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
+import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -65,7 +67,7 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
         body: SingleChildScrollView(
-          physics: AppTheme.physics,
+      physics: AppTheme.physics,
       child: Container(
         padding: AppTheme.paddingGeneralPages,
         child: Column(
@@ -146,6 +148,8 @@ class _HeaderProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final elapseDays = Provider.of<StateGlobal>(context);
+
     return Column(
       children: [
         Container(
@@ -164,7 +168,9 @@ class _HeaderProfile extends StatelessWidget {
               ),
               // const SizedBox(width: 20,),
               _createColum(
-                  title: 'Dia', icon: Icons.bolt_outlined, value: '19'),
+                  title: 'Dia',
+                  icon: Icons.bolt_outlined,
+                  value: (elapseDays.dayActive + 1).toString()),
               _createColum(
                   title: 'Calorias',
                   icon: Icons.local_fire_department_outlined,
@@ -193,14 +199,14 @@ class _HeaderProfile extends StatelessWidget {
         ),
         Text(
           value,
-          style: TextStyle(
+          style: const TextStyle(
               color: AppTheme.primaryColor,
               fontSize: 32,
               fontWeight: FontWeight.bold),
         ),
         Text(
           title,
-          style: TextStyle(fontSize: 16, color: AppTheme.blackLight),
+          style: const TextStyle(fontSize: 16, color: AppTheme.blackLight),
         )
       ],
     );

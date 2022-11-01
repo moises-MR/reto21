@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -44,9 +46,73 @@ class _RoutineStartScreenState extends State<RoutineStartScreen> {
     //     ));
   }
 
+  late Timer timer;
+  bool timerWidgetActive = false;
+  int seconsRevers = 10;
+  void initTimer() {
+    if (!timerWidgetActive) {
+      timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        if (seconsRevers <= 1) {
+          navigateNextStep();
+          stopTimer();
+          return;
+        }
+        seconsRevers--;
+        setState(() {});
+      });
+      timerWidgetActive = true;
+      return;
+    }
+    if (timer.isActive) return;
+
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (seconsRevers <= 1) {
+        navigateNextStep();
+        stopTimer();
+        return;
+      }
+      ;
+      seconsRevers--;
+      setState(() {});
+    });
+  }
+
+  void stopTimer() {
+    if (timerWidgetActive) {
+      timer.cancel();
+      timerWidgetActive = true;
+    }
+  }
+
+  void restartTimer() {
+    seconsRevers = 0;
+    setState(() {});
+  }
+
+  void navigateNextStep() {
+    stopTimer();
+    AppRoutes.pushRouteCupertino(
+        context: context,
+        pageBuilder: RotineScreen(
+          exercices: widget.exercices,
+        ));
+  }
+
+  @override
+  void initState() {
+    initTimer();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    stopTimer();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-  final exerciceState = Provider.of<StateGlobal>(context);
+    final exerciceState = Provider.of<StateGlobal>(context);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -67,38 +133,34 @@ class _RoutineStartScreenState extends State<RoutineStartScreen> {
             child: Stack(
               alignment: AlignmentDirectional.center,
               children: [
-                
-                // Cambiarlo el value a un timer
-                TweenAnimationBuilder(
-                  duration: const Duration(seconds: 10),
-                  tween: Tween(begin: 0.0, end: 1.0),
-                  builder: (BuildContext context, double value, Widget? child) {
-                    return SizedBox(
-                      width: 120,
-                      height: 120,
-                      child: CircularProgressIndicator(
-                        value: value,
-                        strokeWidth: 11,
-                        backgroundColor: Colors.grey[300],
-                        color: AppTheme.primaryColor,
-                      ),
-                    );
-                  },
+                SizedBox(
+                  width: 120,
+                  height: 120,
+                  child: CircularProgressIndicator(
+                    value: seconsRevers / 10,
+                    strokeWidth: 11,
+                    backgroundColor: Colors.grey[300],
+                    color: AppTheme.primaryColor,
+                  ),
                 ),
-                const Text('0', style: TextStyle(
-                fontFamily: 'Artico',
-                fontSize: 65,
-                color: AppTheme.grayBlack,
-                fontWeight: FontWeight.bold),),
+                Text(
+                  '$seconsRevers',
+                  style: const TextStyle(
+                      fontFamily: 'Artico',
+                      fontSize: 65,
+                      color: AppTheme.grayBlack,
+                      fontWeight: FontWeight.bold),
+                ),
                 Positioned(
                     right: 7,
                     child: InkWell(
                         borderRadius: BorderRadius.circular(100),
-                        onTap: (){
+                        onTap: () {
                           AppRoutes.pushRouteCupertino(
-                            context: context,
-                            pageBuilder:  RotineScreen(exercices: widget.exercices,));
-                            exerciceState.execiceActive++;
+                              context: context,
+                              pageBuilder: RotineScreen(
+                                exercices: widget.exercices,
+                              ));
                         },
                         child: const Icon(
                           Icons.chevron_right,
@@ -126,7 +188,8 @@ class _Texts extends StatelessWidget {
   final List<ExercicesModel> exercices;
 
   Widget build(BuildContext context) {
-    var radius = const Radius.circular(20);
+    const radius = Radius.circular(20);
+    final exerciceState = Provider.of<StateGlobal>(context);
 
     return Column(
       children: [
@@ -146,7 +209,6 @@ class _Texts extends StatelessWidget {
           children: [
             Text(
               exercices[0].title.toString(),
-              // exerciceState.excercices[0].title.toString(),
               style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
@@ -163,6 +225,9 @@ class _Texts extends StatelessWidget {
                   radius: radius,
                   context: context,
                   initialIndex: 0,
+                  animation: exercices[0].animation_normal.toString(),
+                  durationExercise: exercices[0].duration.toString(),
+                  titleExercise: exercices[0].title.toString(),
                 );
               },
               child: const Icon(
@@ -177,82 +242,3 @@ class _Texts extends StatelessWidget {
     );
   }
 }
-
-// class _CircleBottom extends StatelessWidget {
-//   const _CircleBottom({
-//     Key? key,
-//     required this.controller,
-//     required this.changeScreen,
-//   }) : super(key: key);
-//   final Function changeScreen;
-
-//   final CountDownController controller;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox(
-//       width: double.infinity,
-//       child: Stack(
-//         alignment: AlignmentDirectional.center,
-//         clipBehavior: Clip.none,
-//         children: [
-//           CircularCountDownTimer(
-//             onChange: (value) {
-//               if (value == '6') {}
-//             },
-//             duration: 10,
-//             initialDuration: 0,
-//             controller: controller,
-//             width: 130,
-//             height: 130,
-//             ringColor: Colors.grey[300]!,
-//             fillColor: AppTheme.primaryColor,
-//             strokeWidth: 10.0,
-//             strokeCap: StrokeCap.round,
-//             textStyle: const TextStyle(
-//                 fontFamily: 'Artico',
-//                 fontSize: 65,
-//                 color: AppTheme.grayBlack,
-//                 fontWeight: FontWeight.bold),
-//             isReverse: true,
-//             isReverseAnimation: true,
-//             isTimerTextShown: true,
-//             autoStart: true,
-//           ),
-//           Positioned(
-//               right: 7,
-//               child: InkWell(
-//                   borderRadius: BorderRadius.circular(100),
-//                   onTap: () => AppRoutes.pushRouteCupertino(
-//                       context: context, pageBuilder: const RotineScreen()),
-//                   child: const Icon(
-//                     Icons.chevron_right,
-//                     size: 60,
-//                     color: AppTheme.blackLight,
-//                   )))
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// void _openModal(
-//     {required BuildContext context,
-//     required Radius radius,
-//     required Function initTimer,
-//     required int initialIndex,
-//     required Function stopTimer}) {
-//   var roundedRectangleBorder = RoundedRectangleBorder(
-//       borderRadius: BorderRadius.only(topLeft: radius, topRight: radius));
-//   stopTimer();
-//   showModalBottomSheet(
-//       context: context,
-//       shape: roundedRectangleBorder,
-//       builder: (context) => CreateModal(
-//             initialIndex: initialIndex,
-//             titleExercise: 'Lagartijas',
-//             animation: 'assets/plank leg up.json',
-//             durationExercise: '10:min',
-//           ),
-//       isScrollControlled: true);
-// }

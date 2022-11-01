@@ -13,28 +13,28 @@ import '../break/break_screen.dart';
 
 class RotineScreen extends StatelessWidget {
   const RotineScreen({super.key, required this.exercices});
-  final List<ExercicesModel> exercices; 
+  final List<ExercicesModel> exercices;
   @override
   Widget build(BuildContext context) {
-    return  _InitRoutine(exercices: exercices,);
+    return _InitRoutine(
+      exercices: exercices,
+    );
   }
 }
 
 class _InitRoutine extends StatefulWidget {
   const _InitRoutine({
-    Key? key, required this.exercices,
-    
+    Key? key,
+    required this.exercices,
   }) : super(key: key);
 
-
-  final List<ExercicesModel> exercices; 
+  final List<ExercicesModel> exercices;
 
   @override
   State<_InitRoutine> createState() => _InitRoutineState();
 }
 
 class _InitRoutineState extends State<_InitRoutine> {
-  int milliseconds = 0;
   late Timer timer;
   bool timerWidgetActive = false;
   int seconsRevers = 10;
@@ -102,7 +102,7 @@ class _InitRoutineState extends State<_InitRoutine> {
 
   @override
   Widget build(BuildContext context) {
-  final exerciceState = Provider.of<StateGlobal>(context);
+    final exerciceState = Provider.of<StateGlobal>(context);
 
     return Scaffold(
       body: Column(
@@ -110,11 +110,12 @@ class _InitRoutineState extends State<_InitRoutine> {
           _LottieContainer(
             stopTimer: stopTimer,
             initTimer: initTimer,
+            exercices: widget.exercices,
           ),
           Expanded(child: Container()),
-           Text(
+          Text(
             widget.exercices[exerciceState.execiceActive].title.toString(),
-            style:const TextStyle(
+            style: const TextStyle(
                 fontSize: 27, fontWeight: FontWeight.w800, letterSpacing: 0.3),
           ),
           //
@@ -134,7 +135,9 @@ class _InitRoutineState extends State<_InitRoutine> {
           const SizedBox(
             height: 40,
           ),
-          const ButtonTabsBottom(),
+          ButtonTabsBottom(
+            exercices: widget.exercices,
+          ),
           const SizedBox(
             height: 32,
           ),
@@ -147,7 +150,9 @@ class _InitRoutineState extends State<_InitRoutine> {
 class ButtonTabsBottom extends StatelessWidget {
   const ButtonTabsBottom({
     Key? key,
+    required this.exercices,
   }) : super(key: key);
+  final List<ExercicesModel> exercices;
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +181,10 @@ class ButtonTabsBottom extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () => AppRoutes.pushRouteCupertino(
-              context: context, pageBuilder: const BreackScreen()),
+              context: context,
+              pageBuilder: BreackScreen(
+                exercices: exercices,
+              )),
           child: Row(
             children: const [
               Text('Siguiente'),
@@ -209,7 +217,6 @@ class _LinearCounterState extends State<LinearCounter> {
   bool isPause = false;
   @override
   Widget build(BuildContext context) {
-    
     const textStyle = TextStyle(
         fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white);
     return GestureDetector(
@@ -289,12 +296,17 @@ class _LottieContainer extends StatelessWidget {
     Key? key,
     required this.stopTimer,
     required this.initTimer,
+    required this.exercices,
   }) : super(key: key);
 
   final Function stopTimer;
   final Function initTimer;
+  final List<ExercicesModel> exercices;
+
   @override
   Widget build(BuildContext context) {
+    final exerciceState = Provider.of<StateGlobal>(context);
+
     return SizedBox(
       child: Stack(
         children: [
@@ -333,6 +345,14 @@ class _LottieContainer extends StatelessWidget {
                       context: context,
                       initialIndex: 1,
                       radius: const Radius.circular(20),
+                      animation: exercices[exerciceState.dayActive]
+                          .animation_normal
+                          .toString(),
+                      durationExercise: exercices[exerciceState.dayActive]
+                          .duration
+                          .toString(),
+                      titleExercise:
+                          exercices[exerciceState.dayActive].title.toString(),
                     ),
                   ),
                   const SizedBox(
@@ -393,6 +413,9 @@ void openModal({
   required BuildContext context,
   required Radius radius,
   required int initialIndex,
+  required String titleExercise,
+  required String animation,
+  required String durationExercise,
 }) {
   var roundedRectangleBorder = RoundedRectangleBorder(
       borderRadius: BorderRadius.only(topLeft: radius, topRight: radius));
@@ -401,9 +424,9 @@ void openModal({
       shape: roundedRectangleBorder,
       builder: (context) => CreateModal(
             initialIndex: initialIndex,
-            titleExercise: 'Lagartijas',
-            animation: 'assets/plank leg up.json',
-            durationExercise: '10:min',
+            titleExercise: titleExercise,
+            animation: animation,
+            durationExercise: durationExercise,
           ),
       isScrollControlled: true);
 }

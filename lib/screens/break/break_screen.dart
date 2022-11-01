@@ -3,12 +3,16 @@ import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
 import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
+import '../../models/Excercices.dart';
+import '../../provider/state_global.dart';
 import '../routine/finish_routine.dart';
 import '../routine/routine_screen.dart';
 
 class BreackScreen extends StatelessWidget {
-  const BreackScreen({super.key});
+  const BreackScreen({super.key, required this.exercices});
+  final List<ExercicesModel> exercices;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +26,9 @@ class BreackScreen extends StatelessWidget {
           InkWell(
               onTap: () => AppRoutes.pushRouteCupertino(
                   context: context, pageBuilder: FinishScreen()),
-              child: const _BottomInfo()),
+              child: _BottomInfo(
+                exercices: exercices,
+              )),
         ],
       ),
     );
@@ -32,10 +38,14 @@ class BreackScreen extends StatelessWidget {
 class _BottomInfo extends StatelessWidget {
   const _BottomInfo({
     Key? key,
+    required this.exercices,
   }) : super(key: key);
+  final List<ExercicesModel> exercices;
 
   @override
   Widget build(BuildContext context) {
+    final exerciceState = Provider.of<StateGlobal>(context);
+
     return FadeInUp(
       delay: const Duration(milliseconds: 400),
       child: Column(
@@ -63,9 +73,9 @@ class _BottomInfo extends StatelessWidget {
                         color: Colors.grey,
                       ),
                     ),
-                    const Text(
-                      'Sentadillla bulgara izquierda',
-                      style: TextStyle(
+                    Text(
+                      exercices[exerciceState.dayActive + 1].title.toString(),
+                      style: const TextStyle(
                           fontSize: 19,
                           color: AppTheme.grayBlack,
                           fontWeight: FontWeight.w700),
@@ -77,6 +87,15 @@ class _BottomInfo extends StatelessWidget {
                           radius: const Radius.circular(20),
                           context: context,
                           initialIndex: 0,
+                          animation: exercices[exerciceState.dayActive]
+                              .animation_normal
+                              .toString(),
+                          durationExercise: exercices[exerciceState.dayActive]
+                              .duration
+                              .toString(),
+                          titleExercise: exercices[exerciceState.dayActive]
+                              .title
+                              .toString(),
                         );
                       },
                       child: const Icon(

@@ -2,7 +2,6 @@ import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/Excercices.dart';
-import '../../provider/state_global.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/widgets.dart';
 import '../screens.dart';
@@ -17,11 +16,11 @@ class StartRoutineScreen extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: Stack(
         children: [
+          // Cambiar por el color que es
           Container(
-            color: AppTheme.lightPink,
+            color: Color.fromARGB(255, 250, 218, 231),
             height: 300,
             width: double.infinity,
             child: Stack(
@@ -34,22 +33,28 @@ class StartRoutineScreen extends StatelessWidget {
               ],
             ),
           ),
-          const Instructions(),
-          FutureBuilder(
-            future: getJsonExercices(pathJson: 'assets/routines/day1.json', context: context),
-            builder: (BuildContext context,
-                AsyncSnapshot<List<ExercicesModel>> snapshot) {
-              if (snapshot.hasError) {
-                return const Text('Hubo un error');
-              } else if (snapshot.hasData) {
-                final exercices = snapshot.data as List<ExercicesModel>;
-                return ListExercisesContainer(exercises: exercices);
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
+
+          Container(
+              margin: EdgeInsets.only(top: 300), child: const Instructions()),
+          Container(
+            margin: EdgeInsets.only(top: 470),
+            child: FutureBuilder(
+              future: getJsonExercices(
+                  pathJson: 'assets/routines/day1.json', context: context),
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<ExercicesModel>> snapshot) {
+                if (snapshot.hasError) {
+                  return const Text('Hubo un error');
+                } else if (snapshot.hasData) {
+                  final exercices = snapshot.data as List<ExercicesModel>;
+                  return ListExercisesContainer(exercises: exercices);
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            ),
           )
         ],
       ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../models/Excercices.dart';
 
 class StateGlobal with ChangeNotifier {
   int _dayActive = 0;

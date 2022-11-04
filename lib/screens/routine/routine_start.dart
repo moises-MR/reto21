@@ -32,29 +32,16 @@ class RoutineStartScreen extends StatefulWidget {
 
 class _RoutineStartScreenState extends State<RoutineStartScreen> {
   bool changeScreenActive = false;
-  void changeScreen() {
-    // AppRoutes.pushRouteCupertino(
-    //     context: context,
-    //     pageBuilder: const ExerciseDayScreen(
-    //       pathJsonRoutine: 'assets/routines/day1.json',
-    //       subTitleDay:
-    //           'Entrenamientos eficientes de 3-10 min para ayudarte a perder grasa y mantenerte en forma. ¡Consigue rápido tu objetivo de pérdida de peso!',
-    //       titleDay: 'Dia 1',
-    //       assetSvg1: '',
-    //       assetSvg2: '',
-    //       image: '',
-    //     ));
-  }
 
   late Timer timer;
   bool timerWidgetActive = false;
-  int seconsRevers = 10;
+  int seconsRevers = 3;
+
   void initTimer() {
     if (!timerWidgetActive) {
       timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         if (seconsRevers <= 1) {
           navigateNextStep();
-          stopTimer();
           return;
         }
         seconsRevers--;
@@ -68,7 +55,6 @@ class _RoutineStartScreenState extends State<RoutineStartScreen> {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (seconsRevers <= 1) {
         navigateNextStep();
-        stopTimer();
         return;
       }
       ;
@@ -80,7 +66,7 @@ class _RoutineStartScreenState extends State<RoutineStartScreen> {
   void stopTimer() {
     if (timerWidgetActive) {
       timer.cancel();
-      timerWidgetActive = true;
+      timerWidgetActive = false;
     }
   }
 
@@ -90,13 +76,17 @@ class _RoutineStartScreenState extends State<RoutineStartScreen> {
   }
 
   void navigateNextStep() {
-    stopTimer();
+      if (timerWidgetActive) {
+      timer.cancel();
+      timerWidgetActive = false;
+    }
     AppRoutes.pushRouteCupertino(
         context: context,
         pageBuilder: RotineScreen(
           exercices: widget.exercices,
         ));
   }
+
 
   @override
   void initState() {
@@ -112,7 +102,7 @@ class _RoutineStartScreenState extends State<RoutineStartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final exerciceState = Provider.of<StateGlobal>(context);
+    // final exerciceState = Provider.of<StateGlobal>(context);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -155,13 +145,7 @@ class _RoutineStartScreenState extends State<RoutineStartScreen> {
                     right: 7,
                     child: InkWell(
                         borderRadius: BorderRadius.circular(100),
-                        onTap: () {
-                          AppRoutes.pushRouteCupertino(
-                              context: context,
-                              pageBuilder: RotineScreen(
-                                exercices: widget.exercices,
-                              ));
-                        },
+                        onTap: () => navigateNextStep(),
                         child: const Icon(
                           Icons.chevron_right,
                           size: 60,
@@ -189,7 +173,7 @@ class _Texts extends StatelessWidget {
 
   Widget build(BuildContext context) {
     const radius = Radius.circular(20);
-    final exerciceState = Provider.of<StateGlobal>(context);
+    // final exerciceState = Provider.of<StateGlobal>(context);
 
     return Column(
       children: [

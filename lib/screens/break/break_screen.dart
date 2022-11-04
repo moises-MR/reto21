@@ -1,13 +1,13 @@
+import 'package:flutter/material.dart';
+import 'dart:async';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
 import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
-import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-
 import '../../models/Excercices.dart';
 import '../../provider/state_global.dart';
-import '../routine/finish_routine.dart';
 import '../routine/routine_screen.dart';
 
 class BreackScreen extends StatelessWidget {
@@ -21,14 +21,13 @@ class BreackScreen extends StatelessWidget {
       body: Column(
         children: [
           Expanded(child: Container()),
-          const _ContainerCenter(),
+          _ContainerCenter(
+            exercices: exercices,
+          ),
           Expanded(child: Container()),
-          InkWell(
-              onTap: () => AppRoutes.pushRouteCupertino(
-                  context: context, pageBuilder: FinishScreen()),
-              child: _BottomInfo(
-                exercices: exercices,
-              )),
+          _BottomInfo(
+            exercices: exercices,
+          )
         ],
       ),
     );
@@ -45,13 +44,20 @@ class _BottomInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final exerciceState = Provider.of<StateGlobal>(context);
-
+    const textStyle = TextStyle(
+      fontSize: 17,
+      color: Colors.grey,
+    );
+    const textStyle2 = TextStyle(
+      fontSize: 19,
+      color: AppTheme.primaryColor,
+    );
     return FadeInUp(
       delay: const Duration(milliseconds: 400),
       child: Column(
         children: [
           LinearProgressIndicator(
-            value: 0.2,
+            value: exerciceState.execiceActive / exercices.length,
             backgroundColor: Colors.grey[300],
             color: AppTheme.primaryColor,
           ),
@@ -66,15 +72,12 @@ class _BottomInfo extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'SIGUIENTE 2/6',
-                      style: TextStyle(
-                        fontSize: 17,
-                        color: Colors.grey,
-                      ),
+                    Text(
+                      'SIGUIENTE ${exerciceState.execiceActive + 1}/${exercices.length}',
+                      style: textStyle,
                     ),
                     Text(
-                      exercices[exerciceState.dayActive + 1].title.toString(),
+                      exercices[exerciceState.execiceActive].title.toString(),
                       style: const TextStyle(
                           fontSize: 19,
                           color: AppTheme.grayBlack,
@@ -87,13 +90,14 @@ class _BottomInfo extends StatelessWidget {
                           radius: const Radius.circular(20),
                           context: context,
                           initialIndex: 0,
-                          animation: exercices[exerciceState.dayActive]
+                          animation: exercices[exerciceState.execiceActive]
                               .animation_normal
                               .toString(),
-                          durationExercise: exercices[exerciceState.dayActive]
-                              .duration
-                              .toString(),
-                          titleExercise: exercices[exerciceState.dayActive]
+                          durationExercise:
+                              exercices[exerciceState.execiceActive]
+                                  .duration
+                                  .toString(),
+                          titleExercise: exercices[exerciceState.execiceActive]
                               .title
                               .toString(),
                         );
@@ -104,17 +108,16 @@ class _BottomInfo extends StatelessWidget {
                         size: 24,
                       ),
                     ),
-                    const Text(
-                      '00:20',
-                      style: TextStyle(
-                        fontSize: 19,
-                        color: AppTheme.primaryColor,
-                      ),
+                    Text(
+                      '${exercices[exerciceState.execiceActive].duration.toString()} seg.',
+                      style: textStyle2,
                     ),
                   ],
                 ),
                 LottieBuilder.asset(
-                  'assets/lotties/abdominales_crunch_blank.json',
+                  exercices[exerciceState.execiceActive]
+                      .animation_normal
+                      .toString(),
                   width: 100,
                 )
               ],
@@ -126,13 +129,88 @@ class _BottomInfo extends StatelessWidget {
   }
 }
 
-class _ContainerCenter extends StatelessWidget {
+class _ContainerCenter extends StatefulWidget {
   const _ContainerCenter({
     Key? key,
+    required this.exercices,
   }) : super(key: key);
+
+  final List<ExercicesModel> exercices;
+
+  @override
+  State<_ContainerCenter> createState() => _ContainerCenterState();
+}
+
+class _ContainerCenterState extends State<_ContainerCenter> {
+  late Timer timer;
+  bool timerWidgetActive = false;
+  int seconsRevers = 5;
+  void initTimer() {
+    if (!timerWidgetActive) {
+      timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        if (seconsRevers <= 1) {
+          handleFinished();
+          return;
+        }
+        seconsRevers--;
+        setState(() {});
+      });
+      timerWidgetActive = true;
+      return;
+    }
+    if (timer.isActive) return;
+
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (seconsRevers <= 1) {
+        handleFinished();
+        return;
+      }
+      ;
+      seconsRevers--;
+      setState(() {});
+    });
+  }
+
+  void stopTimer() {
+    if (timerWidgetActive) {
+      timer.cancel();
+      timerWidgetActive = true;
+    }
+  }
+
+  void handleFinished() {
+    if (timerWidgetActive) {
+      timer.cancel();
+      timerWidgetActive = true;
+    }
+    AppRoutes.pushRouteCupertino(
+        context: context,
+        pageBuilder: RotineScreen(
+          exercices: widget.exercices,
+        ));
+  }
+
+  @override
+  void initState() {
+    initTimer();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    stopTimer();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    // final exerciceState = Provider.of<StateGlobal>(context);
+    //   print(exerciceState.execiceActive);
+    const textStyle = TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+        fontSize: 70,
+        fontFamily: 'Artico');
     return FadeInDown(
       child: Center(
         child: Column(
@@ -144,40 +222,44 @@ class _ContainerCenter extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                   fontSize: 22),
             ),
-            const Text(
-              '00:28',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 70,
-                  fontFamily: 'Artico'),
+            Text(
+              '00:${seconsRevers >= 10 ? "$seconsRevers" : "0$seconsRevers"}',
+              style: textStyle,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Chip(
-                    label: Text(
-                      '+20s',
-                      style: TextStyle(
-                          color: AppTheme.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17),
-                    ),
-                    backgroundColor: Color.fromARGB(200, 255, 110, 168),
-                    padding: EdgeInsets.symmetric(horizontal: 20)),
-                SizedBox(
+              children: [
+                InkWell(
+                  onTap: () => setState(() {
+                    seconsRevers += 20;
+                  }),
+                  child: const Chip(
+                      label: Text(
+                        ' +20s ',
+                        style: TextStyle(
+                            color: AppTheme.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17),
+                      ),
+                      backgroundColor: Color.fromARGB(200, 255, 110, 168),
+                      padding: EdgeInsets.symmetric(horizontal: 20)),
+                ),
+                const SizedBox(
                   width: 22,
                 ),
-                Chip(
-                    label: Text(
-                      'Omitir',
-                      style: TextStyle(
-                          color: AppTheme.primaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17),
-                    ),
-                    backgroundColor: Colors.transparent,
-                    padding: EdgeInsets.symmetric(horizontal: 20)),
+                InkWell(
+                  onTap: () => handleFinished(),
+                  child: const Chip(
+                      label: Text(
+                        'Omitir',
+                        style: TextStyle(
+                            color: AppTheme.primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17),
+                      ),
+                      backgroundColor: Colors.transparent,
+                      padding: EdgeInsets.symmetric(horizontal: 20)),
+                ),
               ],
             )
           ],

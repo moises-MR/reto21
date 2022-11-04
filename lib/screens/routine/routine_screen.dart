@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
+import 'package:bajar_de_peso_21_dias/screens/routine/finish_routine.dart';
 import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -16,8 +17,11 @@ class RotineScreen extends StatelessWidget {
   final List<ExercicesModel> exercices;
   @override
   Widget build(BuildContext context) {
+    final exerciceState = Provider.of<StateGlobal>(context);
+
     return _InitRoutine(
       exercices: exercices,
+      exerciceState: exerciceState,
     );
   }
 }
@@ -26,10 +30,11 @@ class _InitRoutine extends StatefulWidget {
   const _InitRoutine({
     Key? key,
     required this.exercices,
+    required this.exerciceState,
   }) : super(key: key);
 
   final List<ExercicesModel> exercices;
-
+  final StateGlobal exerciceState;
   @override
   State<_InitRoutine> createState() => _InitRoutineState();
 }
@@ -37,12 +42,12 @@ class _InitRoutine extends StatefulWidget {
 class _InitRoutineState extends State<_InitRoutine> {
   late Timer timer;
   bool timerWidgetActive = false;
-  int seconsRevers = 10;
+  int seconsRevers = 5;
   void initTimer() {
     if (!timerWidgetActive) {
       timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         if (seconsRevers <= 1) {
-          stopTimer();
+          handleFinished();
           return;
         }
         seconsRevers--;
@@ -55,10 +60,9 @@ class _InitRoutineState extends State<_InitRoutine> {
 
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (seconsRevers <= 1) {
-        stopTimer();
+        handleFinished();
         return;
       }
-      ;
       seconsRevers--;
       setState(() {});
     });
@@ -67,7 +71,7 @@ class _InitRoutineState extends State<_InitRoutine> {
   void stopTimer() {
     if (timerWidgetActive) {
       timer.cancel();
-      timerWidgetActive = true;
+      timerWidgetActive = false;
     }
   }
 
@@ -87,6 +91,28 @@ class _InitRoutineState extends State<_InitRoutine> {
   // void changeContainer() {
   //   initTimer();
   // }
+
+  void handleFinished() {
+    if (timerWidgetActive) {
+      timer.cancel();
+      timerWidgetActive = false;
+    }
+    final exercicesLength = widget.exercices.length;
+    if (widget.exerciceState.execiceActive + 1 <= exercicesLength - 1) {
+      //Aun existen ejercicios
+      AppRoutes.pushRouteCupertino(
+          context: context,
+          pageBuilder: BreackScreen(
+            exercices: widget.exercices,
+          ));
+      widget.exerciceState.execiceActive++;
+    } else {
+      //Ya no existe ejercicios
+      AppRoutes.pushRouteCupertino(
+          context: context, pageBuilder: const FinishScreen());
+          widget.exerciceState.execiceActive = 0;
+    }
+  }
 
   @override
   void initState() {
@@ -136,7 +162,7 @@ class _InitRoutineState extends State<_InitRoutine> {
             height: 40,
           ),
           ButtonTabsBottom(
-            exercices: widget.exercices,
+            exercices: widget.exercices, stopTimer: stopTimer,
           ),
           const SizedBox(
             height: 32,
@@ -150,26 +176,40 @@ class _InitRoutineState extends State<_InitRoutine> {
 class ButtonTabsBottom extends StatelessWidget {
   const ButtonTabsBottom({
     Key? key,
-    required this.exercices,
+    required this.exercices, required this.stopTimer,
   }) : super(key: key);
   final List<ExercicesModel> exercices;
-
+  final Function stopTimer;
   @override
   Widget build(BuildContext context) {
+    final exerciceState = Provider.of<StateGlobal>(context);
+    Color constcolorActive = exerciceState.execiceActive == 0
+                        ? Colors.grey
+                        : Colors.black;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         GestureDetector(
+          onTap: exerciceState.execiceActive == 0 ? null : (){
+            exerciceState.execiceActive--;
+            stopTimer();
+            AppRoutes.pushRouteCupertino(
+              context: context,
+              pageBuilder: RotineScreen(
+                exercices: exercices,
+              ));
+          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(
+            children: [
+               Icon(
                 Icons.keyboard_arrow_left,
-                color: Colors.grey,
+                color: constcolorActive,
               ),
               Text(
                 'Anterior',
-                style: TextStyle(color: Colors.grey),
+                style: TextStyle(
+                    color: constcolorActive),
               )
             ],
           ),
@@ -328,9 +368,10 @@ class _LottieContainer extends StatelessWidget {
                   const SizedBox(
                     width: 7,
                   ),
-                  const Text(
-                    '1/7',
-                    style: TextStyle(color: AppTheme.blackLight, fontSize: 22),
+                  Text(
+                    '${exerciceState.execiceActive + 1}/${exercices.length}',
+                    style: const TextStyle(
+                        color: AppTheme.blackLight, fontSize: 22),
                   )
                 ],
               )),

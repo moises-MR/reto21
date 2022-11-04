@@ -110,7 +110,7 @@ class _InitRoutineState extends State<_InitRoutine> {
       //Ya no existe ejercicios
       AppRoutes.pushRouteCupertino(
           context: context, pageBuilder: const FinishScreen());
-          widget.exerciceState.execiceActive = 0;
+      widget.exerciceState.execiceActive = 0;
     }
   }
 
@@ -162,7 +162,8 @@ class _InitRoutineState extends State<_InitRoutine> {
             height: 40,
           ),
           ButtonTabsBottom(
-            exercices: widget.exercices, stopTimer: stopTimer,
+            exercices: widget.exercices,
+            timer: timer,
           ),
           const SizedBox(
             height: 32,
@@ -176,40 +177,46 @@ class _InitRoutineState extends State<_InitRoutine> {
 class ButtonTabsBottom extends StatelessWidget {
   const ButtonTabsBottom({
     Key? key,
-    required this.exercices, required this.stopTimer,
+    required this.exercices,
+    required this.timer,
   }) : super(key: key);
   final List<ExercicesModel> exercices;
-  final Function stopTimer;
+  final Timer timer;
   @override
   Widget build(BuildContext context) {
     final exerciceState = Provider.of<StateGlobal>(context);
-    Color constcolorActive = exerciceState.execiceActive == 0
-                        ? Colors.grey
-                        : Colors.black;
+    Color colorActiveBefore =
+        exerciceState.execiceActive == 0 ? Colors.grey : Colors.black;
+    Color colorActiveAffter =
+        exerciceState.execiceActive + 1 >= exercices.length - 1
+            ? Colors.grey
+            : Colors.black;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         GestureDetector(
-          onTap: exerciceState.execiceActive == 0 ? null : (){
-            exerciceState.execiceActive--;
-            stopTimer();
-            AppRoutes.pushRouteCupertino(
-              context: context,
-              pageBuilder: RotineScreen(
-                exercices: exercices,
-              ));
-          },
+          onTap: exerciceState.execiceActive == 0
+              ? null
+              : () {
+                  timer.cancel();
+
+                  exerciceState.execiceActive--;
+                  AppRoutes.pushRouteCupertino(
+                      context: context,
+                      pageBuilder: RotineScreen(
+                        exercices: exercices,
+                      ));
+                },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-               Icon(
+              Icon(
                 Icons.keyboard_arrow_left,
-                color: constcolorActive,
+                color: colorActiveBefore,
               ),
               Text(
                 'Anterior',
-                style: TextStyle(
-                    color: constcolorActive),
+                style: TextStyle(color: colorActiveBefore),
               )
             ],
           ),
@@ -220,15 +227,27 @@ class ButtonTabsBottom extends StatelessWidget {
           width: 2,
         ),
         GestureDetector(
-          onTap: () => AppRoutes.pushRouteCupertino(
-              context: context,
-              pageBuilder: BreackScreen(
-                exercices: exercices,
-              )),
+          onTap: exerciceState.execiceActive + 1 >= exercices.length - 1
+              ? null
+              : () {
+                  timer.cancel();
+                  AppRoutes.pushRouteCupertino(
+                      context: context,
+                      pageBuilder: BreackScreen(
+                        exercices: exercices,
+                      ));
+                  exerciceState.execiceActive++;
+                },
           child: Row(
-            children: const [
-              Text('Siguiente'),
-              Icon(Icons.keyboard_arrow_right)
+            children: [
+              Text(
+                'Siguiente',
+                style: TextStyle(color: colorActiveAffter),
+              ),
+              Icon(
+                Icons.keyboard_arrow_right,
+                color: colorActiveAffter,
+              )
             ],
           ),
         )

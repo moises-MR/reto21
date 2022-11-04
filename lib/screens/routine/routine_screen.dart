@@ -185,6 +185,7 @@ class ButtonTabsBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final exerciceState = Provider.of<StateGlobal>(context);
+
     Color colorActiveBefore =
         exerciceState.execiceActive == 0 ? Colors.grey : Colors.black;
     Color colorActiveAffter =

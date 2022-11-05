@@ -187,7 +187,7 @@ class _ContainerCenterState extends State<_ContainerCenter> {
         context: context,
         pageBuilder: RotineScreen(
           exercices: widget.exercices,
-        ));
+    ));
   }
 
   @override

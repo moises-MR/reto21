@@ -189,7 +189,7 @@ class ButtonTabsBottom extends StatelessWidget {
     Color colorActiveBefore =
         exerciceState.execiceActive == 0 ? Colors.grey : Colors.black;
     Color colorActiveAffter =
-        exerciceState.execiceActive + 1 >= exercices.length - 1
+        exerciceState.execiceActive  >= exercices.length - 1
             ? Colors.grey
             : Colors.black;
     return Row(
@@ -228,7 +228,7 @@ class ButtonTabsBottom extends StatelessWidget {
           width: 2,
         ),
         GestureDetector(
-          onTap: exerciceState.execiceActive + 1 >= exercices.length - 1
+          onTap: exerciceState.execiceActive  >= exercices.length - 1
               ? null
               : () {
                   timer.cancel();

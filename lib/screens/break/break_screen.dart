@@ -183,7 +183,7 @@ class _ContainerCenterState extends State<_ContainerCenter> {
       timer.cancel();
       timerWidgetActive = true;
     }
-    AppRoutes.pushRouteCupertino(
+    AppRoutes.pushRouteCupertinoReplacementNamed(
         context: context,
         pageBuilder: RotineScreen(
           exercices: widget.exercices,

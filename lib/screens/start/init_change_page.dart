@@ -57,7 +57,7 @@ class ContainerImageText extends StatelessWidget {
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-          color: Color.fromARGB(255, 250, 218, 231),
+          color: const Color(0xffffebee),
           borderRadius: BorderRadius.circular(20)),
       child: Stack(children: [
         Column(

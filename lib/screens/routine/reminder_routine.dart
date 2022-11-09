@@ -122,8 +122,7 @@ class _ContainerButton extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 20),
       width: double.infinity,
       child: CustomButtonInit(
-        onPressed: () => Navigator.push(context,
-            AppRoutes.handleNavigate(pageBuilder: const MainScreen(), type: 'fade')),
+        onPressed: () => AppRoutes.pushRouteCupertinoReplacementNamed(context: context,pageBuilder: const MainScreen()),
         title: 'TERMINAR',
         style: const TextStyle(
             fontWeight: FontWeight.bold, letterSpacing: 0.4, fontSize: 19),

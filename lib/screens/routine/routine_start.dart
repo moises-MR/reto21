@@ -1,14 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
 
 import '../../models/Excercices.dart';
-import '../../provider/state_global.dart';
 import '../../router/app_routes.dart';
 import '../../theme/app_theme.dart';
-// import '../exercise/exercise_day.dart';
 import 'routine_screen.dart';
 
 class RoutineStart extends StatelessWidget {
@@ -35,7 +31,7 @@ class _RoutineStartScreenState extends State<RoutineStartScreen> {
 
   late Timer timer;
   bool timerWidgetActive = false;
-  int seconsRevers = 3;
+  int seconsRevers = 10;
 
   void initTimer() {
     if (!timerWidgetActive) {
@@ -80,7 +76,7 @@ class _RoutineStartScreenState extends State<RoutineStartScreen> {
       timer.cancel();
       timerWidgetActive = false;
     }
-    AppRoutes.pushRouteCupertino(
+    AppRoutes.pushRouteCupertinoReplacementNamed(
         context: context,
         pageBuilder: RotineScreen(
           exercices: widget.exercices,

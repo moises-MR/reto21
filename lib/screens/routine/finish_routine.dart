@@ -22,11 +22,13 @@ class _FinishScreenState extends State<FinishScreen> {
 
   void onCloseDialog() {
     if (mounted) {
-      Navigator.push(
-          context,
-          AppRoutes.handleNavigate(
-              pageBuilder: const RemeinderScreen(),
-              type: 'bottom_fade_cupertino'));
+      // Navigator.push(
+      //     context,
+      //     AppRoutes.handleNavigate(
+      //         pageBuilder: const RemeinderScreen(),
+      //         type: 'bottom_fade_cupertino'));
+      AppRoutes.pushRouteCupertinoReplacementNamed(
+          context: context, pageBuilder: const RemeinderScreen());
     }
   }
 

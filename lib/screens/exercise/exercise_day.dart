@@ -37,7 +37,7 @@ class ExerciseDayScreen extends StatelessWidget {
     List<ExercicesModel> exercises = [];
     const textStyleButton =
         TextStyle(fontWeight: FontWeight.w600, letterSpacing: 0.1);
-  // final exerciceState = Provider.of<StateGlobal>(context);
+    // final exerciceState = Provider.of<StateGlobal>(context);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -62,7 +62,8 @@ class ExerciseDayScreen extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(top: 307),
             child: FutureBuilder(
-              future: getJsonExercices(pathJson: pathJsonRoutine, context: context),
+              future:
+                  getJsonExercices(pathJson: pathJsonRoutine, context: context),
               builder: (BuildContext context,
                   AsyncSnapshot<List<ExercicesModel>> snapshot) {
                 if (snapshot.hasError) {
@@ -85,12 +86,11 @@ class ExerciseDayScreen extends StatelessWidget {
       ),
       floatingActionButton: CustomButtonInit(
           onPressed: () {
-            AppRoutes.pushRouteCupertino(
+            AppRoutes.pushRouteCupertinoReplacementNamed(
                 context: context,
                 pageBuilder: RoutineStart(
                   exercices: exercises,
                 ));
-                
           },
           title: 'VAMOS',
           style: textStyleButton),

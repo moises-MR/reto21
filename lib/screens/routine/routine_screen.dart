@@ -42,7 +42,7 @@ class _InitRoutine extends StatefulWidget {
 class _InitRoutineState extends State<_InitRoutine> {
   late Timer timer;
   bool timerWidgetActive = false;
-  int seconsRevers = 5;
+  int seconsRevers = 10;
   void initTimer() {
     if (!timerWidgetActive) {
       timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -100,7 +100,7 @@ class _InitRoutineState extends State<_InitRoutine> {
     final exercicesLength = widget.exercices.length;
     if (widget.exerciceState.execiceActive + 1 <= exercicesLength - 1) {
       //Aun existen ejercicios
-      AppRoutes.pushRouteCupertino(
+      AppRoutes.pushRouteCupertinoReplacementNamed(
           context: context,
           pageBuilder: BreackScreen(
             exercices: widget.exercices,
@@ -108,7 +108,7 @@ class _InitRoutineState extends State<_InitRoutine> {
       widget.exerciceState.execiceActive++;
     } else {
       //Ya no existe ejercicios
-      AppRoutes.pushRouteCupertino(
+      AppRoutes.pushRouteCupertinoReplacementNamed(
           context: context, pageBuilder: const FinishScreen());
       widget.exerciceState.execiceActive = 0;
     }
@@ -201,12 +201,12 @@ class ButtonTabsBottom extends StatelessWidget {
               : () {
                   timer.cancel();
 
-                  exerciceState.execiceActive--;
-                  AppRoutes.pushRouteCupertino(
+                  AppRoutes.pushRouteCupertinoReplacementNamed(
                       context: context,
                       pageBuilder: RotineScreen(
                         exercices: exercices,
                       ));
+                  exerciceState.execiceActive--;
                 },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -232,7 +232,7 @@ class ButtonTabsBottom extends StatelessWidget {
               ? null
               : () {
                   timer.cancel();
-                  AppRoutes.pushRouteCupertino(
+                  AppRoutes.pushRouteCupertinoReplacementNamed(
                       context: context,
                       pageBuilder: BreackScreen(
                         exercices: exercices,
@@ -380,7 +380,7 @@ class _LottieContainer extends StatelessWidget {
               child: Row(
                 children: [
                   GestureDetector(
-                      onTap: () => Navigator.pop(context),
+                      // onTap: () => Navigator.pop(context),
                       child: const Icon(
                         Icons.arrow_back_ios_outlined,
                         color: AppTheme.blackLight,

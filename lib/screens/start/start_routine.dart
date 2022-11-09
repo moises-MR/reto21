@@ -1,6 +1,5 @@
 import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../models/Excercices.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/widgets.dart';
@@ -20,7 +19,7 @@ class StartRoutineScreen extends StatelessWidget {
         children: [
           // Cambiar por el color que es
           Container(
-            color: Color.fromARGB(255, 250, 218, 231),
+            color: const Color(0xffffebee),
             height: 300,
             width: double.infinity,
             child: Stack(
@@ -35,9 +34,10 @@ class StartRoutineScreen extends StatelessWidget {
           ),
 
           Container(
-              margin: EdgeInsets.only(top: 300), child: const Instructions()),
+              margin: const EdgeInsets.only(top: 300),
+              child: const Instructions()),
           Container(
-            margin: EdgeInsets.only(top: 470),
+            margin: const EdgeInsets.only(top: 470),
             child: FutureBuilder(
               future: getJsonExercices(
                   pathJson: 'assets/routines/day1.json', context: context),
@@ -59,10 +59,8 @@ class StartRoutineScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: CustomButtonInit(
-          onPressed: () => Navigator.push(
-              context,
-              AppRoutes.handleNavigate(
-                  pageBuilder: const MainScreen(), type: 'fade')),
+          onPressed: () => AppRoutes.pushRouteCupertinoReplacementNamed(
+              context: context, pageBuilder: const MainScreen()),
           title: 'VAMOS',
           style: textStyleButton),
       floatingActionButtonLocation:

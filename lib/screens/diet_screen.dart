@@ -84,7 +84,7 @@ class ContainerSlide extends StatelessWidget {
                     title: 'VAMOS',
                   ),
                 ),
-                  if(!daysActive.elapsedDays.contains(index))
+                  if(daysActive.execiceActive < index - 1)
                   Positioned(
                     child: Container(
                       width: double.infinity,

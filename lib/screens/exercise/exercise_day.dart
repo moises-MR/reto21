@@ -45,6 +45,7 @@ class ExerciseDayScreen extends StatelessWidget {
       body: Stack(
         children: [
           CardDayExercice(
+
             colorContainer: Color(colorContainer),
             colorSvg: Color(colorSvg),
             rightImage: rightImage,

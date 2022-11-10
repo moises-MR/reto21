@@ -84,9 +84,9 @@ class ContainerSlide extends StatelessWidget {
                     title: 'VAMOS',
                   ),
                 ),
-                  if(daysActive.execiceActive < index - 1)
-                  Positioned(
-                    child: Container(
+                  if(daysActive.dayActive < index )
+                
+                 Container(
                       width: double.infinity,
                       height: double.infinity,
                       decoration: const BoxDecoration(
@@ -98,7 +98,7 @@ class ContainerSlide extends StatelessWidget {
                         'assets/SVG/lock.svg',
                         width: 120,
                       )),
-                    ),
+                    
                   ),
               ],
             ),

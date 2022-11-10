@@ -18,11 +18,14 @@ Future<List<ExercicesModel>> getJsonExercices(
     {required String pathJson, required BuildContext context}) async {
   final jsonData = await rootBundle.loadString(pathJson);
   final exercices = jsonDecode(jsonData) as List<dynamic>;
- 
-  return exercices.map((e) => ExercicesModel.fromJson(e)).toList();;
+
+  return exercices.map((e) => ExercicesModel.fromJson(e)).toList();
+  ;
 }
 
-Future<List<DayModel>> getJsonDays({required String pathJson, }) async {
+Future<List<DayModel>> getJsonDays({
+  required String pathJson,
+}) async {
   final jsonData = await rootBundle.loadString(pathJson);
   final days = jsonDecode(jsonData) as List<dynamic>;
   return days.map((e) => DayModel.fromJson(e)).toList();
@@ -32,69 +35,66 @@ class ExerciseScreen extends StatelessWidget {
   const ExerciseScreen({super.key});
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         body: Container(
       padding: AppTheme.paddingGeneralPages,
-      child: SingleChildScrollView(
-        physics: AppTheme.physics,
-        child: FutureBuilder(
-          future: getJsonDays(pathJson: 'assets/days/days.json'),
-          builder:
-              (BuildContext context, AsyncSnapshot<List<DayModel>> snapshot) {
-            if (snapshot.hasError) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasData) {
-              final days = snapshot.data as List<DayModel>;
-              return SingleChildScrollView(
-                child: Column(
-                  children: days
-                      .map(
-                        (day) => CardDayExercice(
-                            title: 'Dia ${day.day} - ${day.title}',
-                            subTitle: day.subTitle.toString(),
-                            assetSvg1: day.assetSvg1.toString(),
-                            image: day.image ?? '',
-                            assetSvg2: day.assetSvg2.toString(),
-                            heightImage: day.heightImage,
-                            rightImage: day.rightImage,
-                            colorContainer:
-                                Color(int.parse(day.colorContainer.toString())),
-                            colorSvg: Color(int.parse(day.colorSvg.toString())),
-                            onTap: () {
-                              AppRoutes.pushRouteCupertino(
-                                context: context,
-                                pageBuilder: ExerciseDayScreen(
-                                  pathJsonRoutine:
-                                      day.pathJsonRoutine.toString(),
-                                  subTitleDay: day.subTitleDay.toString(),
-                                  titleDay: 'Dia ${day.day}',
-                                  assetSvg1: day.assetSvg1.toString(),
-                                  assetSvg2: day.assetSvg2.toString(),
-                                  image: day.image.toString(),
-                                  heightImage:
-                                      double.parse(day.heightImage.toString()),
-                                  rightImage:
-                                      double.parse(day.rightImage.toString()),
-                                  colorContainer:
-                                      int.parse(day.colorContainer.toString()),
-                                  colorSvg: int.parse(day.colorSvg.toString()),
-                                ));
-                                
-                            }),
-                      )
-                      .toList(),
-                ),
-              );
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-        ),
+      child: FutureBuilder(
+        future: getJsonDays(pathJson: 'assets/days/days.json'),
+        builder:
+            (BuildContext context, AsyncSnapshot<List<DayModel>> snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasData) {
+            final days = snapshot.data as List<DayModel>;
+            //Este valor incrementa en cada iteracion del map,
+            //Al no tener el index en DART tuve que hacer esto para no entretenerme
+            int index = 0;
+            return ListView(
+              physics: AppTheme.physics,
+              children: days
+                  .map(
+                    (day) => CardDayExercice(
+                        index: index++,
+                        title: 'Dia ${day.day} - ${day.title}',
+                        subTitle: day.subTitle.toString(),
+                        assetSvg1: day.assetSvg1.toString(),
+                        image: day.image ?? '',
+                        assetSvg2: day.assetSvg2.toString(),
+                        heightImage: day.heightImage,
+                        rightImage: day.rightImage,
+                        colorContainer:
+                            Color(int.parse(day.colorContainer.toString())),
+                        colorSvg: Color(int.parse(day.colorSvg.toString())),
+                        onTap: () {
+                          AppRoutes.pushRouteCupertino(
+                              context: context,
+                              pageBuilder: ExerciseDayScreen(
+                                pathJsonRoutine: day.pathJsonRoutine.toString(),
+                                subTitleDay: day.subTitleDay.toString(),
+                                titleDay: 'Dia ${day.day}',
+                                assetSvg1: day.assetSvg1.toString(),
+                                assetSvg2: day.assetSvg2.toString(),
+                                image: day.image.toString(),
+                                heightImage:
+                                    double.parse(day.heightImage.toString()),
+                                rightImage:
+                                    double.parse(day.rightImage.toString()),
+                                colorContainer:
+                                    int.parse(day.colorContainer.toString()),
+                                colorSvg: int.parse(day.colorSvg.toString()),
+                              ));
+                        }),
+                  )
+                  .toList(),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
     ));
   }
@@ -123,6 +123,7 @@ class CardDayExercice extends StatelessWidget {
     this.onTap,
     this.title = '',
     this.subTitle = '',
+    this.index = 0,
   }) : super(key: key);
 
   final String assetSvg1;
@@ -143,17 +144,26 @@ class CardDayExercice extends StatelessWidget {
   final void Function()? onTap;
   final int durationFade;
   final int delayFade;
+  final int index;
   final Color colorSvg;
   final Color colorContainer;
 
   @override
   Widget build(BuildContext context) {
-    var borderRadius = BorderRadius.circular(20);
+    final BorderRadius borderRadius = BorderRadius.circular(20);
+    final StateGlobal daysActive = Provider.of<StateGlobal>(context);
+    final bool conditionalBlockExcercices = daysActive.dayActive < index;
     return FadeInLeft(
       duration: Duration(milliseconds: durationFade),
       delay: Duration(milliseconds: delayFade),
       child: InkWell(
-        onTap: onTap,
+        //Poner una funcion que me active un toast con una palabra de motivacion
+        //Haciendo referencia a que desbloque ese logro
+        //El dia sera activado hasta el dia siguiente, despues de terminar una sesion de exercicio
+        //Es por eso que la funciion aparte de mandar el toast si no esta activo el dia va mostrar una alerta
+        //Cuando el dia ya de haya desbloqueado Felicitando al usuario (mostrando animaciones),
+        //Diciendon mensaje que espere y descanse que se desbloqueara el entrenamiento al dia siguiente despues de desbloquearlo
+        onTap: conditionalBlockExcercices ? null : onTap,
         borderRadius: borderRadius,
         child: Container(
           margin: const EdgeInsets.only(bottom: 17),
@@ -200,7 +210,18 @@ class CardDayExercice extends StatelessWidget {
                     bottom: bottomTexts,
                     left: leftTexts,
                     right: rightTexts,
-                    top: topTexts)
+                    top: topTexts),
+                if (conditionalBlockExcercices)
+                  Container(
+                    width: double.infinity,
+                    height: heightContainer,
+                    color: AppTheme.blackLight,
+                    child: Center(
+                        child: SvgPicture.asset(
+                      'assets/SVG/lock.svg',
+                      width: 80,
+                    )),
+                  ),
               ],
             ),
           ),
@@ -254,4 +275,3 @@ class _Texts extends StatelessWidget {
     );
   }
 }
-

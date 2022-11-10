@@ -15,22 +15,43 @@ class DietDetailsScreen extends StatelessWidget {
         body: Container(
           margin: const EdgeInsets.only(bottom: 12),
           child: Column(
-            
             children: [
               const _HeaderImage(),
               Expanded(
                 child: ListView(
                   physics: AppTheme.physics,
-                  children:  [
+                  children: [
                     // Hacerlo con builder separator
-                    const _ContainerText(assetSvg: 'assets/SVG/breakfast.svg',),
-                    Container(child: Divider(height: 2,),margin: EdgeInsets.symmetric(horizontal:70),),
-                    const _ContainerText(assetSvg: 'assets/SVG/fitness.svg',),
-                    Container(child: Divider(height: 2,),margin: EdgeInsets.symmetric(horizontal:70),),
-                    const _ContainerText(assetSvg: 'assets/SVG/meal.svg',),
-                    Container(child: Divider(height: 2,),margin: EdgeInsets.symmetric(horizontal:70),),
-                    const _ContainerText(assetSvg: 'assets/SVG/dinner-time.svg',),
-
+                    const _ContainerText(
+                      assetSvg: 'assets/SVG/breakfast.svg',
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 70),
+                      child: const Divider(
+                        height: 2,
+                      ),
+                    ),
+                    const _ContainerText(
+                      assetSvg: 'assets/SVG/fitness.svg',
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 70),
+                      child: const Divider(
+                        height: 2,
+                      ),
+                    ),
+                    const _ContainerText(
+                      assetSvg: 'assets/SVG/meal.svg',
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 70),
+                      child: const Divider(
+                        height: 2,
+                      ),
+                    ),
+                    const _ContainerText(
+                      assetSvg: 'assets/SVG/dinner-time.svg',
+                    ),
                   ],
                 ),
               )
@@ -42,7 +63,8 @@ class DietDetailsScreen extends StatelessWidget {
 
 class _ContainerText extends StatelessWidget {
   const _ContainerText({
-    Key? key, required this.assetSvg,
+    Key? key,
+    required this.assetSvg,
   }) : super(key: key);
   final String assetSvg;
   @override
@@ -60,12 +82,21 @@ class _ContainerText extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                children:  [
-                  SvgPicture.asset(assetSvg, width: 30,),
+                children: [
+                  SvgPicture.asset(
+                    assetSvg,
+                    width: 30,
+                  ),
                   const SizedBox(
                     width: 12,
                   ),
-                  const Text('Desayuno',style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500, color: AppTheme.primaryColor),)
+                  const Text(
+                    'Desayuno',
+                    style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        color: AppTheme.primaryColor),
+                  )
                 ],
               ),
               const _Ingredient(
@@ -105,7 +136,10 @@ class _Ingredient extends StatelessWidget {
           const SizedBox(
             width: 12,
           ),
-          Text(title, style: TextStyle(color: Colors.black54),)
+          Text(
+            title,
+            style: const TextStyle(color: Colors.black54),
+          )
         ],
       ),
     );

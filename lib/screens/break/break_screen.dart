@@ -86,25 +86,27 @@ class _BottomInfo extends StatelessWidget {
                     InkWell(
                       borderRadius: BorderRadius.circular(100),
                       onTap: () {
-                        openModal(
-                          radius: const Radius.circular(20),
-                          context: context,
-                          initialIndex: 0,
-                          animation: exercices[exerciceState.execiceActive]
-                              .animation_normal
-                              .toString(),
-                          durationExercise:
-                              exercices[exerciceState.execiceActive]
-                                  .duration
-                                  .toString(),
-                          titleExercise: exercices[exerciceState.execiceActive]
-                              .title
-                              .toString(),
-                        );
+                        // openModal(
+                        //   radius: const Radius.circular(20),
+                        //   context: context,
+                        //   initialIndex: 0,
+                        //   animation: exercices[exerciceState.execiceActive]
+                        //       .animation_normal
+                        //       .toString(),
+                        //   durationExercise:
+                        //       exercices[exerciceState.execiceActive]
+                        //           .duration
+                        //           .toString(),
+                        //   titleExercise: exercices[exerciceState.execiceActive]
+                        //       .title
+                        //       .toString(),
+                        //   onStartTimer: () {},
+                        //   onStopTimer: () {},
+                        // );
                       },
                       child: const Icon(
                         Icons.help_outline_outlined,
-                        color: AppTheme.blackLight,
+                        color: Colors.transparent,
                         size: 24,
                       ),
                     ),
@@ -187,7 +189,7 @@ class _ContainerCenterState extends State<_ContainerCenter> {
         context: context,
         pageBuilder: RotineScreen(
           exercices: widget.exercices,
-    ));
+        ));
   }
 
   @override

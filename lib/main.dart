@@ -18,8 +18,8 @@ class MyApp extends StatelessWidget {
           title: 'RETO DE 21 DIAS',
           debugShowCheckedModeBanner: false,
           routes: AppRoutes.routes,
-          home: const MainScreen(),
-          // home: const StartScreen(),
+          // home: const MainScreen(),
+          home: const StartScreen(),
           theme: AppTheme.lightTheme),
     );
   }

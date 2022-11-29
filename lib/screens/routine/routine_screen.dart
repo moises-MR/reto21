@@ -157,6 +157,7 @@ class _InitRoutineState extends State<_InitRoutine> {
             seconsRevers: seconsRevers,
             stopTimer: stopTimer,
             initTimer: initTimer,
+            timer: timer,
           ),
           const SizedBox(
             height: 40,
@@ -189,7 +190,7 @@ class ButtonTabsBottom extends StatelessWidget {
     Color colorActiveBefore =
         exerciceState.execiceActive == 0 ? Colors.grey : Colors.black;
     Color colorActiveAffter =
-        exerciceState.execiceActive  >= exercices.length - 1
+        exerciceState.execiceActive >= exercices.length - 1
             ? Colors.grey
             : Colors.black;
     return Row(
@@ -228,7 +229,7 @@ class ButtonTabsBottom extends StatelessWidget {
           width: 2,
         ),
         GestureDetector(
-          onTap: exerciceState.execiceActive  >= exercices.length - 1
+          onTap: exerciceState.execiceActive >= exercices.length - 1
               ? null
               : () {
                   timer.cancel();
@@ -263,28 +264,33 @@ class LinearCounter extends StatefulWidget {
     required this.seconsRevers,
     required this.stopTimer,
     required this.initTimer,
+    required this.timer,
   }) : super(key: key);
 
   final int seconsRevers;
   final Function stopTimer;
   final Function initTimer;
-
+  final Timer timer;
   @override
   State<LinearCounter> createState() => _LinearCounterState();
 }
 
 class _LinearCounterState extends State<LinearCounter> {
-  bool isPause = false;
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    bool isPause = !widget.timer.isActive;
+
     const textStyle = TextStyle(
         fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white);
     return GestureDetector(
       onTap: () {
         isPause ? widget.initTimer() : widget.stopTimer();
-        setState(() {
-          isPause = !isPause;
-        });
+        setState(() {});
       },
       child: Stack(
         alignment: AlignmentDirectional.center,
@@ -381,10 +387,24 @@ class _LottieContainer extends StatelessWidget {
                 children: [
                   GestureDetector(
                       // onTap: () => Navigator.pop(context),
-                      child: const Icon(
-                        Icons.arrow_back_ios_outlined,
-                        color: AppTheme.blackLight,
-                      )),
+                      onTap: exerciceState.execiceActive == 0
+                          ? null
+                          : () {
+                              stopTimer();
+
+                              AppRoutes.pushRouteCupertinoReplacementNamed(
+                                  context: context,
+                                  pageBuilder: RotineScreen(
+                                    exercices: exercices,
+                                  ));
+                              exerciceState.execiceActive--;
+                            },
+                      child: exerciceState.execiceActive == 0
+                          ? const SizedBox()
+                          : const Icon(
+                              Icons.arrow_back_ios_outlined,
+                              color: AppTheme.blackLight,
+                            )),
                   const SizedBox(
                     width: 7,
                   ),
@@ -414,6 +434,8 @@ class _LottieContainer extends StatelessWidget {
                           .toString(),
                       titleExercise:
                           exercices[exerciceState.dayActive].title.toString(),
+                      onStartTimer: initTimer,
+                      onStopTimer: stopTimer,
                     ),
                   ),
                   const SizedBox(
@@ -470,14 +492,15 @@ class _IconButton extends StatelessWidget {
   }
 }
 
-void openModal({
-  required BuildContext context,
-  required Radius radius,
-  required int initialIndex,
-  required String titleExercise,
-  required String animation,
-  required String durationExercise,
-}) {
+void openModal(
+    {required BuildContext context,
+    required Radius radius,
+    required int initialIndex,
+    required String titleExercise,
+    required String animation,
+    required String durationExercise,
+    required Function onStartTimer,
+    required Function onStopTimer}) {
   var roundedRectangleBorder = RoundedRectangleBorder(
       borderRadius: BorderRadius.only(topLeft: radius, topRight: radius));
   showModalBottomSheet(
@@ -488,6 +511,8 @@ void openModal({
             titleExercise: titleExercise,
             animation: animation,
             durationExercise: durationExercise,
+            onStartTimer: onStartTimer,
+            onStopTimer: onStopTimer,
           ),
       isScrollControlled: true);
 }

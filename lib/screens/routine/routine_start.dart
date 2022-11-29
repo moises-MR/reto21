@@ -72,7 +72,7 @@ class _RoutineStartScreenState extends State<RoutineStartScreen> {
   }
 
   void navigateNextStep() {
-      if (timerWidgetActive) {
+    if (timerWidgetActive) {
       timer.cancel();
       timerWidgetActive = false;
     }
@@ -82,7 +82,6 @@ class _RoutineStartScreenState extends State<RoutineStartScreen> {
           exercices: widget.exercices,
         ));
   }
-
 
   @override
   void initState() {
@@ -111,6 +110,8 @@ class _RoutineStartScreenState extends State<RoutineStartScreen> {
           ),
           _Texts(
             exercices: widget.exercices,
+            onStartTimer: initTimer,
+            onStopTimer: stopTimer,
           ),
           Expanded(child: Container()),
           SizedBox(
@@ -163,9 +164,13 @@ class _Texts extends StatelessWidget {
   const _Texts({
     Key? key,
     required this.exercices,
+    required this.onStartTimer,
+    required this.onStopTimer,
   }) : super(key: key);
 
   final List<ExercicesModel> exercices;
+  final Function onStartTimer;
+  final Function onStopTimer;
 
   Widget build(BuildContext context) {
     const radius = Radius.circular(20);
@@ -208,6 +213,8 @@ class _Texts extends StatelessWidget {
                   animation: exercices[0].animation_normal.toString(),
                   durationExercise: exercices[0].duration.toString(),
                   titleExercise: exercices[0].title.toString(),
+                  onStartTimer: onStartTimer,
+                  onStopTimer: onStopTimer,
                 );
               },
               child: const Icon(

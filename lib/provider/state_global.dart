@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class StateGlobal with ChangeNotifier {
-  int _dayActive = 2;
+  int _dayActive = 0;
   final List<int> _elapsedDays = [0];
   int _execiceActive = 0;
 

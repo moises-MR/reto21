@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lottie/lottie.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../theme/app_theme.dart';
 
@@ -35,6 +36,8 @@ class ContainerExerciseAnimation extends StatelessWidget {
                     titleExercise: titleExercise,
                     animation: animation,
                     durationExercise: duationExercise,
+                    onStartTimer: () {},
+                    onStopTimer: () {},
                   ),
               shape: roundedRectangleBorder,
               isScrollControlled: true);
@@ -96,12 +99,16 @@ class CreateModal extends StatefulWidget {
     required this.animation,
     required this.durationExercise,
     this.initialIndex = 0,
+    required this.onStopTimer,
+    required this.onStartTimer,
   });
 
   final String titleExercise;
   final String animation;
   final String durationExercise;
   final int initialIndex;
+  final Function onStopTimer;
+  final Function onStartTimer;
 
   @override
   State<CreateModal> createState() => _CreateModalState();
@@ -110,11 +117,13 @@ class CreateModal extends StatefulWidget {
 class _CreateModalState extends State<CreateModal> {
   @override
   void initState() {
+    widget.onStopTimer();
     super.initState();
   }
 
   @override
   void dispose() {
+    widget.onStartTimer();
     super.dispose();
   }
 
@@ -142,8 +151,24 @@ class _CreateModalState extends State<CreateModal> {
             duationExercise: widget.durationExercise,
             titleExercise: widget.titleExercise,
           ),
-          const _VideoPlayer(
-            titleExercise: 'Bir box',
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 300,
+                child: _VideoPlayer(
+                  titleExercise: widget.titleExercise,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 12, top: 12),
+                child: Text(
+                  widget.titleExercise,
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.w700),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -151,29 +176,41 @@ class _CreateModalState extends State<CreateModal> {
   }
 }
 
-class _VideoPlayer extends StatelessWidget {
+class _VideoPlayer extends StatefulWidget {
   final String titleExercise;
   const _VideoPlayer({super.key, required this.titleExercise});
 
   @override
+  State<_VideoPlayer> createState() => _VideoPlayerState();
+}
+
+class _VideoPlayerState extends State<_VideoPlayer> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  final YoutubePlayerController _controller = YoutubePlayerController(
+    initialVideoId: 'uYkpTWfpFHA',
+    flags: const YoutubePlayerFlags(
+      autoPlay: true,
+      mute: false,
+    ),
+  );
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 1,
-          ),
-          Container(color: Colors.black, height: 250, child: newMethod()),
-          Padding(
-            padding: const EdgeInsets.only(left: 12, top: 12),
-            child: Text(
-              titleExercise,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
-            ),
-          ),
-        ],
+    return YoutubePlayerBuilder(
+      player: YoutubePlayer(
+        progressIndicatorColor: AppTheme.primaryColor,
+        controller: _controller,
+        bottomActions: const [],
+        progressColors: const ProgressBarColors(
+          playedColor: AppTheme.primaryColor,
+          handleColor: AppTheme.primaryColor,
+        ),
+      ),
+      builder: (context, player) => Container(
+        child: player,
       ),
     );
   }

@@ -5,6 +5,8 @@ class StateGlobal with ChangeNotifier {
   final List<int> _elapsedDays = [0];
   int _execiceActive = 0;
 
+  StateGlobal({required int dayActive}) : _dayActive = dayActive;
+
   int get dayActive => _dayActive;
   int get execiceActive => _execiceActive;
   List<int> get elapsedDays => _elapsedDays;

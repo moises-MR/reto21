@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
+import 'package:bajar_de_peso_21_dias/share_preferences/preferences.dart';
 import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../widgets/widgets.dart';
@@ -22,7 +24,7 @@ class _RemeinderScreenState extends State<RemeinderScreen>
   late final AnimationController _controller;
 
   _open() {
-    const radius =  Radius.circular(20);
+    const radius = Radius.circular(20);
     const roundedRectangleBorder = RoundedRectangleBorder(
         borderRadius: BorderRadius.only(topLeft: radius, topRight: radius));
     showModalBottomSheet(
@@ -116,13 +118,23 @@ class _ContainerButton extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  finishedRoutine(BuildContext context) {
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat('dd-MM-yyyy');
+    final String formatted = formatter.format(now);
+    Preferences.dayFinishedRoutine = formatted;
+    Preferences.dayActive++;
+    AppRoutes.pushRouteCupertinoReplacementNamed(
+        context: context, pageBuilder: const MainScreen());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       width: double.infinity,
       child: CustomButtonInit(
-        onPressed: () => AppRoutes.pushRouteCupertinoReplacementNamed(context: context,pageBuilder: const MainScreen()),
+        onPressed: () => finishedRoutine(context),
         title: 'TERMINAR',
         style: const TextStyle(
             fontWeight: FontWeight.bold, letterSpacing: 0.4, fontSize: 19),

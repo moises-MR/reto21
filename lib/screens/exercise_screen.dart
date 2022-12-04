@@ -2,15 +2,16 @@ import 'dart:convert';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:bajar_de_peso_21_dias/models/Excercices.dart';
+import 'package:bajar_de_peso_21_dias/share_preferences/preferences.dart';
 
 import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
+// import '../provider/state_global.dart';
 
 import '../models/DayModel.dart';
-import '../provider/state_global.dart';
 import '../router/app_routes.dart';
 import 'exercise/exercise_day.dart';
 
@@ -151,8 +152,9 @@ class CardDayExercice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final BorderRadius borderRadius = BorderRadius.circular(20);
-    final StateGlobal daysActive = Provider.of<StateGlobal>(context);
-    final bool conditionalBlockExcercices = daysActive.dayActive < index;
+    // final StateGlobal daysActive = Provider.of<StateGlobal>(context);
+    // final bool conditionalBlockExcercices = daysActive.dayActive < index;
+    final bool conditionalBlockExcercices = Preferences.dayActive < index;
     return FadeInLeft(
       duration: Duration(milliseconds: durationFade),
       delay: Duration(milliseconds: delayFade),

@@ -1,4 +1,5 @@
 import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
+import 'package:bajar_de_peso_21_dias/share_preferences/preferences.dart';
 import 'package:flutter/material.dart';
 import '../../models/Excercices.dart';
 import '../../theme/app_theme.dart';
@@ -59,8 +60,11 @@ class StartRoutineScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: CustomButtonInit(
-          onPressed: () => AppRoutes.pushRouteCupertinoReplacementNamed(
-              context: context, pageBuilder: const MainScreen()),
+          onPressed: () {
+            AppRoutes.pushRouteCupertinoReplacementNamed(
+                context: context, pageBuilder: const MainScreen());
+            Preferences.appInit = true;
+          },
           title: 'VAMOS',
           style: textStyleButton),
       floatingActionButtonLocation:

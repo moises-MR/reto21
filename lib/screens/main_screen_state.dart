@@ -1,8 +1,8 @@
+import 'package:bajar_de_peso_21_dias/share_preferences/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-
 
 import '../provider/state_global.dart';
 import '../theme/app_theme.dart';
@@ -19,28 +19,27 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int currentIndex = 1;
 
-
-
   @override
   Widget build(BuildContext context) {
     final elapseDays = Provider.of<StateGlobal>(context);
-    final day = elapseDays.dayActive + 1;
-      final List screens = [
-    {'title': 'Dieta - Dia $day', 'screen': const DietScreen()},
-    {'title': 'Reto - Dia $day', 'screen': const ExerciseScreen()},
-    {'title': 'Ajustes', 'screen': const ProfileScreen()},
-  ];
+    final day = Preferences.dayActive + 1;
+    final List screens = [
+      {'title': 'Dieta - Dia $day', 'screen': const DietScreen()},
+      {'title': 'Reto - Dia $day', 'screen': const ExerciseScreen()},
+      {'title': 'Ajustes', 'screen': const ProfileScreen()},
+    ];
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
           screens[currentIndex]['title'],
-          style: const TextStyle(color: AppTheme.primaryColor, fontWeight: FontWeight.w600,),
+          style: const TextStyle(
+            color: AppTheme.primaryColor,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         centerTitle: false,
-        actions: [
-            LottieBuilder.asset('assets/lotties/diamond.json')
-        ],
+        actions: [LottieBuilder.asset('assets/lotties/diamond.json')],
       ),
       body: screens[currentIndex]['screen'],
       bottomNavigationBar: Container(

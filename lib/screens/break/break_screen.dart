@@ -116,7 +116,7 @@ class _BottomInfo extends StatelessWidget {
                     ),
                   ],
                 ),
-                LottieBuilder.asset(
+                Lottie.asset(
                   exercices[exerciceState.execiceActive]
                       .animation_normal
                       .toString(),

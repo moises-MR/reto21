@@ -1,4 +1,5 @@
 import 'package:bajar_de_peso_21_dias/provider/state_global.dart';
+import 'package:bajar_de_peso_21_dias/share_preferences/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -170,7 +171,7 @@ class _HeaderProfile extends StatelessWidget {
               _createColum(
                   title: 'Dia',
                   icon: Icons.bolt_outlined,
-                  value: (elapseDays.dayActive + 1).toString()),
+                  value: (Preferences.dayActive + 1).toString()),
               _createColum(
                   title: 'Calorias',
                   icon: Icons.local_fire_department_outlined,

@@ -1,4 +1,5 @@
 import 'package:bajar_de_peso_21_dias/provider/state_global.dart';
+import 'package:bajar_de_peso_21_dias/share_preferences/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
@@ -12,8 +13,6 @@ class DietScreen extends StatelessWidget {
   const DietScreen({super.key});
   @override
   Widget build(BuildContext context) {
-
-  
     return Scaffold(
         body: Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -34,6 +33,18 @@ class ContainerSlide extends StatelessWidget {
     final daysActive = Provider.of<StateGlobal>(context);
 
     const List<String> images = [
+      "assets/meal.jpeg",
+      "assets/meal.jpeg",
+      "assets/meal.jpeg",
+      "assets/meal.jpeg",
+      "assets/meal.jpeg",
+      "assets/meal.jpeg",
+      "assets/meal.jpeg",
+      "assets/meal.jpeg",
+      "assets/meal.jpeg",
+      "assets/meal.jpeg",
+      "assets/meal.jpeg",
+      "assets/meal.jpeg",
       "assets/meal.jpeg",
       "assets/meal.jpeg",
       "assets/meal.jpeg",
@@ -75,30 +86,28 @@ class ContainerSlide extends StatelessWidget {
                         fontWeight: FontWeight.w700, letterSpacing: .3),
                     onPressed: () {
                       AppRoutes.pushRouteCupertino(
-                        context: context,
-                        pageBuilder: const DietDetailsScreen());
-                        // daysActive.dayActive = 1;
-                        // daysActive.elapsedDaysAdd = 1;
+                          context: context,
+                          pageBuilder: const DietDetailsScreen());
+                      // daysActive.dayActive = 1;
+                      // daysActive.elapsedDaysAdd = 1;
                     },
                     // Navigator.pushNamed(context, 'diet_details_screen'),
                     title: 'VAMOS',
                   ),
                 ),
-                  if(daysActive.dayActive < index )
-                
-                 Container(
-                      width: double.infinity,
-                      height: double.infinity,
-                      decoration: const BoxDecoration(
-                        color: AppTheme.blackLight,
-                        borderRadius: borderRadius,
-                      ),
-                      child: Center(
-                          child: SvgPicture.asset(
-                        'assets/SVG/lock.svg',
-                        width: 120,
-                      )),
-                    
+                if (Preferences.dayActive < index)
+                  Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    decoration: const BoxDecoration(
+                      color: AppTheme.blackLight,
+                      borderRadius: borderRadius,
+                    ),
+                    child: Center(
+                        child: SvgPicture.asset(
+                      'assets/SVG/lock.svg',
+                      width: 120,
+                    )),
                   ),
               ],
             ),

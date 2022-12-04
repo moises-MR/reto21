@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
+import 'package:bajar_de_peso_21_dias/screens/routine/exit_routine.dart';
 import 'package:bajar_de_peso_21_dias/screens/routine/finish_routine.dart';
 import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -80,6 +81,12 @@ class _InitRoutineState extends State<_InitRoutine> {
     setState(() {});
   }
 
+  void restartTimerExercices() {
+    //Agregar valor que viene del ejercicio para poder reiniciarlo
+    seconsRevers = 10;
+    setState(() {});
+  }
+
   // String formatTimer() {
   //   String formatWithTwoValues(int value) => value >= 10 ? "$value" : "0$value";
   //   Duration duration = Duration(milliseconds: milliseconds);
@@ -137,6 +144,7 @@ class _InitRoutineState extends State<_InitRoutine> {
             stopTimer: stopTimer,
             initTimer: initTimer,
             exercices: widget.exercices,
+            restartTimerExercices: restartTimerExercices,
           ),
           Expanded(child: Container()),
           Text(
@@ -363,15 +371,30 @@ class _LottieContainer extends StatelessWidget {
     required this.stopTimer,
     required this.initTimer,
     required this.exercices,
+    required this.restartTimerExercices,
   }) : super(key: key);
 
   final Function stopTimer;
   final Function initTimer;
+  final Function restartTimerExercices;
   final List<ExercicesModel> exercices;
 
   @override
   Widget build(BuildContext context) {
     final exerciceState = Provider.of<StateGlobal>(context);
+
+    void onTapArrowBackIos() {
+      Navigator.push(
+          context,
+          AppRoutes.handleNavigate(
+              pageBuilder: ExitRoutine(
+                exercices: exercices,
+                stopTimer: stopTimer,
+                initTimer: initTimer,
+                restartTimerExercices: restartTimerExercices,
+              ),
+              type: 'fade'));
+    }
 
     return SizedBox(
       child: Stack(
@@ -387,24 +410,11 @@ class _LottieContainer extends StatelessWidget {
                 children: [
                   GestureDetector(
                       // onTap: () => Navigator.pop(context),
-                      onTap: exerciceState.execiceActive == 0
-                          ? null
-                          : () {
-                              stopTimer();
-
-                              AppRoutes.pushRouteCupertinoReplacementNamed(
-                                  context: context,
-                                  pageBuilder: RotineScreen(
-                                    exercices: exercices,
-                                  ));
-                              exerciceState.execiceActive--;
-                            },
-                      child: exerciceState.execiceActive == 0
-                          ? const SizedBox()
-                          : const Icon(
-                              Icons.arrow_back_ios_outlined,
-                              color: AppTheme.blackLight,
-                            )),
+                      onTap: onTapArrowBackIos,
+                      child: const Icon(
+                        Icons.arrow_back_ios_outlined,
+                        color: AppTheme.blackLight,
+                      )),
                   const SizedBox(
                     width: 7,
                   ),

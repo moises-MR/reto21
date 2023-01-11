@@ -49,11 +49,11 @@ class ProfileScreen extends StatelessWidget {
         'icon': Icons.share_outlined,
       },
       {
-        'title': 'Reiniciar progreso',
+        'title': 'Danos tus sugerencias',
         'icon': Icons.star_outline,
       },
       {
-        'title': 'Danos tus sugerencias',
+        'title': 'Casos de éxito',
         'icon': Icons.assistant_outlined,
       },
       {

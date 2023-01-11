@@ -97,8 +97,6 @@ class _RoutineStartScreenState extends State<RoutineStartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final exerciceState = Provider.of<StateGlobal>(context);
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(),

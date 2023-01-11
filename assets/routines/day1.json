@@ -3,7 +3,7 @@
     {
         "title": "Ejecicio 1",
         "description": " Sentadillas 1",
-        "duration": 1.55,
+        "duration": 100.0,
         "animation_normal": "assets/lotties/abdominales_crunch_blank.json",
         "animation_bg": "",
         "video": ""
@@ -11,7 +11,7 @@
     {
         "title": "Ejecicio 2",
         "description": "Abdominales 1",
-        "duration": 1.55,
+        "duration": 90.0,
         "animation_normal": "assets/lotties/abdominales_crunch_blank.json",
         "animation_bg": "",
         "video": ""
@@ -19,7 +19,7 @@
     {
         "title": "Ejecicio 3",
         "description": " Sentadillas 2",
-        "duration": 1.55,
+        "duration": 80.0,
         "animation_normal": "assets/lotties/abdominales_crunch_blank.json",
         "animation_bg": "",
         "video": ""
@@ -27,7 +27,7 @@
     {
         "title": "Ejecicio 4",
         "description": "Abdominales 2",
-        "duration": 1.55,
+        "duration": 100.0,
         "animation_normal": "assets/lotties/abdominales_crunch_blank.json",
         "animation_bg": "",
         "video": ""
@@ -36,7 +36,7 @@
     {
         "title": "Ejecicio 5",
         "description": " Ejecicio 6",
-        "duration": 1.55,
+        "duration": 90.0,
         "animation_normal": "assets/lotties/abdominales_crunch_blank.json",
         "animation_bg": "",
         "video": ""
@@ -44,7 +44,7 @@
     {
         "title": "Ejecicio 6",
         "description": "Abdominales 3",
-        "duration": 1.55,
+        "duration": 80.0,
         "animation_normal": "assets/lotties/abdominales_crunch_blank.json",
         "animation_bg": "",
         "video": ""
@@ -52,7 +52,7 @@
     {
         "title": "Ejecicio 7",
         "description": " Sentadillas 4",
-        "duration": 1.55,
+        "duration": 70.0,
         "animation_normal": "assets/lotties/abdominales_crunch_blank.json",
         "animation_bg": "",
         "video": ""
@@ -60,7 +60,7 @@
     {
         "title": "Ejecicio 8",
         "description": "Abdominales 5",
-        "duration": 1.55,
+        "duration": 50.0,
         "animation_normal": "assets/lotties/abdominales_crunch_blank.json",
         "animation_bg": "",
         "video": ""
@@ -68,7 +68,7 @@
     {
         "title": "Sentadillas 9",
         "description": " Sentadillas 6",
-        "duration": 1.55,
+        "duration": 120.0,
         "animation_normal": "assets/lotties/abdominales_crunch_blank.json",
         "animation_bg": "",
         "video": ""

@@ -3,8 +3,11 @@ import 'dart:async';
 import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
 import 'package:bajar_de_peso_21_dias/screens/routine/exit_routine.dart';
 import 'package:bajar_de_peso_21_dias/screens/routine/finish_routine.dart';
+import 'package:bajar_de_peso_21_dias/screens/screens.dart';
+import 'package:bajar_de_peso_21_dias/share_preferences/preferences.dart';
 import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -16,13 +19,16 @@ import '../break/break_screen.dart';
 class RotineScreen extends StatelessWidget {
   const RotineScreen({super.key, required this.exercices});
   final List<ExercicesModel> exercices;
+
   @override
   Widget build(BuildContext context) {
     final exerciceState = Provider.of<StateGlobal>(context);
-
+    final seconsExecices =
+        exercices[exerciceState.execiceActive].duration?.toInt() ?? 0;
     return _InitRoutine(
       exercices: exercices,
       exerciceState: exerciceState,
+      seconsExecices: seconsExecices,
     );
   }
 }
@@ -32,10 +38,12 @@ class _InitRoutine extends StatefulWidget {
     Key? key,
     required this.exercices,
     required this.exerciceState,
+    required this.seconsExecices,
   }) : super(key: key);
 
   final List<ExercicesModel> exercices;
   final StateGlobal exerciceState;
+  final int seconsExecices;
   @override
   State<_InitRoutine> createState() => _InitRoutineState();
 }
@@ -44,6 +52,7 @@ class _InitRoutineState extends State<_InitRoutine> {
   late Timer timer;
   bool timerWidgetActive = false;
   int seconsRevers = 10;
+
   void initTimer() {
     if (!timerWidgetActive) {
       timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -87,18 +96,6 @@ class _InitRoutineState extends State<_InitRoutine> {
     setState(() {});
   }
 
-  // String formatTimer() {
-  //   String formatWithTwoValues(int value) => value >= 10 ? "$value" : "0$value";
-  //   Duration duration = Duration(milliseconds: milliseconds);
-  //   String seconds = formatWithTwoValues(duration.inSeconds.remainder(60));
-  //   String minutes = formatWithTwoValues(duration.inMinutes);
-  //   return "$minutes:$seconds";
-  // }
-
-  // void changeContainer() {
-  //   initTimer();
-  // }
-
   void handleFinished() {
     if (timerWidgetActive) {
       timer.cancel();
@@ -115,14 +112,33 @@ class _InitRoutineState extends State<_InitRoutine> {
       widget.exerciceState.execiceActive++;
     } else {
       //Ya no existe ejercicios
-      AppRoutes.pushRouteCupertinoReplacementNamed(
-          context: context, pageBuilder: const FinishScreen());
       widget.exerciceState.execiceActive = 0;
+
+      final DateTime now = DateTime.now();
+      final DateFormat formatter = DateFormat('dd-MM-yyyy');
+      final String formatted = formatter.format(now);
+      final dayFinishedRoutine = Preferences.dayFinishedRoutine;
+
+      if (dayFinishedRoutine == formatted) {
+        AppRoutes.pushRouteCupertinoReplacementNamed(
+            context: context, pageBuilder: const MainScreen());
+        return;
+      }
+
+      Preferences.dayFinishedRoutine = formatted;
+      Preferences.dayActive++;
+      Preferences.dimonds++;
+      AppRoutes.pushRouteCupertinoReplacementNamed(
+          context: context,
+          pageBuilder: FinishScreen(
+            exercices: widget.exercices,
+          ));
     }
   }
 
   @override
   void initState() {
+    seconsRevers = widget.seconsExecices;
     initTimer();
     super.initState();
   }
@@ -166,6 +182,7 @@ class _InitRoutineState extends State<_InitRoutine> {
             stopTimer: stopTimer,
             initTimer: initTimer,
             timer: timer,
+            seconsExecices: widget.seconsExecices,
           ),
           const SizedBox(
             height: 40,
@@ -266,6 +283,15 @@ class ButtonTabsBottom extends StatelessWidget {
   }
 }
 
+String formatTimer(int seconsRevers) {
+  String formatWithTwoValues(int value) => value >= 10 ? "$value" : "0$value";
+  // Duration duration = Duration(milliseconds: milliseconds);
+  Duration duration = Duration(seconds: seconsRevers);
+  String seconds = formatWithTwoValues(duration.inSeconds.remainder(60));
+  String minutes = formatWithTwoValues(duration.inMinutes);
+  return "$minutes:$seconds";
+}
+
 class LinearCounter extends StatefulWidget {
   const LinearCounter({
     Key? key,
@@ -273,12 +299,14 @@ class LinearCounter extends StatefulWidget {
     required this.stopTimer,
     required this.initTimer,
     required this.timer,
+    required this.seconsExecices,
   }) : super(key: key);
 
   final int seconsRevers;
   final Function stopTimer;
   final Function initTimer;
   final Timer timer;
+  final int seconsExecices;
   @override
   State<LinearCounter> createState() => _LinearCounterState();
 }
@@ -311,7 +339,7 @@ class _LinearCounterState extends State<LinearCounter> {
                 semanticsValue: widget.seconsRevers.toString(),
                 semanticsLabel: widget.seconsRevers.toString(),
                 minHeight: 60,
-                value: widget.seconsRevers / 10,
+                value: widget.seconsRevers / widget.seconsExecices,
                 color: AppTheme.primaryColor,
                 backgroundColor: AppTheme.lightPink,
               ),
@@ -351,15 +379,15 @@ class _Counter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const textStyle = TextStyle(
+        fontSize: 50,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'Artico',
+        color: AppTheme.grayBlack);
     return Center(
       child: Text(
-        // formatTimer(),
-        '00:${seconsRevers >= 10 ? "$seconsRevers" : "0$seconsRevers"}',
-        style: const TextStyle(
-            fontSize: 50,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Artico',
-            color: AppTheme.grayBlack),
+        formatTimer(seconsRevers),
+        style: textStyle,
       ),
     );
   }

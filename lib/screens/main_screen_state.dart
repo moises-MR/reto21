@@ -1,16 +1,14 @@
+import 'package:badges/badges.dart';
 import 'package:bajar_de_peso_21_dias/share_preferences/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
-
-import '../provider/state_global.dart';
 import '../theme/app_theme.dart';
 import 'screens.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
-
   @override
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -18,11 +16,15 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int currentIndex = 1;
-
   @override
   Widget build(BuildContext context) {
-    final elapseDays = Provider.of<StateGlobal>(context);
-    final day = Preferences.dayActive + 1;
+    final DateTime now = DateTime.now();
+    final DateFormat formatter = DateFormat('dd-MM-yyyy');
+    final String formatted = formatter.format(now);
+
+    final day = Preferences.dayFinishedRoutine == formatted
+        ? Preferences.dayActive
+        : Preferences.dayActive + 1;
     final List screens = [
       {'title': 'Dieta - Dia $day', 'screen': const DietScreen()},
       {'title': 'Reto - Dia $day', 'screen': const ExerciseScreen()},
@@ -39,7 +41,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
         centerTitle: false,
-        actions: [LottieBuilder.asset('assets/lotties/diamond.json')],
+        actions: const [Diamond()],
       ),
       body: screens[currentIndex]['screen'],
       bottomNavigationBar: Container(
@@ -73,6 +75,33 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ]),
       ),
+    );
+  }
+}
+
+class Diamond extends StatelessWidget {
+  const Diamond({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    const textStyle = TextStyle(
+        color: AppTheme.primaryColor,
+        fontSize: 17,
+        fontWeight: FontWeight.w600);
+    return Stack(
+      children: [
+        Lottie.asset('assets/lotties/sparklu-diamond-star-champ.json'),
+        Badge(
+            badgeColor: Colors.white,
+            badgeContent: Text(
+              Preferences.dimonds.toString(),
+              style: textStyle,
+            ),
+            position: BadgePosition.topStart(),
+            child: Lottie.asset('assets/lotties/diamond.json')),
+      ],
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:bajar_de_peso_21_dias/share_preferences/preferences.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -83,32 +84,8 @@ class _BottomInfo extends StatelessWidget {
                           color: AppTheme.grayBlack,
                           fontWeight: FontWeight.w700),
                     ),
-                    InkWell(
-                      borderRadius: BorderRadius.circular(100),
-                      onTap: () {
-                        // openModal(
-                        //   radius: const Radius.circular(20),
-                        //   context: context,
-                        //   initialIndex: 0,
-                        //   animation: exercices[exerciceState.execiceActive]
-                        //       .animation_normal
-                        //       .toString(),
-                        //   durationExercise:
-                        //       exercices[exerciceState.execiceActive]
-                        //           .duration
-                        //           .toString(),
-                        //   titleExercise: exercices[exerciceState.execiceActive]
-                        //       .title
-                        //       .toString(),
-                        //   onStartTimer: () {},
-                        //   onStopTimer: () {},
-                        // );
-                      },
-                      child: const Icon(
-                        Icons.help_outline_outlined,
-                        color: Colors.transparent,
-                        size: 24,
-                      ),
+                    const SizedBox(
+                      height: 24,
                     ),
                     Text(
                       '${exercices[exerciceState.execiceActive].duration.toString()} seg.',
@@ -146,7 +123,7 @@ class _ContainerCenter extends StatefulWidget {
 class _ContainerCenterState extends State<_ContainerCenter> {
   late Timer timer;
   bool timerWidgetActive = false;
-  int seconsRevers = 5;
+  int seconsRevers = Preferences.breaktime;
   void initTimer() {
     if (!timerWidgetActive) {
       timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -225,7 +202,7 @@ class _ContainerCenterState extends State<_ContainerCenter> {
                   fontSize: 22),
             ),
             Text(
-              '00:${seconsRevers >= 10 ? "$seconsRevers" : "0$seconsRevers"}',
+              formatTimer(seconsRevers),
               style: textStyle,
             ),
             Row(

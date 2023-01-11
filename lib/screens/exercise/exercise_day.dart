@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
-import 'package:provider/provider.dart';
 import '../../models/Excercices.dart';
-import '../../provider/state_global.dart';
 import '../../widgets/widgets.dart';
 import '../screens.dart';
 
@@ -45,7 +43,6 @@ class ExerciseDayScreen extends StatelessWidget {
       body: Stack(
         children: [
           CardDayExercice(
-
             colorContainer: Color(colorContainer),
             colorSvg: Color(colorSvg),
             rightImage: rightImage,

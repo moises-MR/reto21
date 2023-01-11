@@ -8,11 +8,12 @@ import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart' show rootBundle;
-// import 'package:provider/provider.dart';
-// import '../provider/state_global.dart';
+import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 import '../models/DayModel.dart';
 import '../router/app_routes.dart';
+import '../widgets/custom_button_init.dart';
 import 'exercise/exercise_day.dart';
 
 Future<List<ExercicesModel>> getJsonExercices(
@@ -21,7 +22,6 @@ Future<List<ExercicesModel>> getJsonExercices(
   final exercices = jsonDecode(jsonData) as List<dynamic>;
 
   return exercices.map((e) => ExercicesModel.fromJson(e)).toList();
-  ;
 }
 
 Future<List<DayModel>> getJsonDays({
@@ -101,7 +101,7 @@ class ExerciseScreen extends StatelessWidget {
   }
 }
 
-class CardDayExercice extends StatelessWidget {
+class CardDayExercice extends StatefulWidget {
   const CardDayExercice({
     Key? key,
     required this.assetSvg1,
@@ -150,22 +150,245 @@ class CardDayExercice extends StatelessWidget {
   final Color colorContainer;
 
   @override
+  State<CardDayExercice> createState() => _CardDayExerciceState();
+}
+
+class _CardDayExerciceState extends State<CardDayExercice> {
+  @override
   Widget build(BuildContext context) {
     final BorderRadius borderRadius = BorderRadius.circular(20);
-    // final StateGlobal daysActive = Provider.of<StateGlobal>(context);
-    // final bool conditionalBlockExcercices = daysActive.dayActive < index;
-    final bool conditionalBlockExcercices = Preferences.dayActive < index;
+    final bool conditionalBlockExcercices =
+        Preferences.dayActive < widget.index;
+    final dayFinishedRoutine = Preferences.dayFinishedRoutine;
+
+    void openModal() {
+      final DateTime now = DateTime.now();
+      final DateFormat formatter = DateFormat('dd-MM-yyyy');
+      final String formatted = formatter.format(now);
+
+      if (Preferences.gameOver) {
+        showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          builder: (context) {
+            return Padding(
+              padding: const EdgeInsets.all(17.0),
+              child: Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 100, bottom: 32),
+                    child: const Text(
+                      'Perdiste el reto',
+                      style: TextStyle(
+                          fontSize: 35,
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.primaryColor),
+                    ),
+                  ),
+                  LottieBuilder.asset(
+                    'assets/lotties/sad-emoji-gameover.json',
+                    width: 200,
+                  ),
+                  const SizedBox(
+                    height: 100,
+                  ),
+                  const Text('¡No te rindas!',
+                      style: TextStyle(
+                          fontSize: 25,
+                          color: AppTheme.grayBlack,
+                          fontWeight: FontWeight.bold)),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  const Text(
+                    '¡Cada día es una oportunidad para mejorar y avanzar hacia tu meta de pérdida de peso!',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: AppTheme.grayBlack,
+                    ),
+                  ),
+                  Expanded(child: Container()),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: Container(
+                            padding: const EdgeInsets.all(8),
+                            child: Row(
+                              children: const [
+                                Icon(
+                                  Icons.arrow_back_ios,
+                                  size: 18,
+                                  color: AppTheme.blackLight,
+                                ),
+                                Text(
+                                  'REGRESAR',
+                                  style: TextStyle(
+                                      color: AppTheme.blackLight, fontSize: 18),
+                                ),
+                              ],
+                            )),
+                      ),
+                      Container(
+                        width: 1,
+                        height: 20,
+                        color: AppTheme.grayBlack,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text(
+                                'Recuperar progreso',
+                                style: TextStyle(
+                                    color: AppTheme.grayBlack,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              content: const Text(
+                                'Para recuperar progeso se necesitan 2 Diamantes 💎',
+                                style: TextStyle(color: AppTheme.blackLight),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, 'Cancel'),
+                                  child: const Text('CANCELAR',
+                                      style:
+                                          TextStyle(color: AppTheme.grayBlack)),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    if (Preferences.dimonds >= 2) {
+                                      Preferences.dimonds -= 2;
+                                      Preferences.dayFinishedRoutine = '';
+                                      Preferences.gameOver = false;
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                      setState(() {});
+                                    } else {
+                                      Navigator.pop(context);
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                            title: const Text(
+                                              'Sin diamantes suficientes',
+                                              style: TextStyle(
+                                                  color: AppTheme.grayBlack,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            content: const Text(
+                                              'No cuentas con diamantes sufucientes, el reto se reiniciara desde el comienzo.',
+                                              style: TextStyle(
+                                                  color: AppTheme.blackLight),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    context, 'Cancel'),
+                                                child: const Text('CANCELAR',
+                                                    style: TextStyle(
+                                                        color: AppTheme
+                                                            .grayBlack)),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Preferences
+                                                      .dayFinishedRoutine = '';
+                                                  Preferences.dayActive = 0;
+                                                  Preferences.pastDay = 0;
+                                                  Preferences.gameOver = false;
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                  setState(() {});
+                                                },
+                                                child: const Text('ACEPTAR',
+                                                    style: TextStyle(
+                                                        color: AppTheme
+                                                            .primaryColor,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                              ),
+                                            ]),
+                                      );
+                                    }
+                                  },
+                                  child: const Text('RECUPERAR',
+                                      style: TextStyle(
+                                          color: AppTheme.primaryColor,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        child: Container(
+                            padding: const EdgeInsets.all(8),
+                            child: Row(
+                              children: [
+                                const Text(
+                                  'RECUPERAR',
+                                  style: TextStyle(
+                                      color: AppTheme.primaryColor,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Lottie.asset('assets/lotties/diamond.json',
+                                    width: 30),
+                              ],
+                            )),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  // InkWell(
+                  //   child: const Text('Reiniciar'),
+                  //   onTap: () {
+                  //     return;
+                  //     Preferences.gameOver = false;
+                  //     Navigator.pop(context);
+                  //   },
+                  // ),
+                ],
+              ),
+            );
+          },
+        );
+        return;
+      }
+      if (dayFinishedRoutine.isEmpty) {
+        widget.onTap != null ? widget.onTap!() : null;
+        return;
+      } else {
+        //Es un ejercicio que ya hizo
+        if (widget.index < Preferences.dayActive) {
+          widget.onTap != null ? widget.onTap!() : null;
+          return;
+        }
+
+        if (dayFinishedRoutine == formatted) {
+          showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            builder: (context) {
+              return const BreakModalExcericisesPage();
+            },
+          );
+        } else {
+          widget.onTap != null ? widget.onTap!() : null;
+        }
+      }
+    }
+
     return FadeInLeft(
-      duration: Duration(milliseconds: durationFade),
-      delay: Duration(milliseconds: delayFade),
+      duration: Duration(milliseconds: widget.durationFade),
+      delay: Duration(milliseconds: widget.delayFade),
       child: InkWell(
-        //Poner una funcion que me active un toast con una palabra de motivacion
-        //Haciendo referencia a que desbloque ese logro
-        //El dia sera activado hasta el dia siguiente, despues de terminar una sesion de exercicio
-        //Es por eso que la funciion aparte de mandar el toast si no esta activo el dia va mostrar una alerta
-        //Cuando el dia ya de haya desbloqueado Felicitando al usuario (mostrando animaciones),
-        //Diciendon mensaje que espere y descanse que se desbloqueara el entrenamiento al dia siguiente despues de desbloquearlo
-        onTap: conditionalBlockExcercices ? null : onTap,
+        onTap: conditionalBlockExcercices ? null : openModal,
         borderRadius: borderRadius,
         child: Container(
           margin: const EdgeInsets.only(bottom: 17),
@@ -175,48 +398,48 @@ class CardDayExercice extends StatelessWidget {
               children: [
                 Container(
                   width: double.infinity,
-                  height: heightContainer,
+                  height: widget.heightContainer,
                   decoration: BoxDecoration(
-                      borderRadius: borderRadius, color: colorContainer),
+                      borderRadius: borderRadius, color: widget.colorContainer),
                 ),
                 positionWidget(
                   left: -150,
                   top: 10,
                   child: SvgPicture.asset(
-                    assetSvg1,
-                    color: colorSvg,
+                    widget.assetSvg1,
+                    color: widget.colorSvg,
                     width: 300,
                   ),
                 ),
                 positionWidget(
                     child: SvgPicture.asset(
-                      assetSvg2,
-                      color: colorSvg,
+                      widget.assetSvg2,
+                      color: widget.colorSvg,
                       width: 200,
                     ),
                     right: -70),
                 positionWidget(
-                    right: rightImage,
-                    top: topImage,
-                    bottom: bottomImage,
-                    left: leftImage,
+                    right: widget.rightImage,
+                    top: widget.topImage,
+                    bottom: widget.bottomImage,
+                    left: widget.leftImage,
                     child: Image.asset(
-                      image,
-                      height: heightImage,
+                      widget.image,
+                      height: widget.heightImage,
                     )),
                 positionWidget(
                     child: _Texts(
-                      title: title,
-                      subtitle: subTitle,
+                      title: widget.title,
+                      subtitle: widget.subTitle,
                     ),
-                    bottom: bottomTexts,
-                    left: leftTexts,
-                    right: rightTexts,
-                    top: topTexts),
+                    bottom: widget.bottomTexts,
+                    left: widget.leftTexts,
+                    right: widget.rightTexts,
+                    top: widget.topTexts),
                 if (conditionalBlockExcercices)
                   Container(
                     width: double.infinity,
-                    height: heightContainer,
+                    height: widget.heightContainer,
                     color: AppTheme.blackLight,
                     child: Center(
                         child: SvgPicture.asset(
@@ -241,6 +464,71 @@ class CardDayExercice extends StatelessWidget {
   }) {
     return Positioned(
         right: right, left: left, top: top, bottom: bottom, child: child);
+  }
+}
+
+class BreakModalExcericisesPage extends StatelessWidget {
+  const BreakModalExcericisesPage({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DraggableScrollableSheet(
+      expand: false,
+      initialChildSize: 1,
+      builder: (context, scrollController) {
+        return Padding(
+          padding: AppTheme.paddingGeneralPages,
+          child: Column(children: [
+            const SizedBox(
+              height: 90,
+            ),
+            Row(
+              children: [
+                const SizedBox(
+                  width: 7,
+                ),
+                IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.close))
+              ],
+            ),
+            const SizedBox(
+              height: 14,
+            ),
+            const Text(
+              '¡Seguimos adelante con pasión! El próximo entrenamiento puede ser el que te haga alcanzar tus metas',
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 22,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            Lottie.asset('assets/lotties/time_girl.json'),
+            Expanded(child: Container()),
+            const Text(
+              '¡Te esperamos mañana con alegría y determinación!',
+              style: TextStyle(
+                  color: AppTheme.primaryColor,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 27),
+              textAlign: TextAlign.center,
+            ),
+            Expanded(child: Container()),
+            CustomButtonInit(
+              title: 'NOTIFICARME',
+              onPressed: () {},
+              style: const TextStyle(
+                  fontWeight: FontWeight.w700, letterSpacing: 0.2),
+            ),
+            const SizedBox(
+              height: 42,
+            ),
+          ]),
+        );
+      },
+    );
   }
 }
 
@@ -277,3 +565,20 @@ class _Texts extends StatelessWidget {
     );
   }
 }
+
+// children: const [
+//   Text(
+//     'Quiero felicitarte por tus nuevos logros',
+//     textAlign: TextAlign.center,
+//     style: TextStyle(
+//         color: AppTheme.grayBlack, fontWeight: FontWeight.w700),
+//   ),
+//   Text(
+//     'una vez más demuestras que todo con esfuerzo vale mucho más la pena',
+//     textAlign: TextAlign.center,
+//     style: TextStyle(
+//       color: AppTheme.primaryColor,
+//       fontWeight: FontWeight.w700,
+//     ),
+//   ),
+// ],

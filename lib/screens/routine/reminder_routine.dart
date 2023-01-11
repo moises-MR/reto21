@@ -1,19 +1,19 @@
 import 'dart:async';
 
+import 'package:bajar_de_peso_21_dias/models/Excercices.dart';
 import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
-import 'package:bajar_de_peso_21_dias/share_preferences/preferences.dart';
 import 'package:bajar_de_peso_21_dias/theme/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../widgets/widgets.dart';
 import '../main_screen_state.dart';
 
 class RemeinderScreen extends StatefulWidget {
-  const RemeinderScreen({super.key});
+  const RemeinderScreen({super.key, required this.exercices});
+  final List<ExercicesModel> exercices;
 
   @override
   State<RemeinderScreen> createState() => _RemeinderScreenState();
@@ -96,7 +96,9 @@ class _RemeinderScreenState extends State<RemeinderScreen>
                 const SizedBox(
                   height: 22,
                 ),
-                const _ContainerIconsAll(),
+                _ContainerIconsAll(
+                  exercices: widget.exercices,
+                ),
                 const SizedBox(
                   height: 22,
                 ),
@@ -119,13 +121,9 @@ class _ContainerButton extends StatelessWidget {
   }) : super(key: key);
 
   finishedRoutine(BuildContext context) {
-    final DateTime now = DateTime.now();
-    final DateFormat formatter = DateFormat('dd-MM-yyyy');
-    final String formatted = formatter.format(now);
-    Preferences.dayFinishedRoutine = formatted;
-    Preferences.dayActive++;
     AppRoutes.pushRouteCupertinoReplacementNamed(
         context: context, pageBuilder: const MainScreen());
+    return;
   }
 
   @override
@@ -146,31 +144,33 @@ class _ContainerButton extends StatelessWidget {
 class _ContainerIconsAll extends StatelessWidget {
   const _ContainerIconsAll({
     Key? key,
+    required this.exercices,
   }) : super(key: key);
+  final List<ExercicesModel> exercices;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: const [
-        _ContainerSvgText(
+      children: [
+        const _ContainerSvgText(
           svg: 'assets/SVG/weighing-machine.svg',
           text: '-567 Calorias',
         ),
-        SizedBox(
+        const SizedBox(
           height: 22,
         ),
-        _ContainerSvgText(
+        const _ContainerSvgText(
           svg: 'assets/SVG/timer.svg',
           text: '7 Minutos',
         ),
-        SizedBox(
+        const SizedBox(
           height: 22,
         ),
         _ContainerSvgText(
           svg: 'assets/SVG/exercisewoman.svg',
-          text: '12 Ejercicios',
+          text: '${exercices.length} Ejercicios',
         ),
-        SizedBox(
+        const SizedBox(
           height: 22,
         ),
       ],

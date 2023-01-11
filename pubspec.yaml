@@ -49,6 +49,7 @@ dependencies:
   youtube_player_flutter: ^8.1.1
   shared_preferences: ^2.0.15
   intl: ^0.17.0
+  badges: ^2.0.3
   
 dev_dependencies:
   flutter_test:

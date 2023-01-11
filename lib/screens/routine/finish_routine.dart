@@ -1,13 +1,16 @@
 import 'dart:async';
 
 import 'package:animate_do/animate_do.dart';
+import 'package:bajar_de_peso_21_dias/models/Excercices.dart';
 import 'package:bajar_de_peso_21_dias/router/app_routes.dart';
 import 'package:bajar_de_peso_21_dias/screens/routine/reminder_routine.dart';
+import 'package:bajar_de_peso_21_dias/share_preferences/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class FinishScreen extends StatefulWidget {
-  const FinishScreen({super.key});
+  const FinishScreen({super.key, required this.exercices});
+  final List<ExercicesModel> exercices;
 
   @override
   State<FinishScreen> createState() => _FinishScreenState();
@@ -22,13 +25,11 @@ class _FinishScreenState extends State<FinishScreen> {
 
   void onCloseDialog() {
     if (mounted) {
-      // Navigator.push(
-      //     context,
-      //     AppRoutes.handleNavigate(
-      //         pageBuilder: const RemeinderScreen(),
-      //         type: 'bottom_fade_cupertino'));
       AppRoutes.pushRouteCupertinoReplacementNamed(
-          context: context, pageBuilder: const RemeinderScreen());
+          context: context,
+          pageBuilder: RemeinderScreen(
+            exercices: widget.exercices,
+          ));
     }
   }
 
@@ -55,7 +56,9 @@ class _FinishScreenState extends State<FinishScreen> {
               ),
               const _Texts(),
               Expanded(child: Container()),
-              const _InfoFinish(),
+              _InfoFinish(
+                exercices: widget.exercices,
+              ),
               const SizedBox(
                 height: 70,
               )
@@ -77,7 +80,9 @@ class _FinishScreenState extends State<FinishScreen> {
 class _InfoFinish extends StatelessWidget {
   const _InfoFinish({
     Key? key,
+    required this.exercices,
   }) : super(key: key);
+  final List<ExercicesModel> exercices;
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +91,8 @@ class _InfoFinish extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _createColumn(title: '7', subtitle: 'Ejercicios'),
+          _createColumn(
+              title: exercices.length.toString(), subtitle: 'Ejercicios'),
           _createColumn(title: '6.6', subtitle: 'Calorías'),
           _createColumn(title: '00:55', subtitle: 'Duración'),
         ],
@@ -125,8 +131,8 @@ class _Texts extends StatelessWidget {
     return FadeInUp(
         delay: const Duration(milliseconds: 1000),
         child: Column(
-          children: const [
-            Text(
+          children: [
+            const Text(
               'FELICIDADES',
               style: TextStyle(
                   color: Colors.white,
@@ -135,8 +141,8 @@ class _Texts extends StatelessWidget {
                   fontFamily: 'Artico'),
             ),
             Text(
-              '1º DIA COMPLETADO',
-              style: TextStyle(
+              '${Preferences.dayActive}º DIA COMPLETADO',
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
